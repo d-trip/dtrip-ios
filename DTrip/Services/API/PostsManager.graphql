@@ -1,0 +1,9 @@
+query Posts($first: Int, $author: String) {
+  posts(first: $first, author: $author) {
+    edges {
+      node {
+        title
+      }
+    }
+  }
+}
