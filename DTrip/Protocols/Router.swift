@@ -2,8 +2,8 @@
 //  Router.swift
 //  DTrip
 //
-//  Created by Artem Semavin on 21/08/2017.
-//  Copyright © 2017 Artem Semavin. All rights reserved.
+//  Created by Artem Semavin on 19/10/2018.
+//  Copyright © 2018 Semavin Artem. All rights reserved.
 //
 
 import UIKit

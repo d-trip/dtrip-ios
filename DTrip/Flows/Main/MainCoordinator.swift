@@ -1,8 +1,8 @@
 //
 //  MainCoordinator.swift
-//  MusicApp
+//  DTrip
 //
-//  Created by Artem Semavin on 11/09/2018.
+//  Created by Artem Semavin on 19/10/2018.
 //  Copyright © 2018 Semavin Artem. All rights reserved.
 //
 
@@ -19,7 +19,7 @@ final class MainCoordinator: Coordinator {
         
         //        let viewModel = view.viewModel!
         //
-        //        viewModel.showNexPage
+        //        viewModel.showNextPage
         //            .bind(onNext: onNext)
         //            .disposed(by: viewModel.disposeBag)
     }

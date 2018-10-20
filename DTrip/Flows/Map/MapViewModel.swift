@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+protocol MapViewModel {
+    
+}
+
+final class MapViewModelImp: MapViewModel {
+    
+}
