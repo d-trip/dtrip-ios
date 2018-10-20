@@ -26,14 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window!.makeKeyAndVisible()
-        window!.rootViewController = UINavigationController()
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UINavigationController()
         
         configureApplicationAssembly(container)
         
-        try! container.bootstrap()
-        (try! container.resolve() as AppCoordinator).start()
-        
+        do {
+            try container.bootstrap()
+            (try container.resolve() as AppCoordinator).start()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
         return true
     }
     

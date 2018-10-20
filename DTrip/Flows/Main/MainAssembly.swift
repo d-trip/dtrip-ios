@@ -19,13 +19,13 @@ func configureMain(_ container: DependencyContainer) {
         MainCoordinator(router: $0, view: $1)
     }
     
-    container.register { (model: MainViewModel) -> MainViewController in
+    container.register { (
+        model: MainViewModel,
+        mapController: MapViewController,
+        feedController: FeedViewController) -> MainViewController in
+        
         let controller = MainViewController()
         controller.viewModel = model
-        
-        let mapController: MapViewController = try! container.resolve()
-        let feedController: FeedViewController = try! container.resolve()
-        
         controller.setViewControllers([mapController, feedController], animated: false)
         controller.selectedIndex = 0
         

@@ -16,8 +16,8 @@ func configureApplicationAssembly(_ container: DependencyContainer) {
     container.register { container }
     container.register { UIApplication.shared }
         
-    container.register() {
-        AppCoordinator(router: try! container.resolve(), main: try! container.resolve())
+    container.register() { (router: Router, mainCoordinator: MainCoordinator) -> AppCoordinator in
+        return AppCoordinator(router: router, main: mainCoordinator)
     }
 
     //Services
