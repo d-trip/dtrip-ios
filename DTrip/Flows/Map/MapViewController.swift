@@ -8,6 +8,7 @@
 
 import UIKit
 import Mapbox
+import RxSwift
 
 final class MapViewController: UIViewController {
     
@@ -31,6 +32,8 @@ final class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupRx()
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -40,7 +43,19 @@ final class MapViewController: UIViewController {
 
     // MARK: - Private methods
     
-    func setupUI() {
+    private func setupUI() {
         view.addSubview(mapView)
+    }
+
+    private func setupRx() {
+        viewModel.postCoordinates
+            .drive(onNext: { [weak self] coordinates in
+                self?.setupMapCoordinates(coordinates)
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+
+    private func setupMapCoordinates(_ coordinates: [CLLocationCoordinate2D]) {
+
     }
 }

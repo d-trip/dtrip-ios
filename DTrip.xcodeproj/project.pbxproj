@@ -37,10 +37,7 @@
 		ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF60217BC01300B6E87B /* MapCoordinator.swift */; };
 		ECC3BF63217BC01D00B6E87B /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF62217BC01D00B6E87B /* MapViewModel.swift */; };
 		ECC3BF65217BC02A00B6E87B /* MapAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF64217BC02A00B6E87B /* MapAssembly.swift */; };
-		ECF93B93217BE16400641225 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = ECF93B92217BE16400641225 /* schema.json */; };
 		ECF93B98217BEA2800641225 /* PostsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF93B97217BEA2800641225 /* PostsManager.swift */; };
-		ECF93B9A217BEA5400641225 /* PostsManager.graphql in Resources */ = {isa = PBXBuildFile; fileRef = ECF93B99217BEA5400641225 /* PostsManager.graphql */; };
-		ECF93B9C217BF05800641225 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF93B9B217BF05800641225 /* API.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,10 +89,7 @@
 		ECC3BF60217BC01300B6E87B /* MapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinator.swift; sourceTree = "<group>"; };
 		ECC3BF62217BC01D00B6E87B /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		ECC3BF64217BC02A00B6E87B /* MapAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAssembly.swift; sourceTree = "<group>"; };
-		ECF93B92217BE16400641225 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = schema.json; path = DTrip/schema.json; sourceTree = SOURCE_ROOT; };
 		ECF93B97217BEA2800641225 /* PostsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsManager.swift; sourceTree = "<group>"; };
-		ECF93B99217BEA5400641225 /* PostsManager.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = PostsManager.graphql; sourceTree = "<group>"; };
-		ECF93B9B217BF05800641225 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = DTrip/API.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,7 +229,6 @@
 		ECC3BF1E21793F8E00B6E87B /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				ECF93B92217BE16400641225 /* schema.json */,
 				ECC3BF0121793BFA00B6E87B /* Info.plist */,
 				ECC3BF52217BBC4F00B6E87B /* Config.swift */,
 			);
@@ -303,9 +296,7 @@
 		ECF93B96217BE9E100641225 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				ECF93B9B217BF05800641225 /* API.swift */,
 				ECF93B97217BEA2800641225 /* PostsManager.swift */,
-				ECF93B99217BEA5400641225 /* PostsManager.graphql */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -318,7 +309,6 @@
 			buildConfigurationList = ECC3BF0F21793BFA00B6E87B /* Build configuration list for PBXNativeTarget "DTrip" */;
 			buildPhases = (
 				66AFB8CDC7A5B04C407882F4 /* [CP] Check Pods Manifest.lock */,
-				ECC3BF4B217BA81C00B6E87B /* Generate Apollo GraphQL API */,
 				ECC3BEEE21793BF900B6E87B /* Sources */,
 				ECC3BEEF21793BF900B6E87B /* Frameworks */,
 				ECC3BEF021793BF900B6E87B /* Resources */,
@@ -396,8 +386,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECC3BF2321793FD500B6E87B /* Assets.xcassets in Resources */,
-				ECF93B9A217BEA5400641225 /* PostsManager.graphql in Resources */,
-				ECF93B93217BE16400641225 /* schema.json in Resources */,
 				ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,12 +453,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DTrip/Pods-DTrip-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Apollo/Apollo.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/Dip/Dip.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftHEXColors/SwiftHEXColors.framework",
 			);
@@ -478,12 +466,12 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Apollo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftHEXColors.framework",
 			);
@@ -491,24 +479,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DTrip/Pods-DTrip-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		ECC3BF4B217BA81C00B6E87B /* Generate Apollo GraphQL API */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Apollo GraphQL API";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "APOLLO_FRAMEWORK_PATH=\"$(eval find $FRAMEWORK_SEARCH_PATHS -name \"Apollo.framework\" -maxdepth 1)\"\n\nif [ -z \"$APOLLO_FRAMEWORK_PATH\" ]; then\necho \"error: Couldn't find Apollo.framework in FRAMEWORK_SEARCH_PATHS; make sure to add the framework to your project.\"\nexit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n$APOLLO_FRAMEWORK_PATH/check-and-run-apollo-cli.sh codegen:generate --queries=\"$(find . -name '*.graphql')\" --schema=schema.json API.swift\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -524,7 +494,6 @@
 				ECC3BF59217BBD4700B6E87B /* FeedCoordinator.swift in Sources */,
 				ECC3BF53217BBC4F00B6E87B /* Config.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
-				ECF93B9C217BF05800641225 /* API.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
@@ -699,7 +668,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ARN263RGLR;
+				DEVELOPMENT_TEAM = UL39A9L53C;
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -718,7 +687,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ARN263RGLR;
+				DEVELOPMENT_TEAM = UL39A9L53C;
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

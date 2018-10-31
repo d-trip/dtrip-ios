@@ -7,11 +7,25 @@
 //
 
 import Foundation
+import CoreLocation
+import RxSwift
+import RxCocoa
 
 protocol MapViewModel {
-    
+    var postCoordinates: Driver<([CLLocationCoordinate2D])> { get }
+
+    var disposeBag: DisposeBag { get }
 }
 
 final class MapViewModelImp: MapViewModel {
-    
+    var postCoordinates: Driver<([CLLocationCoordinate2D])> {
+        return postCoordinatesSubject.asDriver(onErrorJustReturn: [])
+    }
+
+    let postCoordinatesSubject = ReplaySubject<[CLLocationCoordinate2D]>.create(bufferSize: 1)
+
+    let disposeBag = DisposeBag()
+
+    init() {
+    }
 }

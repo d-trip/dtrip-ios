@@ -1,44 +1,43 @@
 PODS:
-  - Apollo (0.9.4):
-    - Apollo/Core (= 0.9.4)
-  - Apollo/Core (0.9.4)
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Swift (3.4.2):
     - CocoaLumberjack/Default
   - Dip (7.0.0)
   - Kingfisher (4.10.0)
   - Mapbox-iOS-SDK (4.5.0)
+  - RxCocoa (4.3.1):
+    - RxSwift (~> 4.0)
   - RxSwift (4.3.1)
   - SwiftHEXColors (1.1.2)
 
 DEPENDENCIES:
-  - Apollo (~> 0.9.4)
   - CocoaLumberjack/Swift
   - Dip (~> 7.0)
   - Kingfisher
   - Mapbox-iOS-SDK (~> 4.5)
+  - RxCocoa
   - RxSwift
   - SwiftHEXColors
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Apollo
     - CocoaLumberjack
     - Dip
     - Kingfisher
     - Mapbox-iOS-SDK
+    - RxCocoa
     - RxSwift
     - SwiftHEXColors
 
 SPEC CHECKSUMS:
-  Apollo: 450856adbdebcdf28c3c671f81732ac3f9944065
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Dip: 996ce76ec9170ca3c260683d2815596dd2bf99c6
   Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
   Mapbox-iOS-SDK: fb9dde66106a8f10d351f9697ac198049c8e5511
+  RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftHEXColors: 7f9f7e6bdce888d821e11749279733e5ddff5f51
 
-PODFILE CHECKSUM: 8f8650bf7afb82e4a335f750acd33cef14cafbfb
+PODFILE CHECKSUM: 2759ae4fa354dfd8ea193f80b00e782bdc18686e
 
 COCOAPODS: 1.5.3

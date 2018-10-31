@@ -10,8 +10,9 @@ target 'DTrip' do
   #utility
   pod 'Dip', '~> 7.0'
   pod 'RxSwift'
+  pod 'RxCocoa'
+
   pod 'CocoaLumberjack/Swift'
-  pod 'Apollo', '~> 0.9.4'
   
   #ui
   pod 'SwiftHEXColors'
