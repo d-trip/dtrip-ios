@@ -12,7 +12,7 @@ func configureMap(_ container: DependencyContainer) {
     unowned let container = container
     
     container.register() {
-        MapViewModelImp() as MapViewModel
+        MapViewModelImp(manager: $0) as MapViewModel
     }
     
     container.register {

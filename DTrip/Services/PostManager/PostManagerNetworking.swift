@@ -31,8 +31,10 @@ extension Networking: PostManagerNetworking {
         // ToDo: - Now it's sync operations. not very fast:(
         return getContent(page: page)
             .flatMap { content -> Observable<ContentResponseModel> in
-                guard content.pages.hasNext else { return .empty() }
-                return Observable<ContentResponseModel>.just(content)
+                guard content.pages.hasNext else {
+                    return Observable.just(content)
+                }
+                return Observable.just(content)
                     .concat(self.getAllContent(page: content.pages.current + 1))
         }
     }

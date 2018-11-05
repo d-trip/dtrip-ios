@@ -25,7 +25,10 @@ final class MapViewModelImp: MapViewModel {
     let postCoordinatesSubject = ReplaySubject<[CLLocationCoordinate2D]>.create(bufferSize: 1)
 
     let disposeBag = DisposeBag()
-
-    init() {
+    let manager: PostManager
+    
+    init(manager: PostManager) {
+        self.manager = manager
+        
     }
 }
