@@ -11,6 +11,7 @@ target 'DTrip' do
   pod 'Dip', '~> 7.0'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'Alamofire'
 
   pod 'CocoaLumberjack/Swift'
   

@@ -17,4 +17,14 @@ func configureServices(_ container: DependencyContainer) {
         }
         return RouterImp(rootController: rootController) as Router
     }
+    
+    container.register(.singleton) {
+        PostManagerImp(network: $0) as PostManager
+    }
+    
+    let network = container.register(.singleton, type: Networking.self) {
+        return Networking()
+    }
+    
+    container.register(network, type: PostManagerNetworking.self)
 }

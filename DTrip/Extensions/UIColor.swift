@@ -18,5 +18,3 @@ extension UIColor {
     static let middleGray: UIColor = UIColor(hexString: "#9F9F9F")!
     static let lightGray: UIColor = UIColor(hexString: "#E9E9E9")!
 }
-
-

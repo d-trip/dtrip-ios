@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		0AA7E269A7D5FB71E5348C78 /* Pods_DTrip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3160CC333263ABC79C3019DF /* Pods_DTrip.framework */; };
 		37D027813C0E769882329662 /* Pods_DTripTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640008754F1848004EDCDA24 /* Pods_DTripTests.framework */; };
+		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
+		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
+		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
+		EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */; };
+		EC78E7252190A86700C19421 /* ContentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E7242190A86700C19421 /* ContentResponseModel.swift */; };
+		EC78E7272190ABAE00C19421 /* TypeContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E7262190ABAE00C19421 /* TypeContent.swift */; };
+		EC78E7292190AC0B00C19421 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E7282190AC0B00C19421 /* ContentModel.swift */; };
+		EC78E72B2190AED000C19421 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E72A2190AED000C19421 /* Observable.swift */; };
 		ECC3BEF621793BF900B6E87B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BEF521793BF900B6E87B /* AppDelegate.swift */; };
 		ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECC3BEFE21793BFA00B6E87B /* LaunchScreen.storyboard */; };
 		ECC3BF0B21793BFA00B6E87B /* DTripTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF0A21793BFA00B6E87B /* DTripTests.swift */; };
@@ -57,6 +65,14 @@
 		72FC80167E76CC747D51DC26 /* Pods-DTrip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.debug.xcconfig"; sourceTree = "<group>"; };
 		A4497E4F816E7CC5F8E66E66 /* Pods-DTrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.release.xcconfig"; sourceTree = "<group>"; };
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
+		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
+		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateDecodingStrategy.swift; sourceTree = "<group>"; };
+		EC78E7242190A86700C19421 /* ContentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentResponseModel.swift; sourceTree = "<group>"; };
+		EC78E7262190ABAE00C19421 /* TypeContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeContent.swift; sourceTree = "<group>"; };
+		EC78E7282190AC0B00C19421 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
+		EC78E72A2190AED000C19421 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		ECC3BEF221793BF900B6E87B /* DTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECC3BEF521793BF900B6E87B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECC3BEFF21793BFA00B6E87B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -130,6 +146,26 @@
 				C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EC78E71C2190996200C19421 /* PostManager */ = {
+			isa = PBXGroup;
+			children = (
+				ECF93B97217BEA2800641225 /* PostsManager.swift */,
+				EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */,
+				EC78E72321909B4400C19421 /* Models */,
+			);
+			path = PostManager;
+			sourceTree = "<group>";
+		};
+		EC78E72321909B4400C19421 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EC78E7242190A86700C19421 /* ContentResponseModel.swift */,
+				EC78E7282190AC0B00C19421 /* ContentModel.swift */,
+				EC78E7262190ABAE00C19421 /* TypeContent.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		ECC3BEE921793BF900B6E87B = {
@@ -211,6 +247,7 @@
 			children = (
 				ECC3BF342179400200B6E87B /* ServicesAssembly.swift */,
 				ECC3BF2F2179400200B6E87B /* Logs */,
+				EC78E71C2190996200C19421 /* PostManager */,
 				ECC3BF352179400300B6E87B /* Router */,
 				ECF93B96217BE9E100641225 /* API */,
 			);
@@ -222,6 +259,9 @@
 			children = (
 				ECC3BF49217940D500B6E87B /* UIViewController+Presentable.swift */,
 				ECC3BF2021793FD300B6E87B /* UIColor.swift */,
+				EC78E71F2190999A00C19421 /* Data.swift */,
+				EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */,
+				EC78E72A2190AED000C19421 /* Observable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -296,7 +336,7 @@
 		ECF93B96217BE9E100641225 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				ECF93B97217BEA2800641225 /* PostsManager.swift */,
+				EC78E71A2190935800C19421 /* Networking.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -453,6 +493,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DTrip/Pods-DTrip-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/Dip/Dip.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
@@ -466,6 +507,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
@@ -490,11 +532,16 @@
 				ECC3BF1621793F0700B6E87B /* AppCoordinator.swift in Sources */,
 				ECC3BF3F2179400300B6E87B /* LogManager.swift in Sources */,
 				ECC3BF3E2179400300B6E87B /* Log.swift in Sources */,
+				EC78E71B2190935800C19421 /* Networking.swift in Sources */,
 				ECC3BF422179400300B6E87B /* ServicesAssembly.swift in Sources */,
 				ECC3BF59217BBD4700B6E87B /* FeedCoordinator.swift in Sources */,
 				ECC3BF53217BBC4F00B6E87B /* Config.swift in Sources */,
+				EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */,
+				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
+				EC78E7272190ABAE00C19421 /* TypeContent.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
+				EC78E72B2190AED000C19421 /* Observable.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
 				ECC3BF2221793FD500B6E87B /* UIColor.swift in Sources */,
@@ -503,13 +550,16 @@
 				ECC3BF5B217BBD5400B6E87B /* FeedViewModel.swift in Sources */,
 				ECC3BF1821793F0D00B6E87B /* AppContainer.swift in Sources */,
 				ECC3BF57217BBD3100B6E87B /* FeedViewController.swift in Sources */,
+				EC78E7202190999A00C19421 /* Data.swift in Sources */,
 				ECC3BF462179400300B6E87B /* Coordinator.swift in Sources */,
 				ECC3BEF621793BF900B6E87B /* AppDelegate.swift in Sources */,
 				ECC3BF65217BC02A00B6E87B /* MapAssembly.swift in Sources */,
 				ECC3BF432179400300B6E87B /* RouterImp.swift in Sources */,
 				ECC3BF2821793FF500B6E87B /* MainViewController.swift in Sources */,
+				EC78E7252190A86700C19421 /* ContentResponseModel.swift in Sources */,
 				ECC3BF2B21793FF500B6E87B /* MainViewModel.swift in Sources */,
 				ECC3BF4A217940D500B6E87B /* UIViewController+Presentable.swift in Sources */,
+				EC78E7292190AC0B00C19421 /* ContentModel.swift in Sources */,
 				ECC3BF442179400300B6E87B /* Presentable.swift in Sources */,
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
 				ECC3BF63217BC01D00B6E87B /* MapViewModel.swift in Sources */,
@@ -668,7 +718,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UL39A9L53C;
+				DEVELOPMENT_TEAM = ARN263RGLR;
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -687,7 +737,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UL39A9L53C;
+				DEVELOPMENT_TEAM = ARN263RGLR;
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

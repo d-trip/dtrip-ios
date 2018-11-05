@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.7.3)
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Swift (3.4.2):
     - CocoaLumberjack/Default
@@ -11,6 +12,7 @@ PODS:
   - SwiftHEXColors (1.1.2)
 
 DEPENDENCIES:
+  - Alamofire
   - CocoaLumberjack/Swift
   - Dip (~> 7.0)
   - Kingfisher
@@ -21,6 +23,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - CocoaLumberjack
     - Dip
     - Kingfisher
@@ -30,6 +33,7 @@ SPEC REPOS:
     - SwiftHEXColors
 
 SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Dip: 996ce76ec9170ca3c260683d2815596dd2bf99c6
   Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
@@ -38,6 +42,6 @@ SPEC CHECKSUMS:
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftHEXColors: 7f9f7e6bdce888d821e11749279733e5ddff5f51
 
-PODFILE CHECKSUM: 2759ae4fa354dfd8ea193f80b00e782bdc18686e
+PODFILE CHECKSUM: d8e06d3465f38fe86f3e9c29e710437340202918
 
 COCOAPODS: 1.5.3

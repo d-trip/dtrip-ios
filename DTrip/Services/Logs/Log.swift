@@ -27,6 +27,57 @@ class Log {
     }
 
 	static func handleError(_ error: Error, showError: Bool = false) {
-        // ToDo: - make handle error func
+        
+        var errorMessage = ""
+        if let decodingError = error as? DecodingError {
+            switch decodingError {
+            case .dataCorrupted(let context):
+                DDLogError("""
+                    Decode error: \(context.debugDescription)
+                    Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))
+                    """)
+                
+                errorMessage = "Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))"
+            case .keyNotFound(let codingkey, let context):
+                DDLogError("""
+                    Decode error: \(context.debugDescription)
+                    Coding key: \(codingkey.stringValue)
+                    Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))
+                    """)
+                
+                errorMessage = "Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))"
+            case .typeMismatch(let type, let context):
+                DDLogError("""
+                    Decode error: \(context.debugDescription)
+                    Type: \(type) Extra: \(context.codingPath.debugDescription) Extra2: \(context.underlyingError.debugDescription)
+                    Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))
+                    """)
+                
+                errorMessage = "Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))"
+            case .valueNotFound(let type, let context):
+                DDLogError("""
+                    Decode error: \(context.debugDescription)
+                    Type: \(type) Extra: \(context.codingPath.debugDescription) Extra2: \(context.underlyingError.debugDescription)
+                    Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))
+                    """)
+                
+                errorMessage = "Coding path: \(context.codingPath.compactMap({ $0.stringValue }).joined(separator: " -> "))"
+            }
+        } else {
+            DDLogError(error.localizedDescription)
+            errorMessage = error.localizedDescription
+        }
+        
+        if showError {
+            let alertController = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+            let settingsAction = UIAlertAction(title: "Ok", style: .default)
+            alertController.addAction(settingsAction)
+            
+            var presented = UIApplication.shared.keyWindow?.rootViewController
+            while (presented?.presentedViewController as? UINavigationController != nil) {
+                presented = presented?.presentedViewController
+            }
+            presented?.present(alertController, animated: true, completion: nil)
+        }
 	}
 }
