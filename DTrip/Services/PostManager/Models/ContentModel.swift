@@ -36,7 +36,7 @@ struct LocationModel: Codable {
 }
 
 struct LocatioGeometry: Codable {
-    let type: String
+    let type: LocatioGeometryType
     let coordinates: [Double]
 }
 

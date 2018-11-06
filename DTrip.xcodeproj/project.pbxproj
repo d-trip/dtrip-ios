@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0AA7E269A7D5FB71E5348C78 /* Pods_DTrip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3160CC333263ABC79C3019DF /* Pods_DTrip.framework */; };
 		37D027813C0E769882329662 /* Pods_DTripTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640008754F1848004EDCDA24 /* Pods_DTripTests.framework */; };
+		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
+		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
 		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
 		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
@@ -65,6 +67,8 @@
 		72FC80167E76CC747D51DC26 /* Pods-DTrip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.debug.xcconfig"; sourceTree = "<group>"; };
 		A4497E4F816E7CC5F8E66E66 /* Pods-DTrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.release.xcconfig"; sourceTree = "<group>"; };
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
+		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
+		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
 		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -148,6 +152,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		EC16E992219171CA0099C4FE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EC16E990219171C40099C4FE /* MapPointModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		EC78E71C2190996200C19421 /* PostManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +176,7 @@
 				EC78E7242190A86700C19421 /* ContentResponseModel.swift */,
 				EC78E7282190AC0B00C19421 /* ContentModel.swift */,
 				EC78E7262190ABAE00C19421 /* TypeContent.swift */,
+				EC16E98E219171270099C4FE /* LocatioGeometryType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -318,6 +331,7 @@
 				ECC3BF60217BC01300B6E87B /* MapCoordinator.swift */,
 				ECC3BF62217BC01D00B6E87B /* MapViewModel.swift */,
 				ECC3BF5E217BC00400B6E87B /* MapViewController.swift */,
+				EC16E992219171CA0099C4FE /* Models */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -536,8 +550,10 @@
 				ECC3BF422179400300B6E87B /* ServicesAssembly.swift in Sources */,
 				ECC3BF59217BBD4700B6E87B /* FeedCoordinator.swift in Sources */,
 				ECC3BF53217BBC4F00B6E87B /* Config.swift in Sources */,
+				EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */,
 				EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */,
 				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
+				EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */,
 				EC78E7272190ABAE00C19421 /* TypeContent.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,

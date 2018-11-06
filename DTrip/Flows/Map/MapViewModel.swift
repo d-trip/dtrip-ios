@@ -12,17 +12,17 @@ import RxSwift
 import RxCocoa
 
 protocol MapViewModel {
-    var postCoordinates: Driver<([CLLocationCoordinate2D])> { get }
+    var postCoordinates: Driver<([MapPointModel])> { get }
 
     var disposeBag: DisposeBag { get }
 }
 
 final class MapViewModelImp: MapViewModel {
-    var postCoordinates: Driver<([CLLocationCoordinate2D])> {
+    var postCoordinates: Driver<([MapPointModel])> {
         return postCoordinatesSubject.asDriver(onErrorJustReturn: [])
     }
 
-    let postCoordinatesSubject = ReplaySubject<[CLLocationCoordinate2D]>.create(bufferSize: 1)
+    let postCoordinatesSubject = ReplaySubject<[MapPointModel]>.create(bufferSize: 1)
 
     let disposeBag = DisposeBag()
     let manager: PostManager
@@ -30,5 +30,36 @@ final class MapViewModelImp: MapViewModel {
     init(manager: PostManager) {
         self.manager = manager
         
+        manager.content
+            .map(performContentCoordinates)
+            .bind(to: postCoordinatesSubject.asObserver())
+            .disposed(by: disposeBag)
+    }
+    
+    func performContentCoordinates(_ content: [ContentModel]) -> [MapPointModel] {
+        return content
+            .map(makeMapPointModel)
+            .compactMap { $0 }
+    }
+    
+    func makeMapPointModel(_ content: ContentModel) -> MapPointModel? {
+        guard content.type == .post,
+            content.meta.location.geometry.type == .point else { return nil }
+        
+        let coordinatesArray = content.meta.location.geometry.coordinates
+        let latitudeIndex = 0
+        let longitudeIndex = 1
+    
+        guard coordinatesArray.indices.contains(latitudeIndex),
+            coordinatesArray.indices.contains(longitudeIndex) else { return nil }
+        
+        let latitude = coordinatesArray[latitudeIndex]
+        let longitude = coordinatesArray[longitudeIndex]
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        return MapPointModel(name: content.meta.location.properties.name,
+                             permlink: content.permlink,
+                             author: content.author,
+                             coordinate: coordinate)
     }
 }

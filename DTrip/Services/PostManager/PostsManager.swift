@@ -10,13 +10,18 @@ import Foundation
 import RxSwift
 
 protocol PostManager {
+    var updateContent: AnyObserver<Void> { get }
     var content: Observable<[ContentModel]> { get }
+    
+    func getPost(permlink: String, author: String) -> Observable<ContentModel>
+    func getPosts(filter: [(permlink: String, author: String)]) -> Observable<[ContentModel]>
     
     var disposeBag: DisposeBag { get }
 }
 
 final class PostManagerImp: PostManager {
     
+    let updateContent: AnyObserver<Void>
     var content: Observable<[ContentModel]> {
         return contentSubject
     }
@@ -29,7 +34,12 @@ final class PostManagerImp: PostManager {
     init(network: PostManagerNetworking) {
         self.network = network
         
-        getAllContent()
+        let updateContentSubject = PublishSubject<Void>()
+        updateContent = updateContentSubject.asObserver()
+        
+        updateContentSubject
+            .startWith(())
+            .flatMap(getAllContent)
             .bind { [weak self] (content) in
                 self?.contentSubject.onNext(content)
             }
@@ -43,5 +53,13 @@ final class PostManagerImp: PostManager {
             })
             .takeLast(1)
             .map { $0.filter { $0.type == .post } }
+    }
+    
+    func getPost(permlink: String, author: String) -> Observable<ContentModel> {
+        return Observable.empty()
+    }
+    
+    func getPosts(filter: [(permlink: String, author: String)]) -> Observable<[ContentModel]> {
+        return Observable.empty()
     }
 }
