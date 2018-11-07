@@ -47,8 +47,8 @@ final class MapViewModelImp: MapViewModel {
             content.meta.location.geometry.type == .point else { return nil }
         
         let coordinatesArray = content.meta.location.geometry.coordinates
-        let latitudeIndex = 0
-        let longitudeIndex = 1
+        let latitudeIndex = 1
+        let longitudeIndex = 0
     
         guard coordinatesArray.indices.contains(latitudeIndex),
             coordinatesArray.indices.contains(longitudeIndex) else { return nil }

@@ -22,7 +22,7 @@ enum LocatioGeometryType: String, Codable {
     }
     
     init(_ value: String) {
-        switch value {
+        switch value.lowercased() {
         case "point":
             self = .point
         default:

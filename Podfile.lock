@@ -5,7 +5,6 @@ PODS:
     - CocoaLumberjack/Default
   - Dip (7.0.0)
   - Kingfisher (4.10.0)
-  - Mapbox-iOS-SDK (4.5.0)
   - RxCocoa (4.3.1):
     - RxSwift (~> 4.0)
   - RxSwift (4.3.1)
@@ -16,7 +15,6 @@ DEPENDENCIES:
   - CocoaLumberjack/Swift
   - Dip (~> 7.0)
   - Kingfisher
-  - Mapbox-iOS-SDK (~> 4.5)
   - RxCocoa
   - RxSwift
   - SwiftHEXColors
@@ -27,7 +25,6 @@ SPEC REPOS:
     - CocoaLumberjack
     - Dip
     - Kingfisher
-    - Mapbox-iOS-SDK
     - RxCocoa
     - RxSwift
     - SwiftHEXColors
@@ -37,11 +34,10 @@ SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Dip: 996ce76ec9170ca3c260683d2815596dd2bf99c6
   Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
-  Mapbox-iOS-SDK: fb9dde66106a8f10d351f9697ac198049c8e5511
   RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftHEXColors: 7f9f7e6bdce888d821e11749279733e5ddff5f51
 
-PODFILE CHECKSUM: d8e06d3465f38fe86f3e9c29e710437340202918
+PODFILE CHECKSUM: ba2323f72b498155bc9bb4ad2382484fcc1be6b1
 
 COCOAPODS: 1.5.3

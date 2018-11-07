@@ -7,19 +7,19 @@
 //
 
 import UIKit
-import Mapbox
+import MapKit
 import RxSwift
 
 final class MapViewController: UIViewController {
     
     //MARK: - Outlets
     
-    var mapView: MGLMapView = {
-        let mapView = MGLMapView()
-        mapView.styleURL = URL(string: Config.map.styleURL)
-        mapView.logoView.isHidden = true
-        mapView.attributionButton.isHidden = true
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    var mapView: MKMapView = {
+        let mapView = MKMapView()
+        mapView.register(MapMarkerView.self,
+                         forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        mapView.register(MapClusterMarkerView.self,
+                         forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
         return mapView
     }()
     
@@ -36,6 +36,11 @@ final class MapViewController: UIViewController {
 
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        centreMap(on: initialLocation)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         mapView.frame = view.bounds
@@ -49,13 +54,20 @@ final class MapViewController: UIViewController {
 
     private func setupRx() {
         viewModel.postCoordinates
-            .drive(onNext: { [weak self] coordinates in
-                self?.setupMapCoordinates(coordinates)
+            .drive(onNext: { [weak self] points in
+                self?.setupMapPoints(points)
             })
             .disposed(by: viewModel.disposeBag)
     }
 
-    private func setupMapCoordinates(_ coordinates: [CLLocationCoordinate2D]) {
-
+    private func setupMapPoints(_ points: [MapPointModel]) {
+        mapView.addAnnotations(points)
+    }
+    
+    private func centreMap(on location: CLLocation) {
+//        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
+//                                                  latitudinalMeters: regionRadius * 2.0,
+//                                                  longitudinalMeters: regionRadius * 2.0)
+//        mapView.setRegion(coordinateRegion, animated: true)
     }
 }

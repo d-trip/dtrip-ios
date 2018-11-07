@@ -22,7 +22,7 @@ enum TypeContent: String, Codable {
     }
     
     init(_ value: String) {
-        switch value {
+        switch value.lowercased() {
         case "post":
             self = .post
         default:
