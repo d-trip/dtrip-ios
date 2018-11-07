@@ -17,11 +17,22 @@ final class MapCoordinator: Coordinator {
         self.view = view
         self.router = router
         
-        //        let viewModel = view.viewModel!
-        //
-        //        viewModel.showNexPage
-        //            .bind(onNext: onNext)
-        //            .disposed(by: viewModel.disposeBag)
+        guard let viewModel = view.viewModel else {
+            assertionFailure("ViewModel must be setted")
+            return
+        }
+        
+        viewModel.showMapPointsContent
+            .filter { $0.count == 1 }
+            .map { $0.first }
+            .unwrap()
+            .bind(onNext: showPostScreen)
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.showMapPointsContent
+            .filter { $0.count > 1 }
+            .bind(onNext: showPostFeed)
+            .disposed(by: viewModel.disposeBag)
     }
     
     func start() {
@@ -30,7 +41,11 @@ final class MapCoordinator: Coordinator {
         //        router.present(view)
     }
     
-    //    func onNext() {
-    //
-    //    }
+    func showPostScreen(post: (author: String, permlink: String)) {
+        
+    }
+    
+    func showPostFeed(posts: [(author: String, permlink: String)]) {
+        
+    }
 }

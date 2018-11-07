@@ -9,14 +9,24 @@
 import Foundation
 import Alamofire
 import RxSwift
+import SwiftyConnect
 
 final class Networking {
  
-    let searchURL: String = "https://api.asksteem.com/search"
+    let searchURL: String = Parameters.API.searchURL
+    let steem = Steem.sharedInstance
+    
+    init() {
+        configureSteem()
+    }
+    
+    func configureSteem() {
+        steem.initialize(config: ["api": Parameters.API.steemURL])
+    }
     
     func request(url: URLConvertible,
                  method: HTTPMethod,
-                 parameters: Parameters? = nil,
+                 parameters: Alamofire.Parameters? = nil,
                  headers: HTTPHeaders? = nil) -> Observable<Data> {
         
         let encoding: ParameterEncoding
@@ -28,7 +38,8 @@ final class Networking {
         }
 
         return Observable.create { observer in
-            let request = SessionManager.default.request(url, method: method,
+            let request = SessionManager.default.request(url,
+                                                         method: method,
                                                          parameters: parameters,
                                                          encoding: encoding,
                                                          headers: headers)

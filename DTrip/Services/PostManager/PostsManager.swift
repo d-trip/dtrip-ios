@@ -13,8 +13,8 @@ protocol PostManager {
     var updateContent: AnyObserver<Void> { get }
     var content: Observable<[ContentModel]> { get }
     
-    func getPost(permlink: String, author: String) -> Observable<ContentModel>
-    func getPosts(filter: [(permlink: String, author: String)]) -> Observable<[ContentModel]>
+    func getPost(author: String, permlink: String) -> Observable<PostModel>
+    func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]>
     
     var disposeBag: DisposeBag { get }
 }
@@ -55,11 +55,13 @@ final class PostManagerImp: PostManager {
             .map { $0.filter { $0.type == .post } }
     }
     
-    func getPost(permlink: String, author: String) -> Observable<ContentModel> {
-        return Observable.empty()
+    func getPost(author: String, permlink: String) -> Observable<PostModel> {
+        return network
+            .getContent(author: author, permlink: permlink)
+            .map { $0.result }
     }
     
-    func getPosts(filter: [(permlink: String, author: String)]) -> Observable<[ContentModel]> {
+    func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]> {
         return Observable.empty()
     }
 }

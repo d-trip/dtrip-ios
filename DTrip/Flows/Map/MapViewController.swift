@@ -50,6 +50,7 @@ final class MapViewController: UIViewController {
     
     private func setupUI() {
         view.addSubview(mapView)
+        mapView.delegate = self
     }
 
     private func setupRx() {
@@ -69,5 +70,17 @@ final class MapViewController: UIViewController {
 //                                                  latitudinalMeters: regionRadius * 2.0,
 //                                                  longitudinalMeters: regionRadius * 2.0)
 //        mapView.setRegion(coordinateRegion, animated: true)
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotation = view.annotation as? MKClusterAnnotation,
+            let annotations = annotation.memberAnnotations as? [MapPointModel] {
+            // ToDo: - open post list screen
+        } else if let annotation = view.annotation as? MapPointModel {
+            // ToDo: - open post screen
+            viewModel.didSelectMapPoint.onNext(annotation)
+        }
     }
 }

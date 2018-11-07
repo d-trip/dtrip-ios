@@ -13,15 +13,26 @@ import RxCocoa
 
 protocol MapViewModel {
     var postCoordinates: Driver<([MapPointModel])> { get }
-
+    var showMapPointsContent: Observable<[(author: String, permlink: String)]> { get }
+    
+    var didSelectMapPoint: AnyObserver<[MapPointModel]> { get }
     var disposeBag: DisposeBag { get }
 }
 
 final class MapViewModelImp: MapViewModel {
+    var showMapPointsContent: Observable<[(author: String, permlink: String)]> {
+        return mapPointsSubject.map {
+            $0.map { ($0.author, $0.permlink) }
+        }
+    }
+    var didSelectMapPoint: AnyObserver<[MapPointModel]> {
+        return mapPointsSubject.asObserver()
+    }
     var postCoordinates: Driver<([MapPointModel])> {
         return postCoordinatesSubject.asDriver(onErrorJustReturn: [])
     }
-
+    
+    let mapPointsSubject = PublishSubject<[MapPointModel]>()
     let postCoordinatesSubject = ReplaySubject<[MapPointModel]>.create(bufferSize: 1)
 
     let disposeBag = DisposeBag()
@@ -29,13 +40,13 @@ final class MapViewModelImp: MapViewModel {
     
     init(manager: PostManager) {
         self.manager = manager
-        
+
         manager.content
             .map(performContentCoordinates)
             .bind(to: postCoordinatesSubject.asObserver())
             .disposed(by: disposeBag)
     }
-    
+
     func performContentCoordinates(_ content: [ContentModel]) -> [MapPointModel] {
         return content
             .map(makeMapPointModel)

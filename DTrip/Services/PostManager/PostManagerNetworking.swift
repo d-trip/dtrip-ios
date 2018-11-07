@@ -8,9 +8,11 @@
 
 import Foundation
 import RxSwift
+import SwiftyConnect
 
 protocol PostManagerNetworking {
     func getAllContent(page: Int) -> Observable<ContentResponseModel>
+    func getContent(author: String, permlink: String) -> Observable<PostResponceResult>
 }
 
 extension Networking: PostManagerNetworking {
@@ -37,5 +39,35 @@ extension Networking: PostManagerNetworking {
                 return Observable.just(content)
                     .concat(self.getAllContent(page: content.pages.current + 1))
         }
+    }
+    
+    func getContent(author: String, permlink: String) -> Observable<PostResponceResult> {
+        let request = Observable<Data>.create { [weak self] observer in
+            guard let steem = self?.steem else {
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            
+            steem.api.getContent(author: author, permlink: permlink) { (error, response) in
+                if let error = error as? Error {
+                    observer.onError(error)
+                }
+                if let response = response {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+                        observer.onNext(data)
+                        observer.onCompleted()
+                    } catch {
+                        observer.onError(error)
+                    }
+                }
+            }
+            return Disposables.create()
+        }
+        
+        return request
+            .catchError(handleError)
+            .map(to: PostResponceResult.self)
+            .catchError(handleError)
     }
 }

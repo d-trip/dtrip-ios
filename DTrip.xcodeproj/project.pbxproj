@@ -13,6 +13,12 @@
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
 		EC16E997219242240099C4FE /* MapClusterMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E996219242240099C4FE /* MapClusterMarkerView.swift */; };
+		EC16E9BD2193800E0099C4FE /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC16E9BB2193800E0099C4FE /* OAuth2.framework */; };
+		EC16E9BE2193800E0099C4FE /* SwiftyConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */; };
+		EC16E9C1219383590099C4FE /* AppParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C0219383590099C4FE /* AppParameters.swift */; };
+		EC16E9C321938EDE0099C4FE /* PostResponceResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C221938EDE0099C4FE /* PostResponceResult.swift */; };
+		EC16E9C521938F470099C4FE /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C421938F470099C4FE /* PostModel.swift */; };
+		EC16E9C721938FF00099C4FE /* ActiveVote.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C621938FF00099C4FE /* ActiveVote.swift */; };
 		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
 		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
 		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
@@ -62,6 +68,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		EC16E9B721937FC40099C4FE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		3160CC333263ABC79C3019DF /* Pods_DTrip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DTrip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4765C32C729013BC10852D4C /* Pods-DTripTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -73,6 +92,16 @@
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
 		EC16E996219242240099C4FE /* MapClusterMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapClusterMarkerView.swift; sourceTree = "<group>"; };
+		EC16E99F21937FC40099C4FE /* SwiftyConnect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftyConnect.h; sourceTree = "<group>"; };
+		EC16E9A021937FC40099C4FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC16E9AC21937FC40099C4FE /* SwiftyConnectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyConnectTests.swift; sourceTree = "<group>"; };
+		EC16E9AE21937FC40099C4FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC16E9BB2193800E0099C4FE /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
+		EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyConnect.framework; path = Carthage/Build/iOS/SwiftyConnect.framework; sourceTree = "<group>"; };
+		EC16E9C0219383590099C4FE /* AppParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppParameters.swift; sourceTree = "<group>"; };
+		EC16E9C221938EDE0099C4FE /* PostResponceResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostResponceResult.swift; sourceTree = "<group>"; };
+		EC16E9C421938F470099C4FE /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		EC16E9C621938FF00099C4FE /* ActiveVote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveVote.swift; sourceTree = "<group>"; };
 		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
 		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -121,6 +150,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC16E9BD2193800E0099C4FE /* OAuth2.framework in Frameworks */,
+				EC16E9BE2193800E0099C4FE /* SwiftyConnect.framework in Frameworks */,
 				0AA7E269A7D5FB71E5348C78 /* Pods_DTrip.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +170,8 @@
 		16B27EB48CEC9B8F8512C04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EC16E9BB2193800E0099C4FE /* OAuth2.framework */,
+				EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */,
 				3160CC333263ABC79C3019DF /* Pods_DTrip.framework */,
 				640008754F1848004EDCDA24 /* Pods_DTripTests.framework */,
 			);
@@ -173,6 +206,24 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		EC16E99E21937FC40099C4FE /* SwiftyConnect */ = {
+			isa = PBXGroup;
+			children = (
+				EC16E99F21937FC40099C4FE /* SwiftyConnect.h */,
+				EC16E9A021937FC40099C4FE /* Info.plist */,
+			);
+			path = SwiftyConnect;
+			sourceTree = "<group>";
+		};
+		EC16E9AB21937FC40099C4FE /* SwiftyConnectTests */ = {
+			isa = PBXGroup;
+			children = (
+				EC16E9AC21937FC40099C4FE /* SwiftyConnectTests.swift */,
+				EC16E9AE21937FC40099C4FE /* Info.plist */,
+			);
+			path = SwiftyConnectTests;
+			sourceTree = "<group>";
+		};
 		EC78E71C2190996200C19421 /* PostManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +241,9 @@
 				EC78E7282190AC0B00C19421 /* ContentModel.swift */,
 				EC78E7262190ABAE00C19421 /* TypeContent.swift */,
 				EC16E98E219171270099C4FE /* LocatioGeometryType.swift */,
+				EC16E9C221938EDE0099C4FE /* PostResponceResult.swift */,
+				EC16E9C421938F470099C4FE /* PostModel.swift */,
+				EC16E9C621938FF00099C4FE /* ActiveVote.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -199,6 +253,8 @@
 			children = (
 				ECC3BEF421793BF900B6E87B /* DTrip */,
 				ECC3BF0921793BFA00B6E87B /* DTripTests */,
+				EC16E99E21937FC40099C4FE /* SwiftyConnect */,
+				EC16E9AB21937FC40099C4FE /* SwiftyConnectTests */,
 				ECC3BEF321793BF900B6E87B /* Products */,
 				57D3279ADE9B391D3261AFAE /* Pods */,
 				16B27EB48CEC9B8F8512C04C /* Frameworks */,
@@ -220,6 +276,7 @@
 				ECC3BEF521793BF900B6E87B /* AppDelegate.swift */,
 				ECC3BF1521793F0700B6E87B /* AppCoordinator.swift */,
 				ECC3BF1721793F0D00B6E87B /* AppContainer.swift */,
+				EC16E9C0219383590099C4FE /* AppParameters.swift */,
 				ECC3BF1C21793F7A00B6E87B /* Services */,
 				ECC3BF1921793F6100B6E87B /* Flows */,
 				ECC3BF48217940A800B6E87B /* Protocols */,
@@ -377,10 +434,12 @@
 			buildConfigurationList = ECC3BF0F21793BFA00B6E87B /* Build configuration list for PBXNativeTarget "DTrip" */;
 			buildPhases = (
 				66AFB8CDC7A5B04C407882F4 /* [CP] Check Pods Manifest.lock */,
+				EC16E9BF2193801B0099C4FE /* ShellScript */,
 				ECC3BEEE21793BF900B6E87B /* Sources */,
 				ECC3BEEF21793BF900B6E87B /* Frameworks */,
 				ECC3BEF021793BF900B6E87B /* Resources */,
 				ACA2F2B9FBA397127DAAAC5D /* [CP] Embed Pods Frameworks */,
+				EC16E9B721937FC40099C4FE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -416,7 +475,7 @@
 		ECC3BEEA21793BF900B6E87B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Semavin Artem";
 				TargetAttributes = {
@@ -546,6 +605,25 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DTrip/Pods-DTrip-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EC16E9BF2193801B0099C4FE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftyConnect.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OAuth2.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -559,6 +637,7 @@
 				EC78E71B2190935800C19421 /* Networking.swift in Sources */,
 				ECC3BF422179400300B6E87B /* ServicesAssembly.swift in Sources */,
 				ECC3BF59217BBD4700B6E87B /* FeedCoordinator.swift in Sources */,
+				EC16E9C1219383590099C4FE /* AppParameters.swift in Sources */,
 				ECC3BF53217BBC4F00B6E87B /* Config.swift in Sources */,
 				EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */,
 				EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */,
@@ -571,10 +650,12 @@
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
 				ECC3BF2221793FD500B6E87B /* UIColor.swift in Sources */,
+				EC16E9C721938FF00099C4FE /* ActiveVote.swift in Sources */,
 				ECF93B98217BEA2800641225 /* PostsManager.swift in Sources */,
 				EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */,
 				ECC3BF5F217BC00400B6E87B /* MapViewController.swift in Sources */,
 				ECC3BF5B217BBD5400B6E87B /* FeedViewModel.swift in Sources */,
+				EC16E9C321938EDE0099C4FE /* PostResponceResult.swift in Sources */,
 				ECC3BF1821793F0D00B6E87B /* AppContainer.swift in Sources */,
 				ECC3BF57217BBD3100B6E87B /* FeedViewController.swift in Sources */,
 				EC78E7202190999A00C19421 /* Data.swift in Sources */,
@@ -583,6 +664,7 @@
 				ECC3BF65217BC02A00B6E87B /* MapAssembly.swift in Sources */,
 				ECC3BF432179400300B6E87B /* RouterImp.swift in Sources */,
 				ECC3BF2821793FF500B6E87B /* MainViewController.swift in Sources */,
+				EC16E9C521938F470099C4FE /* PostModel.swift in Sources */,
 				EC78E7252190A86700C19421 /* ContentResponseModel.swift in Sources */,
 				ECC3BF2B21793FF500B6E87B /* MainViewModel.swift in Sources */,
 				ECC3BF4A217940D500B6E87B /* UIViewController+Presentable.swift in Sources */,
@@ -747,7 +829,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ARN263RGLR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -766,7 +853,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ARN263RGLR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/DTrip/Configs/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
