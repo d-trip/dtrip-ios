@@ -1,21 +1,12 @@
 //
-//  ActiveVote.swift
+//  Reputation.swift
 //  DTrip
 //
-//  Created by Artem Semavin on 08/11/2018.
+//  Created by Artem Semavin on 10/11/2018.
 //  Copyright © 2018 Semavin Artem. All rights reserved.
 //
 
 import Foundation
-
-struct ActiveVote: Codable {
-    let time: Date
-    let voter: String
-    let weight: Int
-    let rshares: Int
-    let percent: Int
-    let reputation: Reputation
-}
 
 enum Reputation: Codable {
     case integer(Int)
