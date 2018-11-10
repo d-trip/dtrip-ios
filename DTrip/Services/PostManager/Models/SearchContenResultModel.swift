@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SearchContenResulttModel: Codable {
+struct SearchContenResultModel: Codable {
     let permlink: String
     let created: String
     let title: String

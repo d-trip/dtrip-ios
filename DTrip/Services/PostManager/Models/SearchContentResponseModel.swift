@@ -9,7 +9,7 @@
 import Foundation
 
 struct SearchContentResponseModel: Codable {
-    let results: [SearchContenResulttModel]
+    let results: [SearchContenResultModel]
     let hits: Int
     let error: Bool
     let pages: Pages

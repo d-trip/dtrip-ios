@@ -11,10 +11,10 @@ import RxSwift
 
 protocol PostManager {
     var updateContent: AnyObserver<Void> { get }
-    var content: Observable<[SearchContenResulttModel]> { get }
+    var content: Observable<[SearchContenResultModel]> { get }
     
-    func getPost(author: String, permlink: String) -> Observable<PostModel>
-    func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]>
+    func getPost(identifier: PostIdentifier) -> Observable<PostModel>
+    func getPosts(identifiers: [PostIdentifier]) -> Observable<[PostModel]>
     
     var disposeBag: DisposeBag { get }
 }
@@ -22,11 +22,11 @@ protocol PostManager {
 final class PostManagerImp: PostManager {
     
     let updateContent: AnyObserver<Void>
-    var content: Observable<[SearchContenResulttModel]> {
+    var content: Observable<[SearchContenResultModel]> {
         return contentSubject
     }
     
-    private let contentSubject = ReplaySubject<[SearchContenResulttModel]>.create(bufferSize: 1)
+    private let contentSubject = ReplaySubject<[SearchContenResultModel]>.create(bufferSize: 1)
     
     let disposeBag = DisposeBag()
     let network: PostManagerNetworking
@@ -48,22 +48,22 @@ final class PostManagerImp: PostManager {
             .disposed(by: disposeBag)
     }
     
-    func getAllContent() -> Observable<[SearchContenResulttModel]> {
+    func getAllContent() -> Observable<[SearchContenResultModel]> {
         return network.getAllContent(page: 0)
             .scan([]) { $0 + $1.results }
             .takeLast(1)
             .map { $0.filter { $0.type == .post } }
     }
     
-    func getPost(author: String, permlink: String) -> Observable<PostModel> {
+    func getPost(identifier: PostIdentifier) -> Observable<PostModel> {
         return network
-            .getContent(author: author, permlink: permlink)
+            .getContent(author: identifier.author, permlink: identifier.permlink)
             .map { $0.result }
             .flatMap(parser.makePostModel)
     }
     
-    func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]> {
-        let posts = filter.map(getPost)
+    func getPosts(identifiers: [PostIdentifier]) -> Observable<[PostModel]> {
+        let posts = identifiers.map(getPost)
         return Observable.merge(posts)
             .scan([]) { $0 + [$1] }
             .takeLast(1)
