@@ -8,14 +8,14 @@
 
 import Foundation
 
-enum TypeContent: String, Codable {
+enum ContentType: String, Codable {
     case post = "post"
     case other
     
     public init(from decoder: Decoder) throws {
         if let container = try? decoder.singleValueContainer(),
             let typeString = try? container.decode(String.self) {
-            self = TypeContent(typeString)
+            self = ContentType(typeString)
         } else {
             self = .other
         }

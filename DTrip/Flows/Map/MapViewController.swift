@@ -80,7 +80,6 @@ extension MapViewController: MKMapViewDelegate {
             // ToDo: - open post list screen
         } else if let annotation = view.annotation as? MapPointModel {
             // ToDo: - open post screen
-            viewModel.didSelectMapPoint.onNext(annotation)
         }
     }
 }

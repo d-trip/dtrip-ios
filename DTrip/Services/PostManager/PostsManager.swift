@@ -11,7 +11,7 @@ import RxSwift
 
 protocol PostManager {
     var updateContent: AnyObserver<Void> { get }
-    var content: Observable<[ContentModel]> { get }
+    var content: Observable<[SearchContenResulttModel]> { get }
     
     func getPost(author: String, permlink: String) -> Observable<PostModel>
     func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]>
@@ -22,17 +22,19 @@ protocol PostManager {
 final class PostManagerImp: PostManager {
     
     let updateContent: AnyObserver<Void>
-    var content: Observable<[ContentModel]> {
+    var content: Observable<[SearchContenResulttModel]> {
         return contentSubject
     }
     
-    private let contentSubject = ReplaySubject<[ContentModel]>.create(bufferSize: 1)
+    private let contentSubject = ReplaySubject<[SearchContenResulttModel]>.create(bufferSize: 1)
     
     let disposeBag = DisposeBag()
     let network: PostManagerNetworking
+    let parser: PostManagerParser
     
-    init(network: PostManagerNetworking) {
+    init(network: PostManagerNetworking, parser: PostManagerParser) {
         self.network = network
+        self.parser = parser
         
         let updateContentSubject = PublishSubject<Void>()
         updateContent = updateContentSubject.asObserver()
@@ -46,11 +48,9 @@ final class PostManagerImp: PostManager {
             .disposed(by: disposeBag)
     }
     
-    func getAllContent() -> Observable<[ContentModel]> {
+    func getAllContent() -> Observable<[SearchContenResulttModel]> {
         return network.getAllContent(page: 0)
-            .scan([], accumulator: { (result, element) -> [ContentModel] in
-                return result + element.results
-            })
+            .scan([]) { $0 + $1.results }
             .takeLast(1)
             .map { $0.filter { $0.type == .post } }
     }
@@ -59,9 +59,13 @@ final class PostManagerImp: PostManager {
         return network
             .getContent(author: author, permlink: permlink)
             .map { $0.result }
+            .flatMap(parser.makePostModel)
     }
     
     func getPosts(filter: [(author: String, permlink: String)]) -> Observable<[PostModel]> {
-        return Observable.empty()
+        let posts = filter.map(getPost)
+        return Observable.merge(posts)
+            .scan([]) { $0 + [$1] }
+            .takeLast(1)
     }
 }

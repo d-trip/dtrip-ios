@@ -47,13 +47,13 @@ final class MapViewModelImp: MapViewModel {
             .disposed(by: disposeBag)
     }
 
-    func performContentCoordinates(_ content: [ContentModel]) -> [MapPointModel] {
+    func performContentCoordinates(_ content: [SearchContenResulttModel]) -> [MapPointModel] {
         return content
             .map(makeMapPointModel)
             .compactMap { $0 }
     }
     
-    func makeMapPointModel(_ content: ContentModel) -> MapPointModel? {
+    func makeMapPointModel(_ content: SearchContenResulttModel) -> MapPointModel? {
         guard content.type == .post,
             content.meta.location.geometry.type == .point else { return nil }
         

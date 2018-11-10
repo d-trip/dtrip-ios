@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct PostResponceResult: Codable {
+struct NodeContentResponseModel: Codable {
     let id: Int
     let jsonrpc: String
-    let result: PostModel
+    let result: NodeContentModel
 }

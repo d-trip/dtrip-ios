@@ -11,12 +11,12 @@ import RxSwift
 import SwiftyConnect
 
 protocol PostManagerNetworking {
-    func getAllContent(page: Int) -> Observable<ContentResponseModel>
-    func getContent(author: String, permlink: String) -> Observable<PostResponceResult>
+    func getAllContent(page: Int) -> Observable<SearchContentResponseModel>
+    func getContent(author: String, permlink: String) -> Observable<NodeContentResponseModel>
 }
 
 extension Networking: PostManagerNetworking {
-    func getContent(page: Int) -> Observable<ContentResponseModel> {
+    func getContent(page: Int) -> Observable<SearchContentResponseModel> {
         let parameters: [String: Any] = ["q": "meta.app:dtrip AND meta.location.geometry.type:Point",
                                          "include": "meta",
                                          "pg": page]
@@ -24,15 +24,15 @@ extension Networking: PostManagerNetworking {
         return request(url: searchURL, method: .get, parameters: parameters)
             .retry(2)
             .catchError(handleError)
-            .map(to: ContentResponseModel.self)
+            .map(to: SearchContentResponseModel.self)
             .catchError(handleError)
     }
     
-    func getAllContent(page: Int) -> Observable<ContentResponseModel> {
+    func getAllContent(page: Int) -> Observable<SearchContentResponseModel> {
         
         // ToDo: - Now it's sync operations. not very fast:(
         return getContent(page: page)
-            .flatMap { content -> Observable<ContentResponseModel> in
+            .flatMap { content -> Observable<SearchContentResponseModel> in
                 guard content.pages.hasNext else {
                     return Observable.just(content)
                 }
@@ -41,7 +41,7 @@ extension Networking: PostManagerNetworking {
         }
     }
     
-    func getContent(author: String, permlink: String) -> Observable<PostResponceResult> {
+    func getContent(author: String, permlink: String) -> Observable<NodeContentResponseModel> {
         let request = Observable<Data>.create { [weak self] observer in
             guard let steem = self?.steem else {
                 observer.onCompleted()
@@ -67,7 +67,7 @@ extension Networking: PostManagerNetworking {
         
         return request
             .catchError(handleError)
-            .map(to: PostResponceResult.self)
+            .map(to: NodeContentResponseModel.self)
             .catchError(handleError)
     }
 }

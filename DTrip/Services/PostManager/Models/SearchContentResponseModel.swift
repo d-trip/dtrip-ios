@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct ContentResponseModel: Codable {
-    let results: [ContentModel]
+struct SearchContentResponseModel: Codable {
+    let results: [SearchContenResulttModel]
     let hits: Int
     let error: Bool
     let pages: Pages
