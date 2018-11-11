@@ -30,7 +30,21 @@ struct NodeContentModel: Codable {
         case jsonMetadata = "json_metadata"
         case activeVotes = "active_votes"
     }
-    
+}
+
+extension NodeContentModel {
+    func getMeta() -> ContentMetaModel? {
+        guard let data = jsonMetadata.data(using: .utf8) else { return nil }
+        do {
+            let meta = try JSONDecoder().decode(ContentMetaModel.self, from: data)
+            return meta
+        } catch {
+            Log.handleError(error)
+            return nil
+        }
+    }
+}
+
 //    let bodyLength: Int
 //    let percentSteemDollars: Int
 //    let voteRshares: Int
@@ -69,21 +83,7 @@ struct NodeContentModel: Codable {
 //
 //    let totalPayoutValue: String
 //    let authorRewards: Int
-    
+
 //    let rebloggedBy: [String?]
 //    let replies: [String?]
 //    let beneficiaries: [String?]
-}
-
-extension NodeContentModel {
-    func getMetadata() -> MetaJsonModel? {
-        guard let data = jsonMetadata.data(using: .utf8) else { return nil }
-        do {
-            let meta = try JSONDecoder().decode(MetaJsonModel.self, from: data)
-            return meta
-        } catch {
-            Log.handleError(error)
-            return nil
-        }
-    }
-}

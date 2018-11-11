@@ -11,7 +11,6 @@ import Foundation
 struct PostModel {
     let id: Int
     let url: String
-    let author: String
     let category: String
     let permlink: String
     let created: Date
@@ -21,6 +20,9 @@ struct PostModel {
     let bodyHTML: String
     let images: [String]
     let tags: [String]
+    
+    let author: AccountModel
+    let votes: [String]
 }
 
 extension PostModel {

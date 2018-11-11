@@ -17,3 +17,16 @@ struct PostIdentifier {
         self.permlink = permlink
     }
 }
+
+extension PostIdentifier: Hashable {
+    var hashValue: Int {
+        return (author + permlink).hashValue
+    }
+}
+
+extension PostIdentifier: Equatable {
+    static func == (lhs: PostIdentifier, rhs: PostIdentifier) -> Bool {
+        return lhs.author == rhs.author &&
+            lhs.permlink == rhs.permlink
+    }
+}

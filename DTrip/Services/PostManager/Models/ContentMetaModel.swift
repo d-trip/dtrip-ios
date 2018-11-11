@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MetaJsonModel: Codable {
+struct ContentMetaModel: Codable {
     let tags: [String]
     let location: LocationModel
     let format: String

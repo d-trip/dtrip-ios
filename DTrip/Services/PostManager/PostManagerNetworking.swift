@@ -11,6 +11,7 @@ import RxSwift
 import SwiftyConnect
 
 protocol PostManagerNetworking {
+    func getAccounts(accounts: [String]) -> Observable<NodeAccountResponseModel>
     func getAllContent(page: Int) -> Observable<SearchContentResponseModel>
     func getContent(author: String, permlink: String) -> Observable<NodeContentResponseModel>
 }
@@ -68,6 +69,36 @@ extension Networking: PostManagerNetworking {
         return request
             .catchError(handleError)
             .map(to: NodeContentResponseModel.self)
+            .catchError(handleError)
+    }
+    
+    func getAccounts(accounts: [String]) -> Observable<NodeAccountResponseModel> {
+        let request = Observable<Data>.create { [weak self] observer in
+            guard let steem = self?.steem else {
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            
+            steem.api.getAccounts(accounts: accounts) { (error, response) in
+                if let error = error as? Error {
+                    observer.onError(error)
+                }
+                if let response = response {
+                    do {
+                        let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+                        observer.onNext(data)
+                        observer.onCompleted()
+                    } catch {
+                        observer.onError(error)
+                    }
+                }
+            }
+            return Disposables.create()
+        }
+        
+        return request
+            .catchError(handleError)
+            .map(to: NodeAccountResponseModel.self)
             .catchError(handleError)
     }
 }

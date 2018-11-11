@@ -38,7 +38,7 @@ final class PostManagerImp: PostManager {
         
         let updateContentSubject = PublishSubject<Void>()
         updateContent = updateContentSubject.asObserver()
-        
+    
         updateContentSubject
             .startWith(())
             .flatMap(getAllContent)
@@ -56,9 +56,17 @@ final class PostManagerImp: PostManager {
     }
     
     func getPost(identifier: PostIdentifier) -> Observable<PostModel> {
-        return network
+        let postModel = network
             .getContent(author: identifier.author, permlink: identifier.permlink)
             .map { $0.result }
+            .take(1)
+        
+        let accountsModel = network
+            .getAccounts(accounts: [identifier.author])
+            .map { $0.result }
+            .take(1)
+        
+        return Observable.combineLatest(postModel, accountsModel)
             .flatMap(parser.makePostModel)
     }
     

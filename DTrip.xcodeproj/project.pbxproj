@@ -22,12 +22,16 @@
 		EC16E9D2219647ED0099C4FE /* ActiveVoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D1219647ED0099C4FE /* ActiveVoteModel.swift */; };
 		EC16E9D4219648170099C4FE /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D3219648170099C4FE /* ContentType.swift */; };
 		EC16E9D6219648370099C4FE /* Reputation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D5219648370099C4FE /* Reputation.swift */; };
-		EC16E9D8219648F20099C4FE /* MetaJsonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D7219648F20099C4FE /* MetaJsonModel.swift */; };
+		EC16E9D8219648F20099C4FE /* ContentMetaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D7219648F20099C4FE /* ContentMetaModel.swift */; };
 		EC16E9DA2196490C0099C4FE /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D92196490C0099C4FE /* LocationModel.swift */; };
 		EC16E9DE21964A650099C4FE /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9DD21964A650099C4FE /* PostModel.swift */; };
 		EC16E9E021973AA90099C4FE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9DF21973AA90099C4FE /* Date.swift */; };
 		EC16E9E221974BCA0099C4FE /* SearchContenResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */; };
 		EC16E9E421974DDF0099C4FE /* PostIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */; };
+		EC16E9EA219864780099C4FE /* AccountMetaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E9219864780099C4FE /* AccountMetaModel.swift */; };
+		EC16E9EC219867130099C4FE /* NodeAccountResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9EB219867120099C4FE /* NodeAccountResponseModel.swift */; };
+		EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9ED219867360099C4FE /* NodeAccountModel.swift */; };
+		EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9EF219867F80099C4FE /* AccountModel.swift */; };
 		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
 		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
 		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
@@ -108,12 +112,16 @@
 		EC16E9D1219647ED0099C4FE /* ActiveVoteModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveVoteModel.swift; sourceTree = "<group>"; };
 		EC16E9D3219648170099C4FE /* ContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 		EC16E9D5219648370099C4FE /* Reputation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reputation.swift; sourceTree = "<group>"; };
-		EC16E9D7219648F20099C4FE /* MetaJsonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaJsonModel.swift; sourceTree = "<group>"; };
+		EC16E9D7219648F20099C4FE /* ContentMetaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMetaModel.swift; sourceTree = "<group>"; };
 		EC16E9D92196490C0099C4FE /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		EC16E9DD21964A650099C4FE /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		EC16E9DF21973AA90099C4FE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContenResultModel.swift; sourceTree = "<group>"; };
 		EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostIdentifier.swift; sourceTree = "<group>"; };
+		EC16E9E9219864780099C4FE /* AccountMetaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMetaModel.swift; sourceTree = "<group>"; };
+		EC16E9EB219867120099C4FE /* NodeAccountResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeAccountResponseModel.swift; sourceTree = "<group>"; };
+		EC16E9ED219867360099C4FE /* NodeAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeAccountModel.swift; sourceTree = "<group>"; };
+		EC16E9EF219867F80099C4FE /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
 		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -233,15 +241,19 @@
 				EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */,
 				EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */,
 				EC16E9D92196490C0099C4FE /* LocationModel.swift */,
-				EC16E9D7219648F20099C4FE /* MetaJsonModel.swift */,
+				EC16E9D7219648F20099C4FE /* ContentMetaModel.swift */,
 				EC16E9D5219648370099C4FE /* Reputation.swift */,
 				EC16E98E219171270099C4FE /* LocatioGeometryType.swift */,
 				EC16E9D3219648170099C4FE /* ContentType.swift */,
 				EC16E9CC2196471F0099C4FE /* NodeContentResponseModel.swift */,
 				EC16E9CF219647B00099C4FE /* NodeContentModel.swift */,
+				EC16E9EB219867120099C4FE /* NodeAccountResponseModel.swift */,
+				EC16E9ED219867360099C4FE /* NodeAccountModel.swift */,
 				EC16E9D1219647ED0099C4FE /* ActiveVoteModel.swift */,
 				EC16E9DD21964A650099C4FE /* PostModel.swift */,
 				EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */,
+				EC16E9E9219864780099C4FE /* AccountMetaModel.swift */,
+				EC16E9EF219867F80099C4FE /* AccountModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -630,6 +642,7 @@
 			files = (
 				ECC3BF1621793F0700B6E87B /* AppCoordinator.swift in Sources */,
 				ECC3BF3F2179400300B6E87B /* LogManager.swift in Sources */,
+				EC16E9EA219864780099C4FE /* AccountMetaModel.swift in Sources */,
 				ECC3BF3E2179400300B6E87B /* Log.swift in Sources */,
 				EC78E71B2190935800C19421 /* Networking.swift in Sources */,
 				EC16E9D0219647B00099C4FE /* NodeContentModel.swift in Sources */,
@@ -645,6 +658,7 @@
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
 				EC78E72B2190AED000C19421 /* Observable.swift in Sources */,
+				EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				EC16E9E021973AA90099C4FE /* Date.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
@@ -657,6 +671,7 @@
 				EC16E9E221974BCA0099C4FE /* SearchContenResultModel.swift in Sources */,
 				ECC3BF5B217BBD5400B6E87B /* FeedViewModel.swift in Sources */,
 				EC16E9DA2196490C0099C4FE /* LocationModel.swift in Sources */,
+				EC16E9EC219867130099C4FE /* NodeAccountResponseModel.swift in Sources */,
 				ECC3BF1821793F0D00B6E87B /* AppContainer.swift in Sources */,
 				ECC3BF57217BBD3100B6E87B /* FeedViewController.swift in Sources */,
 				EC78E7202190999A00C19421 /* Data.swift in Sources */,
@@ -668,7 +683,7 @@
 				ECC3BF432179400300B6E87B /* RouterImp.swift in Sources */,
 				ECC3BF2821793FF500B6E87B /* MainViewController.swift in Sources */,
 				EC16E9CE219647200099C4FE /* NodeContentResponseModel.swift in Sources */,
-				EC16E9D8219648F20099C4FE /* MetaJsonModel.swift in Sources */,
+				EC16E9D8219648F20099C4FE /* ContentMetaModel.swift in Sources */,
 				EC16E9D4219648170099C4FE /* ContentType.swift in Sources */,
 				EC78E7252190A86700C19421 /* SearchContentResponseModel.swift in Sources */,
 				ECC3BF2B21793FF500B6E87B /* MainViewModel.swift in Sources */,
@@ -676,6 +691,7 @@
 				EC16E997219242240099C4FE /* MapClusterMarkerView.swift in Sources */,
 				ECC3BF442179400300B6E87B /* Presentable.swift in Sources */,
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
+				EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */,
 				ECC3BF63217BC01D00B6E87B /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

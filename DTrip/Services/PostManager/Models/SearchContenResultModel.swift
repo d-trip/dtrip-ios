@@ -16,7 +16,7 @@ struct SearchContenResultModel: Codable {
     let netVotes: Int
     let tags: [String]
     let author: String
-    let meta: MetaJsonModel
+    let meta: ContentMetaModel
     let type: ContentType
     let summary: String
     
