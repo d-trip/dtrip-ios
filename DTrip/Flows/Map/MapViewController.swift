@@ -11,9 +11,9 @@ import MapKit
 import RxSwift
 
 final class MapViewController: UIViewController {
-    
+
     //MARK: - Outlets
-    
+
     var mapView: MKMapView = {
         let mapView = MKMapView()
         mapView.register(MapMarkerView.self,
@@ -22,32 +22,31 @@ final class MapViewController: UIViewController {
                          forAnnotationViewWithReuseIdentifier: MKMapViewDefaultClusterAnnotationViewReuseIdentifier)
         return mapView
     }()
-    
+
     //MARK: - Property
-    
+
     var viewModel: MapViewModel!
-    
+
     //MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupRx()
-
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        centreMap(on: initialLocation)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         mapView.frame = view.bounds
     }
 
     // MARK: - Private methods
-    
+
     private func setupUI() {
         view.addSubview(mapView)
         mapView.delegate = self
@@ -64,7 +63,7 @@ final class MapViewController: UIViewController {
     private func setupMapPoints(_ points: [MapPointModel]) {
         mapView.addAnnotations(points)
     }
-    
+
     private func centreMap(on location: CLLocation) {
 //        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
 //                                                  latitudinalMeters: regionRadius * 2.0,
@@ -76,7 +75,7 @@ final class MapViewController: UIViewController {
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation as? MKClusterAnnotation,
-            let annotations = annotation.memberAnnotations as? [MapPointModel] {
+           let annotations = annotation.memberAnnotations as? [MapPointModel] {
             // ToDo: - open post list screen
         } else if let annotation = view.annotation as? MapPointModel {
             // ToDo: - open post screen

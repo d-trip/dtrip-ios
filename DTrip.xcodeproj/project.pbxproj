@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		0AA7E269A7D5FB71E5348C78 /* Pods_DTrip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3160CC333263ABC79C3019DF /* Pods_DTrip.framework */; };
 		37D027813C0E769882329662 /* Pods_DTripTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640008754F1848004EDCDA24 /* Pods_DTripTests.framework */; };
+		402EB1F6318E6927219DE41C /* PostsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBF5E4CD7AF974FB0CD6A /* PostsAssembly.swift */; };
+		402EB60E9C83C71CC37D668D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBEA07B3BD74D5316F68F /* PostsViewController.swift */; };
+		402EB940D5B9C590F8FEB858 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */; };
+		402EB9AFF5D1E820CFAE2630 /* Spaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBBD488E3DB5081618DDD /* Spaces.swift */; };
+		402EBA2620E63F5E719FC8F7 /* PostsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBBA03A4535984C140B9A /* PostsCoordinator.swift */; };
+		402EBA918B2067D20E27A49F /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB6BB06DF361CDFAC2B9E /* PostView.swift */; };
+		402EBDB9411F180B51039C2D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB37ADD3CF024C578508E /* UIImage.swift */; };
+		402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
@@ -94,6 +102,14 @@
 
 /* Begin PBXFileReference section */
 		3160CC333263ABC79C3019DF /* Pods_DTrip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DTrip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
+		402EB37ADD3CF024C578508E /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		402EB6BB06DF361CDFAC2B9E /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		402EBBA03A4535984C140B9A /* PostsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsCoordinator.swift; sourceTree = "<group>"; };
+		402EBBD488E3DB5081618DDD /* Spaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spaces.swift; sourceTree = "<group>"; };
+		402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewModel.swift; sourceTree = "<group>"; };
+		402EBEA07B3BD74D5316F68F /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		402EBF5E4CD7AF974FB0CD6A /* PostsAssembly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsAssembly.swift; sourceTree = "<group>"; };
 		4765C32C729013BC10852D4C /* Pods-DTripTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.debug.xcconfig"; sourceTree = "<group>"; };
 		640008754F1848004EDCDA24 /* Pods_DTripTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DTripTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		72FC80167E76CC747D51DC26 /* Pods-DTrip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.debug.xcconfig"; sourceTree = "<group>"; };
@@ -196,6 +212,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		402EB06CA27B86DFC6A9059F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		402EB34311935171318D46AF /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				402EB06CA27B86DFC6A9059F /* Cells */,
+				402EB922546C4D42B4D4D7AC /* Views */,
+				402EBBD488E3DB5081618DDD /* Spaces.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		402EB922546C4D42B4D4D7AC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				402EB6BB06DF361CDFAC2B9E /* PostView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		402EBE62CF065492853CE587 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				402EBF5E4CD7AF974FB0CD6A /* PostsAssembly.swift */,
+				402EBBA03A4535984C140B9A /* PostsCoordinator.swift */,
+				402EBEA07B3BD74D5316F68F /* PostsViewController.swift */,
+				402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */,
+			);
+			path = Posts;
+			sourceTree = "<group>";
+		};
 		57D3279ADE9B391D3261AFAE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +344,7 @@
 				ECC3BF1E21793F8E00B6E87B /* Configs */,
 				ECC3BF1F21793FBC00B6E87B /* Resources */,
 				ECC3BF1D21793F8800B6E87B /* Extensions */,
+				402EB34311935171318D46AF /* UI */,
 			);
 			path = DTrip;
 			sourceTree = "<group>";
@@ -310,6 +364,7 @@
 				ECC3BF1B21793F7400B6E87B /* Main */,
 				ECC3BF55217BBD2100B6E87B /* Feed */,
 				ECC3BF54217BBD1C00B6E87B /* Map */,
+				402EBE62CF065492853CE587 /* Posts */,
 			);
 			path = Flows;
 			sourceTree = "<group>";
@@ -354,6 +409,7 @@
 				EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */,
 				EC78E72A2190AED000C19421 /* Observable.swift */,
 				EC16E9DF21973AA90099C4FE /* Date.swift */,
+				402EB37ADD3CF024C578508E /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -693,6 +749,14 @@
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
 				EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */,
 				ECC3BF63217BC01D00B6E87B /* MapViewModel.swift in Sources */,
+				402EB1F6318E6927219DE41C /* PostsAssembly.swift in Sources */,
+				402EBA2620E63F5E719FC8F7 /* PostsCoordinator.swift in Sources */,
+				402EB60E9C83C71CC37D668D /* PostsViewController.swift in Sources */,
+				402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */,
+				402EBA918B2067D20E27A49F /* PostView.swift in Sources */,
+				402EB940D5B9C590F8FEB858 /* PostCollectionViewCell.swift in Sources */,
+				402EB9AFF5D1E820CFAE2630 /* Spaces.swift in Sources */,
+				402EBDB9411F180B51039C2D /* UIImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

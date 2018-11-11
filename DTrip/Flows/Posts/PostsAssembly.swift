@@ -1,0 +1,19 @@
+import Dip
+
+func configurePosts(_ container: DependencyContainer) {
+    unowned let container = container
+
+    container.register() {
+        PostsViewModelImp() as PostsViewModel
+    }
+
+    container.register {
+        PostsCoordinator(router: $0, view: $1)
+    }
+
+    container.register { (model: PostsViewModel) -> PostsViewController in
+        let controller = PostsViewController()
+        controller.viewModel = model
+        return controller
+    }
+}

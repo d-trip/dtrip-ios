@@ -41,12 +41,12 @@ final class MainViewController: UITabBarController {
         viewControllers?.forEach { controller in
             switch controller {
             case is MapViewController:
-                let image = UIImage(named: "map")
-                let selectedImage = UIImage(named: "map_selected")
+                let image = UIImage.TabBar.map
+                let selectedImage = UIImage.TabBar.mapSelected
                 controller.tabBarItem = UITabBarItem.init(title: nil, image: image, selectedImage: selectedImage)
             case is FeedViewController:
-                let image = UIImage(named: "feed")
-                let selectedImage = UIImage(named: "feed_selected")
+                let image = UIImage.TabBar.feed
+                let selectedImage = UIImage.TabBar.feedSelected
                 controller.tabBarItem = UITabBarItem.init(title: nil, image: image, selectedImage: selectedImage)
             default: break
             }

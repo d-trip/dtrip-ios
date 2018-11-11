@@ -17,4 +17,7 @@ extension UIColor {
     static let darkGray: UIColor = UIColor(hexString: "#707070")!
     static let middleGray: UIColor = UIColor(hexString: "#9F9F9F")!
     static let lightGray: UIColor = UIColor(hexString: "#E9E9E9")!
+    static let white: UIColor = UIColor(hexString: "#FFFFFF")!
+    static let boulder: UIColor = UIColor(hexString: "#777777")!
+    static let alto: UIColor = UIColor(hexString: "#DCDCDC")!
 }
