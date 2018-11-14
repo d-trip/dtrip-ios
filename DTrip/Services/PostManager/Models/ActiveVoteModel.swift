@@ -12,7 +12,7 @@ struct ActiveVoteModel: Codable {
     let time: Date
     let voter: String
     let weight: Int
-    let rshares: Int
+//    let rshares: Int
     let percent: Int
     let reputation: Reputation
 }

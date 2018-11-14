@@ -11,5 +11,15 @@ final class PostsCoordinator: Coordinator {
     }
 
     func start() {
+        assertionFailure("Method is not implemented")
+    }
+    
+    func start(_ postIdentifiers: [PostIdentifier]) {
+        guard let viewModel = view.viewModel else {
+            assertionFailure("ViewModel is not found")
+            return
+        }
+        viewModel.setPostIdentifiers.onNext(postIdentifiers)
+        router.push(view)
     }
 }

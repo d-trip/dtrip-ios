@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 struct PostViewModel {
     let avatarImage: UIImage
@@ -17,31 +18,40 @@ final class PostView: UIView {
 
     private lazy var avatarImageView: UIImageView = {
         let avatarImageView = UIImageView()
+        avatarImageView.contentMode = .scaleAspectFill
+        avatarImageView.clipsToBounds = true
+        avatarImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         return avatarImageView
     }()
 
     private lazy var userNameLabel: UILabel = {
         let userNameLabel = UILabel()
-        userNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        userNameLabel.numberOfLines = 1
+        userNameLabel.lineBreakMode = .byTruncatingTail
+        userNameLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         return userNameLabel
     }()
 
     private lazy var dateLabel: UILabel = {
         let dateLabel = UILabel()
-        dateLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        dateLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         dateLabel.textColor = .middleGray
         return dateLabel
     }()
 
     private lazy var postImageView: UIImageView = {
         let postImageView = UIImageView()
+        postImageView.contentMode = .scaleAspectFill
+        postImageView.clipsToBounds = true
+        postImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         return postImageView
     }()
 
     private lazy var locationLabel: UILabel = {
         let locationLabel = UILabel()
         locationLabel.numberOfLines = 2
-        locationLabel.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        let fontSize = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
+        locationLabel.font = UIFont.boldSystemFont(ofSize: fontSize)
         locationLabel.textColor = .white
         self.configureShadow(for: locationLabel)
         return locationLabel
@@ -52,7 +62,7 @@ final class PostView: UIView {
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         statusLabel.setContentHuggingPriority(.required, for: .horizontal)
         statusLabel.textColor = .white
-        statusLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        statusLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         self.configureShadow(for: statusLabel)
         return statusLabel
     }()
@@ -60,14 +70,14 @@ final class PostView: UIView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 2
-        titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
         return titleLabel
     }()
 
     private lazy var descriptionLabel: UILabel = {
         let descriptionLabel = UILabel()
         descriptionLabel.numberOfLines = 2
-        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         descriptionLabel.textColor = .boulder
         return descriptionLabel
     }()
@@ -99,18 +109,44 @@ final class PostView: UIView {
         shareButton.setImage(UIImage.Feed.Post.shareButton, for: .normal)
         return shareButton
     }()
-
+    
     // MARK: - Configure
 
-    func configure(_ postViewModel: PostViewModel) {
-        avatarImageView.image = postViewModel.avatarImage
-        userNameLabel.text = postViewModel.userName
-        dateLabel.text = postViewModel.date
-        postImageView.image = postViewModel.postImage
+    func configure(_ postViewModel: PostModel) {
+        
+        if let profileImage = postViewModel.author.profileImage {
+            let profileImageUrl = URL(string: profileImage)
+            avatarImageView.kf.setImage(with: profileImageUrl) { [weak self] (image, _, _, url) in
+                guard url == profileImageUrl else { return }
+                if let image = image {
+                    self?.avatarImageView.image = image
+                } else {
+                    self?.avatarImageView.image = UIImage(named: "noAvatar")
+                }
+            }
+        } else {
+            avatarImageView.image = UIImage(named: "noAvatar")
+        }
+        
+        if let postImage = postViewModel.titleImage() {
+            let postImageUrl = URL(string: postImage)
+            postImageView.kf.setImage(with: postImageUrl) { [weak self] (image, _, _, url) in
+                guard url == postImageUrl else { return }
+                if let image = image {
+                    self?.postImageView.image = image
+                } else {
+                    self?.postImageView.image = UIImage(named: "noPostImage")
+                }
+            }
+        } else {
+            postImageView.image = UIImage(named: "noPostImage")
+        }
+        userNameLabel.text = postViewModel.author.name
+        dateLabel.text = postViewModel.timeAgo()
         locationLabel.text = postViewModel.location
-        statusLabel.text = postViewModel.status
+        statusLabel.text = "status"
         titleLabel.text = postViewModel.title
-        descriptionLabel.text = postViewModel.description
+        descriptionLabel.text = "I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application."//postViewModel.description
     }
 
     // MARK: - Init
@@ -170,7 +206,6 @@ final class PostView: UIView {
         shadowView.layer.backgroundColor = UIColor.white.cgColor
         shadowView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         shadowView.layer.cornerRadius = Constants.postCornerRadius
-
     }
 
     private func setupImageViewRoundedCorners() {
@@ -201,12 +236,15 @@ final class PostView: UIView {
         let constraints = [
             avatarImageView.topAnchor.constraint(equalTo: topAnchor),
             avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-
+            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarSize.height),
+            avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarSize.width),
+            
             userNameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             userNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: Spaces.single),
-
+            userNameLabel.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -Spaces.single),
+            
             dateLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spaces.single),
 
             contentView.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: Spaces.single),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -222,15 +260,15 @@ final class PostView: UIView {
             locationLabel.trailingAnchor.constraint(equalTo: statusLabel.leadingAnchor, constant: -Spaces.double),
 
             statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
-            statusLabel.centerYAnchor.constraint(equalTo: locationLabel.centerYAnchor),
+            statusLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.single),
 
-            titleLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: Spaces.single),
+            titleLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: Spaces.double),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.single),
 
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.single),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.nonuple),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
 
             shadowView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             shadowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -240,12 +278,13 @@ final class PostView: UIView {
             separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
             separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
+            separatorView.bottomAnchor.constraint(lessThanOrEqualTo: shareButton.topAnchor, constant: -Spaces.double),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
 
-            likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.single),
-            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
+            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
 
-            shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.single),
+            shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
         ]
         NSLayoutConstraint.activate(constraints)
@@ -256,5 +295,6 @@ final class PostView: UIView {
     private enum Constants {
         static let postCornerRadius: CGFloat = 8
         static let avatarCornerRadius: CGFloat = 15
+        static let avatarSize = CGSize(width: 30, height: 30)
     }
 }

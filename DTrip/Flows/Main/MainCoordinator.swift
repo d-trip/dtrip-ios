@@ -12,23 +12,16 @@ final class MainCoordinator: Coordinator {
     
     private let router: Router
     private let view: MainViewController
+    private let map: MapCoordinator
     
-    init(router: Router, view: MainViewController) {
+    init(router: Router, view: MainViewController, map: MapCoordinator) {
         self.view = view
         self.router = router
+        self.map = map
         
-        //        let viewModel = view.viewModel!
-        //
-        //        viewModel.showNextPage
-        //            .bind(onNext: onNext)
-        //            .disposed(by: viewModel.disposeBag)
     }
     
     func start() {
         router.setRootModule(view, hideBar: true, animated: false)
     }
-    
-    //    func onNext() {
-    //
-    //    }
 }

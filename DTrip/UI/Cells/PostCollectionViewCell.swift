@@ -34,7 +34,7 @@ final class PostCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
 
-    func configure(_ postViewModel: PostViewModel) {
+    func configure(_ postViewModel: PostModel) {
         postView.configure(postViewModel)
     }
 }

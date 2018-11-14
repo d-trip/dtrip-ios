@@ -35,11 +35,6 @@ final class MapViewController: UIViewController {
         setupRx()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        centreMap(on: initialLocation)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         mapView.frame = view.bounds
@@ -63,22 +58,16 @@ final class MapViewController: UIViewController {
     private func setupMapPoints(_ points: [MapPointModel]) {
         mapView.addAnnotations(points)
     }
-
-    private func centreMap(on location: CLLocation) {
-//        let coordinateRegion = MKCoordinateRegion(center: location.coordinate,
-//                                                  latitudinalMeters: regionRadius * 2.0,
-//                                                  longitudinalMeters: regionRadius * 2.0)
-//        mapView.setRegion(coordinateRegion, animated: true)
-    }
 }
 
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation as? MKClusterAnnotation,
            let annotations = annotation.memberAnnotations as? [MapPointModel] {
-            // ToDo: - open post list screen
+            viewModel.didSelectMapPoint.onNext(annotations)
         } else if let annotation = view.annotation as? MapPointModel {
-            // ToDo: - open post screen
+            // ToDo: - Open single post screen
+            viewModel.didSelectMapPoint.onNext([annotation])
         }
     }
 }

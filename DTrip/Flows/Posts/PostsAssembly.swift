@@ -4,7 +4,7 @@ func configurePosts(_ container: DependencyContainer) {
     unowned let container = container
 
     container.register() {
-        PostsViewModelImp() as PostsViewModel
+        PostsViewModelImp(manager: $0) as PostsViewModel
     }
 
     container.register {

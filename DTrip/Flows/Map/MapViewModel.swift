@@ -13,16 +13,16 @@ import RxCocoa
 
 protocol MapViewModel {
     var postCoordinates: Driver<([MapPointModel])> { get }
-    var showMapPointsContent: Observable<[(author: String, permlink: String)]> { get }
+    var showPostsContent: Observable<[PostIdentifier]> { get }
     
     var didSelectMapPoint: AnyObserver<[MapPointModel]> { get }
     var disposeBag: DisposeBag { get }
 }
 
 final class MapViewModelImp: MapViewModel {
-    var showMapPointsContent: Observable<[(author: String, permlink: String)]> {
-        return mapPointsSubject.map {
-            $0.map { ($0.author, $0.permlink) }
+    var showPostsContent: Observable<[PostIdentifier]> {
+        return mapPointsSubject.map { 
+            $0.map { PostIdentifier($0.author, $0.permlink) }
         }
     }
     var didSelectMapPoint: AnyObserver<[MapPointModel]> {

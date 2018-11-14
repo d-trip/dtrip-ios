@@ -17,6 +17,9 @@ struct PostModel {
     let lastUpdate: Date
     
     let title: String
+    let description: String
+    
+    let location: String?
     let bodyHTML: String
     let images: [String]
     let tags: [String]
@@ -32,5 +35,13 @@ extension PostModel {
     
     func timeAgo() -> String? {
         return created.getElapsedInterval()
+    }
+}
+
+extension PostModel: Equatable {
+    static func == (lhs: PostModel, rhs: PostModel) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.author == rhs.author &&
+            lhs.permlink == rhs.permlink
     }
 }

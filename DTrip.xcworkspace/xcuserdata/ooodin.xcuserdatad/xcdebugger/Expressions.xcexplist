@@ -6,12 +6,26 @@
          contextName = "closure #1 in Networking.getContent(author:permlink:):PostManagerNetworking.swift">
       </ContextState>
       <ContextState
+         contextName = "PostsViewModelImp.makePostDiffs(_:):PostsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "postItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "MapViewController.mapView(_:didSelect:):MapViewController.swift">
          <PersistentStrings>
             <PersistentString
                value = "view.annotation">
             </PersistentString>
+            <PersistentString
+               value = "view.annotation.memberAnnotations">
+            </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in PostsViewController.setupRx():PostsViewController.swift">
       </ContextState>
       <ContextState
          contextName = "MapViewModelImp.makeMapPointModel(_:):MapViewModel.swift">

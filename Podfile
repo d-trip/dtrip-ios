@@ -18,8 +18,8 @@ target 'DTrip' do
   #ui
   pod 'SwiftHEXColors'
   pod 'Kingfisher'
-#  pod 'Mapbox-iOS-SDK', '~> 4.5'
-
+  pod 'DifferenceKit'
+  
   target 'DTripTests' do
     inherit! :search_paths
     # Pods for testing

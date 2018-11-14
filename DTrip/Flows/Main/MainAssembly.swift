@@ -16,7 +16,7 @@ func configureMain(_ container: DependencyContainer) {
     }
     
     container.register {
-        MainCoordinator(router: $0, view: $1)
+        MainCoordinator(router: $0, view: $1, map: $2)
     }
     
     container.register { (

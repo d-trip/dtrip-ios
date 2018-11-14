@@ -41,6 +41,8 @@ final class PostManagerParserImp: PostManagerParser {
                                       created: content.created,
                                       lastUpdate: content.lastUpdate,
                                       title: content.title,
+                                      description: "",
+                                      location: postMeta?.location.properties.name,
                                       bodyHTML: content.body,
                                       images: [],
                                       tags: postMeta?.tags ?? [],

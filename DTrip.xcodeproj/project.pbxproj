@@ -17,6 +17,9 @@
 		402EBA918B2067D20E27A49F /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB6BB06DF361CDFAC2B9E /* PostView.swift */; };
 		402EBDB9411F180B51039C2D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB37ADD3CF024C578508E /* UIImage.swift */; };
 		402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */; };
+		EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACE8219A351E001F0484 /* PostItem.swift */; };
+		EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */; };
+		EC13ACED219CD786001F0484 /* PostCollectionViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
@@ -115,6 +118,9 @@
 		72FC80167E76CC747D51DC26 /* Pods-DTrip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.debug.xcconfig"; sourceTree = "<group>"; };
 		A4497E4F816E7CC5F8E66E66 /* Pods-DTrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.release.xcconfig"; sourceTree = "<group>"; };
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
+		EC13ACE8219A351E001F0484 /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
+		EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageIndicator.swift; sourceTree = "<group>"; };
+		EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewLoadingCell.swift; sourceTree = "<group>"; };
 		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
@@ -216,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */,
+				EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -234,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				402EB6BB06DF361CDFAC2B9E /* PostView.swift */,
+				EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -243,8 +251,9 @@
 			children = (
 				402EBF5E4CD7AF974FB0CD6A /* PostsAssembly.swift */,
 				402EBBA03A4535984C140B9A /* PostsCoordinator.swift */,
-				402EBEA07B3BD74D5316F68F /* PostsViewController.swift */,
 				402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */,
+				402EBEA07B3BD74D5316F68F /* PostsViewController.swift */,
+				EC13ACE7219A350D001F0484 /* Models */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -258,6 +267,14 @@
 				C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EC13ACE7219A350D001F0484 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EC13ACE8219A351E001F0484 /* PostItem.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		EC16E992219171CA0099C4FE /* Models */ = {
@@ -340,11 +357,11 @@
 				EC16E9C0219383590099C4FE /* AppParameters.swift */,
 				ECC3BF1C21793F7A00B6E87B /* Services */,
 				ECC3BF1921793F6100B6E87B /* Flows */,
+				402EB34311935171318D46AF /* UI */,
 				ECC3BF48217940A800B6E87B /* Protocols */,
 				ECC3BF1E21793F8E00B6E87B /* Configs */,
 				ECC3BF1F21793FBC00B6E87B /* Resources */,
 				ECC3BF1D21793F8800B6E87B /* Extensions */,
-				402EB34311935171318D46AF /* UI */,
 			);
 			path = DTrip;
 			sourceTree = "<group>";
@@ -647,6 +664,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-DTrip/Pods-DTrip-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Dip/Dip.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
@@ -659,6 +677,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DifferenceKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Dip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
@@ -697,6 +716,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECC3BF1621793F0700B6E87B /* AppCoordinator.swift in Sources */,
+				EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */,
 				ECC3BF3F2179400300B6E87B /* LogManager.swift in Sources */,
 				EC16E9EA219864780099C4FE /* AccountMetaModel.swift in Sources */,
 				ECC3BF3E2179400300B6E87B /* Log.swift in Sources */,
@@ -712,6 +732,7 @@
 				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
 				EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
+				EC13ACED219CD786001F0484 /* PostCollectionViewLoadingCell.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
 				EC78E72B2190AED000C19421 /* Observable.swift in Sources */,
 				EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */,
@@ -745,6 +766,7 @@
 				ECC3BF2B21793FF500B6E87B /* MainViewModel.swift in Sources */,
 				ECC3BF4A217940D500B6E87B /* UIViewController+Presentable.swift in Sources */,
 				EC16E997219242240099C4FE /* MapClusterMarkerView.swift in Sources */,
+				EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */,
 				ECC3BF442179400300B6E87B /* Presentable.swift in Sources */,
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
 				EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */,

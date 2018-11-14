@@ -16,3 +16,9 @@ struct AccountModel {
     let github: String?
     let website: String?
 }
+
+extension AccountModel: Equatable {
+    static func == (lhs: AccountModel, rhs: AccountModel) -> Bool {
+        return lhs.name == rhs.name
+    }
+}

@@ -1,77 +1,45 @@
 import UIKit
+import RxCocoa
+import DifferenceKit
 
 final class PostsViewController: UIViewController {
 
     var viewModel: PostsViewModel!
-
+    private var postItems: [PostItem] = []
+    
     // MARK: - UI properties
-
-    private lazy var collectionViewController: UICollectionViewController = {
-        let collectionViewController = UICollectionViewController(collectionViewLayout: collectionViewFlowLayout)
-        return collectionViewController
-    }()
-
+    
     private lazy var collectionViewFlowLayout: UICollectionViewFlowLayout = {
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        let screenWidth = UIScreen.main.bounds.width
         collectionViewFlowLayout.scrollDirection = .vertical
         collectionViewFlowLayout.minimumLineSpacing = Spaces.single
         return collectionViewFlowLayout
     }()
 
-    private var collectionView: UICollectionView {
-        return collectionViewController.collectionView
-    }
-
-    // MARK: - Data
-
-    private var data: [PostViewModel] = [
-        PostViewModel(avatarImage: UIImage.makeColoredImage(.red, size: CGSize(width: 15, height: 15))!,
-                      userName: "Jennifer",
-                      date: "2 hours ago",
-                      postImage: UIImage.makeColoredImage(.red, size: CGSize(width: 171, height: 116))!,
-                      location: "Starowiślna 93A, 31-052 Kraków, Poland",
-                      status: "ON TRIP",
-                      title: "DTrip 0.2 Alfa Update: AskSteem, SPA version, styles",
-                      description: "/ipns/dtrip.app/ I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application."),
-        PostViewModel(avatarImage: UIImage.makeColoredImage(.red, size: CGSize(width: 15, height: 15))!,
-                      userName: "Jennifer",
-                      date: "2 hours ago",
-                      postImage: UIImage.makeColoredImage(.red, size: CGSize(width: 171, height: 116))!,
-                      location: "Starowiślna 93A, 31-052 Kraków, Poland",
-                      status: "ON TRIP",
-                      title: "DTrip 0.2 Alfa Update: AskSteem, SPA version, styles",
-                      description: "/ipns/dtrip.app/ I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application."),
-        PostViewModel(avatarImage: UIImage.makeColoredImage(.red, size: CGSize(width: 15, height: 15))!,
-                      userName: "Jennifer",
-                      date: "2 hours ago",
-                      postImage: UIImage.makeColoredImage(.red, size: CGSize(width: 171, height: 116))!,
-                      location: "Starowiślna 93A, 31-052 Kraków, Poland",
-                      status: "ON TRIP",
-                      title: "DTrip 0.2 Alfa Update: AskSteem, SPA version, styles",
-                      description: "/ipns/dtrip.app/ I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application."),
-    ]
-
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewFlowLayout)
+        return collectionView
+    }()
+    
     // MARK: - Managing the View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        addChild(collectionViewController)
-        view.addSubview(collectionViewController.view)
-        collectionViewController.didMove(toParent: self)
-
-        setupConstraints()
         configureCollectionView(collectionView)
+        setupConstraints()
+        
+        setupRx()
     }
 
     // MARK: - Setup
 
     private func setupConstraints() {
         let constraints: [NSLayoutConstraint] = [
-            collectionViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -79,15 +47,24 @@ final class PostsViewController: UIViewController {
     private func configureCollectionView(_ collectionView: UICollectionView) {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
+        collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: Constants.postCellIdentifier)
+        collectionView.register(PostCollectionViewLoadingCell.self, forCellWithReuseIdentifier: Constants.postCellLoadingIdentifier)
+        
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: Constants.postCellIdentifier)
+        view.addSubview(collectionView)
     }
-
-    // MARK: - Constants
-
-    private enum Constants {
-        static let postCellIdentifier = "PostCollectionViewCell"
+    
+    private func setupRx() {
+        viewModel.posts
+            .drive(onNext: { [weak self] target in
+                guard let strongSelf = self else { return }
+                let diffs = StagedChangeset(source: strongSelf.postItems, target: target)
+                strongSelf.collectionView.reload(using: diffs) { postItems in
+                    strongSelf.postItems = postItems
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -95,16 +72,26 @@ final class PostsViewController: UIViewController {
 
 extension PostsViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
+        return postItems.count
     }
-
+    
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellIdentifier,
-                                                      for: indexPath) as! PostCollectionViewCell
-        let post = data[indexPath.row]
-        cell.configure(post)
-        return cell
+        guard postItems.indices.contains(indexPath.row) else {
+            return UICollectionViewCell()
+        }
+        let item = postItems[indexPath.row]
+        
+        switch item {
+        case .postItem(post: let post):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellIdentifier,
+                                                          for: indexPath) as! PostCollectionViewCell
+            cell.configure(post)
+            return cell
+        case .loadingItem(title: _, animate: _):
+            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellLoadingIdentifier,
+                                                      for: indexPath)
+        }
     }
 }
 
@@ -115,6 +102,15 @@ extension PostsViewController: UICollectionViewDelegateFlowLayout {
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.bounds.width,
-                      height: view.bounds.width * 1.15)
+                      height: view.bounds.width * 1.13)
+    }
+}
+
+// MARK: - Constants
+
+extension PostsViewController {
+    private enum Constants {
+        static let postCellIdentifier = "PostCollectionViewCell"
+        static let postCellLoadingIdentifier = "PostCollectionViewLoadingCell"
     }
 }
