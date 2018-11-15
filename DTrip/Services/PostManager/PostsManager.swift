@@ -21,13 +21,16 @@ protocol PostManager {
 
 final class PostManagerImp: PostManager {
     
-    let updateContent: AnyObserver<Void>
+    var updateContent: AnyObserver<Void> {
+        return updateContentSubject.asObserver()
+    }
     var content: Observable<[SearchContenResultModel]> {
         return contentSubject
     }
     
     private let contentSubject = ReplaySubject<[SearchContenResultModel]>.create(bufferSize: 1)
-    
+    private let updateContentSubject = PublishSubject<Void>()
+
     let disposeBag = DisposeBag()
     let network: PostManagerNetworking
     let parser: PostManagerParser
@@ -35,10 +38,7 @@ final class PostManagerImp: PostManager {
     init(network: PostManagerNetworking, parser: PostManagerParser) {
         self.network = network
         self.parser = parser
-        
-        let updateContentSubject = PublishSubject<Void>()
-        updateContent = updateContentSubject.asObserver()
-    
+
         updateContentSubject
             .startWith(())
             .flatMap(getAllContent)
