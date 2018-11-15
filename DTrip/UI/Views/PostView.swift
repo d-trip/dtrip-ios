@@ -144,9 +144,9 @@ final class PostView: UIView {
         userNameLabel.text = postViewModel.author.name
         dateLabel.text = postViewModel.timeAgo()
         locationLabel.text = postViewModel.location
-        statusLabel.text = "status"
+        statusLabel.text = postViewModel.category
         titleLabel.text = postViewModel.title
-        descriptionLabel.text = "I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application."//postViewModel.description
+        descriptionLabel.text = postViewModel.description
     }
 
     // MARK: - Init
@@ -234,10 +234,15 @@ final class PostView: UIView {
 
     private func setupConstraints() {
         let constraints = [
-            avatarImageView.topAnchor.constraint(equalTo: topAnchor),
+            contentView.topAnchor.constraint(equalTo: topAnchor, constant: Spaces.quintuple),
+            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
             avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            avatarImageView.heightAnchor.constraint(equalToConstant: Constants.avatarSize.height),
-            avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarSize.width),
+            avatarImageView.topAnchor.constraint(equalTo: topAnchor),
+            avatarImageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: -Spaces.single),
+            avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor),
             
             userNameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             userNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: Spaces.single),
@@ -246,15 +251,11 @@ final class PostView: UIView {
             dateLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spaces.single),
 
-            contentView.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: Spaces.single),
-            contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
             postImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
+            postImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
+            
             locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             locationLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.single),
             locationLabel.trailingAnchor.constraint(equalTo: statusLabel.leadingAnchor, constant: -Spaces.double),
@@ -277,15 +278,18 @@ final class PostView: UIView {
 
             separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
-            separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
-            separatorView.bottomAnchor.constraint(lessThanOrEqualTo: shareButton.topAnchor, constant: -Spaces.double),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spaces.septuple),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
 
+            likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-
+            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
+            
+            shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
+            shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -294,7 +298,6 @@ final class PostView: UIView {
 
     private enum Constants {
         static let postCornerRadius: CGFloat = 8
-        static let avatarCornerRadius: CGFloat = 15
-        static let avatarSize = CGSize(width: 30, height: 30)
+        static let avatarCornerRadius: CGFloat = 16
     }
 }

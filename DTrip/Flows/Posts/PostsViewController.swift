@@ -49,6 +49,7 @@ final class PostsViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: Constants.postCellIdentifier)
         collectionView.register(PostCollectionViewLoadingCell.self, forCellWithReuseIdentifier: Constants.postCellLoadingIdentifier)
+        collectionView.register(PostCollectionViewErrorCell.self, forCellWithReuseIdentifier: Constants.postCellErrorIdentifier)
         
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -78,7 +79,8 @@ extension PostsViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard postItems.indices.contains(indexPath.row) else {
-            return UICollectionViewCell()
+            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellErrorIdentifier,
+                                                      for: indexPath)
         }
         let item = postItems[indexPath.row]
         
@@ -88,6 +90,9 @@ extension PostsViewController: UICollectionViewDataSource {
                                                           for: indexPath) as! PostCollectionViewCell
             cell.configure(post)
             return cell
+        case .errorItem(title: _):
+            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellErrorIdentifier,
+                                                      for: indexPath)
         case .loadingItem(title: _, animate: _):
             return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellLoadingIdentifier,
                                                       for: indexPath)
@@ -101,8 +106,49 @@ extension PostsViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width,
-                      height: view.bounds.width * 1.13)
+        guard postItems.indices.contains(indexPath.row) else {
+            return CGSize.zero
+        }
+        let item = postItems[indexPath.row]
+        
+        let insets = collectionView.contentInset
+        let width = UIScreen.main.bounds.width - (insets.left + insets.right)
+        
+        switch item {
+        case .postItem(post: let model):
+            let height = cellHeight(model: model, with: width)
+            return CGSize(width: width, height: height)
+        default:
+            return CGSize(width: width, height: Spaces.octuple)
+        }
+    }
+    
+    func cellHeight(model: PostModel, with width: CGFloat) -> CGFloat {
+        let bodyWidth = width - Spaces.octuple
+        
+        let descriptionLabel = UILabel()
+        descriptionLabel.frame = CGRect(x: 0, y: 0, width: bodyWidth, height: CGFloat.greatestFiniteMagnitude)
+        descriptionLabel.numberOfLines = 2
+        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+        descriptionLabel.text = model.description
+        descriptionLabel.sizeToFit()
+        
+        let descriptionHeight = descriptionLabel.frame.height
+        let titleHeight = model.title.height(withConstrainedWidth: bodyWidth,
+                                             font: UIFont.preferredFont(forTextStyle: .subheadline))
+        let footerHeight: CGFloat = Spaces.septuple
+        let avatarHeight: CGFloat = Spaces.quintuple
+        let imageHeight: CGFloat  = width * 0.6
+        
+        return avatarHeight +
+            imageHeight +
+            Spaces.double +
+            titleHeight +
+            Spaces.single +
+            descriptionHeight +
+            Spaces.double +
+            footerHeight +
+            Spaces.double
     }
 }
 
@@ -112,5 +158,6 @@ extension PostsViewController {
     private enum Constants {
         static let postCellIdentifier = "PostCollectionViewCell"
         static let postCellLoadingIdentifier = "PostCollectionViewLoadingCell"
+        static let postCellErrorIdentifier = "PostCollectionViewErrorCell"
     }
 }

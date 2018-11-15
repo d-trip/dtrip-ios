@@ -21,7 +21,7 @@ protocol MapViewModel {
 
 final class MapViewModelImp: MapViewModel {
     var showPostsContent: Observable<[PostIdentifier]> {
-        return mapPointsSubject.map { 
+        return mapPointsSubject.map {
             $0.map { PostIdentifier($0.author, $0.permlink) }
         }
     }
@@ -32,11 +32,12 @@ final class MapViewModelImp: MapViewModel {
         return postCoordinatesSubject.asDriver(onErrorJustReturn: [])
     }
     
-    let mapPointsSubject = PublishSubject<[MapPointModel]>()
-    let postCoordinatesSubject = ReplaySubject<[MapPointModel]>.create(bufferSize: 1)
-
     let disposeBag = DisposeBag()
-    let manager: PostManager
+    
+    private let mapPointsSubject = PublishSubject<[MapPointModel]>()
+    private let postCoordinatesSubject = ReplaySubject<[MapPointModel]>.create(bufferSize: 1)
+    
+    private let manager: PostManager
     
     init(manager: PostManager) {
         self.manager = manager

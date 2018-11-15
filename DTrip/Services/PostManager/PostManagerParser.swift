@@ -41,7 +41,7 @@ final class PostManagerParserImp: PostManagerParser {
                                       created: content.created,
                                       lastUpdate: content.lastUpdate,
                                       title: content.title,
-                                      description: "",
+                                      description: "I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application.",
                                       location: postMeta?.location.properties.name,
                                       bodyHTML: content.body,
                                       images: [],

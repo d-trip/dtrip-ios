@@ -20,6 +20,8 @@
 		EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACE8219A351E001F0484 /* PostItem.swift */; };
 		EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */; };
 		EC13ACED219CD786001F0484 /* PostCollectionViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */; };
+		EC13ACF1219E08B1001F0484 /* PostCollectionViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */; };
+		EC13ACF3219E0ACA001F0484 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF2219E0ACA001F0484 /* String.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
@@ -121,6 +123,8 @@
 		EC13ACE8219A351E001F0484 /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
 		EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageIndicator.swift; sourceTree = "<group>"; };
 		EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewLoadingCell.swift; sourceTree = "<group>"; };
+		EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewErrorCell.swift; sourceTree = "<group>"; };
+		EC13ACF2219E0ACA001F0484 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			children = (
 				402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */,
 				EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */,
+				EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -420,6 +425,7 @@
 		ECC3BF1D21793F8800B6E87B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				EC13ACF2219E0ACA001F0484 /* String.swift */,
 				ECC3BF49217940D500B6E87B /* UIViewController+Presentable.swift */,
 				ECC3BF2021793FD300B6E87B /* UIColor.swift */,
 				EC78E71F2190999A00C19421 /* Data.swift */,
@@ -727,6 +733,7 @@
 				EC16E9C1219383590099C4FE /* AppParameters.swift in Sources */,
 				ECC3BF53217BBC4F00B6E87B /* Config.swift in Sources */,
 				EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */,
+				EC13ACF3219E0ACA001F0484 /* String.swift in Sources */,
 				EC16E9D6219648370099C4FE /* Reputation.swift in Sources */,
 				EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */,
 				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
@@ -738,6 +745,7 @@
 				EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				EC16E9E021973AA90099C4FE /* Date.swift in Sources */,
+				EC13ACF1219E08B1001F0484 /* PostCollectionViewErrorCell.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
 				ECC3BF2221793FD500B6E87B /* UIColor.swift in Sources */,
 				EC16E9CA219639420099C4FE /* PostManagerParser.swift in Sources */,

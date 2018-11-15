@@ -11,6 +11,7 @@ import protocol DifferenceKit.Differentiable
 
 enum PostItem {
     case postItem(post: PostModel)
+    case errorItem(title: String)
     case loadingItem(title: String, animate: Bool)
 }
 
@@ -21,6 +22,8 @@ extension PostItem: Differentiable {
         switch self {
         case .postItem(post: let post):
             return post.permlink + post.author.name
+        case .errorItem(title: let title):
+            return title
         case .loadingItem(title: let title, animate: _):
             return title
         }
