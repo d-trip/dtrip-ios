@@ -19,6 +19,7 @@ final class PostsCoordinator: Coordinator {
             assertionFailure("ViewModel is not found")
             return
         }
+        
         viewModel.setPostIdentifiers.onNext(postIdentifiers)
         router.push(view)
     }

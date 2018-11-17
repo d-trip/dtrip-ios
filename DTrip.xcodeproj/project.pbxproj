@@ -11,7 +11,7 @@
 		37D027813C0E769882329662 /* Pods_DTripTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 640008754F1848004EDCDA24 /* Pods_DTripTests.framework */; };
 		402EB1F6318E6927219DE41C /* PostsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBF5E4CD7AF974FB0CD6A /* PostsAssembly.swift */; };
 		402EB60E9C83C71CC37D668D /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBEA07B3BD74D5316F68F /* PostsViewController.swift */; };
-		402EB940D5B9C590F8FEB858 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */; };
+		402EB940D5B9C590F8FEB858 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB1258331CBAF48EEBADA /* PostTableViewCell.swift */; };
 		402EB9AFF5D1E820CFAE2630 /* Spaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBBD488E3DB5081618DDD /* Spaces.swift */; };
 		402EBA2620E63F5E719FC8F7 /* PostsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBBA03A4535984C140B9A /* PostsCoordinator.swift */; };
 		402EBA918B2067D20E27A49F /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB6BB06DF361CDFAC2B9E /* PostView.swift */; };
@@ -19,8 +19,8 @@
 		402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */; };
 		EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACE8219A351E001F0484 /* PostItem.swift */; };
 		EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */; };
-		EC13ACED219CD786001F0484 /* PostCollectionViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */; };
-		EC13ACF1219E08B1001F0484 /* PostCollectionViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */; };
+		EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */; };
+		EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */; };
 		EC13ACF3219E0ACA001F0484 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF2219E0ACA001F0484 /* String.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
@@ -107,7 +107,7 @@
 
 /* Begin PBXFileReference section */
 		3160CC333263ABC79C3019DF /* Pods_DTrip.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DTrip.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
+		402EB1258331CBAF48EEBADA /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		402EB37ADD3CF024C578508E /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		402EB6BB06DF361CDFAC2B9E /* PostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		402EBBA03A4535984C140B9A /* PostsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsCoordinator.swift; sourceTree = "<group>"; };
@@ -122,8 +122,8 @@
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC13ACE8219A351E001F0484 /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
 		EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageIndicator.swift; sourceTree = "<group>"; };
-		EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewLoadingCell.swift; sourceTree = "<group>"; };
-		EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewErrorCell.swift; sourceTree = "<group>"; };
+		EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewLoadingCell.swift; sourceTree = "<group>"; };
+		EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewErrorCell.swift; sourceTree = "<group>"; };
 		EC13ACF2219E0ACA001F0484 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
@@ -225,9 +225,9 @@
 		402EB06CA27B86DFC6A9059F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				402EB1258331CBAF48EEBADA /* PostCollectionViewCell.swift */,
-				EC13ACEC219CD786001F0484 /* PostCollectionViewLoadingCell.swift */,
-				EC13ACF0219E08B1001F0484 /* PostCollectionViewErrorCell.swift */,
+				402EB1258331CBAF48EEBADA /* PostTableViewCell.swift */,
+				EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */,
+				EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -739,13 +739,13 @@
 				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
 				EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
-				EC13ACED219CD786001F0484 /* PostCollectionViewLoadingCell.swift in Sources */,
+				EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
 				EC78E72B2190AED000C19421 /* Observable.swift in Sources */,
 				EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				EC16E9E021973AA90099C4FE /* Date.swift in Sources */,
-				EC13ACF1219E08B1001F0484 /* PostCollectionViewErrorCell.swift in Sources */,
+				EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
 				ECC3BF2221793FD500B6E87B /* UIColor.swift in Sources */,
 				EC16E9CA219639420099C4FE /* PostManagerParser.swift in Sources */,
@@ -784,7 +784,7 @@
 				402EB60E9C83C71CC37D668D /* PostsViewController.swift in Sources */,
 				402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */,
 				402EBA918B2067D20E27A49F /* PostView.swift in Sources */,
-				402EB940D5B9C590F8FEB858 /* PostCollectionViewCell.swift in Sources */,
+				402EB940D5B9C590F8FEB858 /* PostTableViewCell.swift in Sources */,
 				402EB9AFF5D1E820CFAE2630 /* Spaces.swift in Sources */,
 				402EBDB9411F180B51039C2D /* UIImage.swift in Sources */,
 			);

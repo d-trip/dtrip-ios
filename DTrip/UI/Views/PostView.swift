@@ -1,17 +1,6 @@
 import UIKit
 import Kingfisher
 
-struct PostViewModel {
-    let avatarImage: UIImage
-    let userName: String
-    let date: String
-    let postImage: UIImage
-    let location: String
-    let status: String
-    let title: String
-    let description: String
-}
-
 final class PostView: UIView {
 
     // MARK: - UI properties
@@ -235,13 +224,18 @@ final class PostView: UIView {
     private func setupConstraints() {
         let constraints = [
             contentView.topAnchor.constraint(equalTo: topAnchor, constant: Spaces.quintuple),
+            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            shadowView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
+            shadowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            shadowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            shadowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
             avatarImageView.topAnchor.constraint(equalTo: topAnchor),
             avatarImageView.bottomAnchor.constraint(equalTo: contentView.topAnchor, constant: -Spaces.single),
+            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             avatarImageView.widthAnchor.constraint(equalTo: avatarImageView.heightAnchor),
             
             userNameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
@@ -252,9 +246,9 @@ final class PostView: UIView {
             dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spaces.single),
 
             postImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
             postImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            postImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.6),
             
             locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             locationLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.single),
@@ -271,16 +265,12 @@ final class PostView: UIView {
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
 
-            shadowView.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
-            shadowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            shadowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            shadowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-
-            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
+            separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
             separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spaces.septuple),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
-
+            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
+            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
+            
             likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),

@@ -8,25 +8,17 @@ final class PostsViewController: UIViewController {
     private var postItems: [PostItem] = []
     
     // MARK: - UI properties
-    
-    private lazy var collectionViewFlowLayout: UICollectionViewFlowLayout = {
-        let collectionViewFlowLayout = UICollectionViewFlowLayout()
-        let screenWidth = UIScreen.main.bounds.width
-        collectionViewFlowLayout.scrollDirection = .vertical
-        collectionViewFlowLayout.minimumLineSpacing = Spaces.single
-        return collectionViewFlowLayout
-    }()
 
-    private lazy var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewFlowLayout)
-        return collectionView
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
     }()
     
     // MARK: - Managing the View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureCollectionView(collectionView)
+        configureTableView(tableView)
         setupConstraints()
         
         setupRx()
@@ -36,24 +28,29 @@ final class PostsViewController: UIViewController {
 
     private func setupConstraints() {
         let constraints: [NSLayoutConstraint] = [
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
     }
 
-    private func configureCollectionView(_ collectionView: UICollectionView) {
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
-        collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: Constants.postCellIdentifier)
-        collectionView.register(PostCollectionViewLoadingCell.self, forCellWithReuseIdentifier: Constants.postCellLoadingIdentifier)
-        collectionView.register(PostCollectionViewErrorCell.self, forCellWithReuseIdentifier: Constants.postCellErrorIdentifier)
+    private func configureTableView(_ tableView: UITableView) {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = Spaces.octuple
+        tableView.rowHeight = UITableView.automaticDimension
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        view.addSubview(collectionView)
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
+        tableView.register(PostTableViewLoadingCell.self, forCellReuseIdentifier: Constants.postCellLoadingIdentifier)
+        tableView.register(PostTableViewErrorCell.self, forCellReuseIdentifier: Constants.postCellErrorIdentifier)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        view.addSubview(tableView)
     }
     
     private func setupRx() {
@@ -61,7 +58,7 @@ final class PostsViewController: UIViewController {
             .drive(onNext: { [weak self] target in
                 guard let strongSelf = self else { return }
                 let diffs = StagedChangeset(source: strongSelf.postItems, target: target)
-                strongSelf.collectionView.reload(using: diffs) { postItems in
+                strongSelf.tableView.reload(using: diffs, with: .bottom) { postItems in
                     strongSelf.postItems = postItems
                 }
             })
@@ -69,86 +66,39 @@ final class PostsViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UITableViewDelegate
 
-extension PostsViewController: UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension PostsViewController: UITableViewDelegate {
+    
+}
+
+// MARK: - UITableViewDataSource
+
+extension PostsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return postItems.count
     }
     
-    public func collectionView(_ collectionView: UICollectionView,
-                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard postItems.indices.contains(indexPath.row) else {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellErrorIdentifier,
-                                                      for: indexPath)
+            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellErrorIdentifier,
+                                                 for: indexPath)
         }
         let item = postItems[indexPath.row]
         
         switch item {
         case .postItem(post: let post):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellIdentifier,
-                                                          for: indexPath) as! PostCollectionViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellIdentifier,
+                                                     for: indexPath) as! PostTableViewCell
             cell.configure(post)
             return cell
         case .errorItem(title: _):
-            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellErrorIdentifier,
-                                                      for: indexPath)
+            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellErrorIdentifier,
+                                                 for: indexPath)
         case .loadingItem(title: _, animate: _):
-            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.postCellLoadingIdentifier,
-                                                      for: indexPath)
+            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellLoadingIdentifier,
+                                                 for: indexPath)
         }
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension PostsViewController: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard postItems.indices.contains(indexPath.row) else {
-            return CGSize.zero
-        }
-        let item = postItems[indexPath.row]
-        
-        let insets = collectionView.contentInset
-        let width = UIScreen.main.bounds.width - (insets.left + insets.right)
-        
-        switch item {
-        case .postItem(post: let model):
-            let height = cellHeight(model: model, with: width)
-            return CGSize(width: width, height: height)
-        default:
-            return CGSize(width: width, height: Spaces.octuple)
-        }
-    }
-    
-    func cellHeight(model: PostModel, with width: CGFloat) -> CGFloat {
-        let bodyWidth = width - Spaces.octuple
-        
-        let descriptionLabel = UILabel()
-        descriptionLabel.frame = CGRect(x: 0, y: 0, width: bodyWidth, height: CGFloat.greatestFiniteMagnitude)
-        descriptionLabel.numberOfLines = 2
-        descriptionLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        descriptionLabel.text = model.description
-        descriptionLabel.sizeToFit()
-        
-        let descriptionHeight = descriptionLabel.frame.height
-        let titleHeight = model.title.height(withConstrainedWidth: bodyWidth,
-                                             font: UIFont.preferredFont(forTextStyle: .subheadline))
-        let footerHeight: CGFloat = Spaces.septuple
-        let avatarHeight: CGFloat = Spaces.quintuple
-        let imageHeight: CGFloat  = width * 0.6
-        
-        return avatarHeight +
-            imageHeight +
-            Spaces.double +
-            titleHeight +
-            Spaces.single +
-            descriptionHeight +
-            Spaces.double +
-            footerHeight +
-            Spaces.double
     }
 }
 

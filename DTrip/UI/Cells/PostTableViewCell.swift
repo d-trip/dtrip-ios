@@ -1,6 +1,6 @@
 import UIKit
 
-final class PostCollectionViewCell: UICollectionViewCell {
+final class PostTableViewCell: UITableViewCell {
 
     private lazy var postView: PostView = {
         let postView = PostView()
@@ -8,11 +8,11 @@ final class PostCollectionViewCell: UICollectionViewCell {
         return postView
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
