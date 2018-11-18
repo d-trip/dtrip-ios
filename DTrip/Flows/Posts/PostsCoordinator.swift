@@ -21,6 +21,11 @@ final class PostsCoordinator: Coordinator {
         }
         
         viewModel.setPostIdentifiers.onNext(postIdentifiers)
-        router.push(view)
+        
+        view.modalTransitionStyle = .coverVertical
+        view.modalPresentationStyle = .overCurrentContext
+        view.definesPresentationContext = false
+        view.providesPresentationContextTransitionStyle = false
+        router.present(view)
     }
 }
