@@ -28,4 +28,5 @@ func configureApplicationAssembly(_ container: DependencyContainer) {
     configureFeed(container)
     configureMap(container)
     configurePosts(container)
+    configurePost(container)
 }

@@ -8,7 +8,7 @@ func configurePosts(_ container: DependencyContainer) {
     }
 
     container.register {
-        PostsCoordinator(router: $0, view: $1)
+        PostsCoordinator(router: $0, view: $1, postCoordinator: $2)
     }
 
     container.register { (model: PostsViewModel) -> PostsViewController in

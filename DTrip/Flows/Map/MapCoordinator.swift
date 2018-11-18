@@ -13,11 +13,16 @@ final class MapCoordinator: Coordinator {
     private let router: Router
     private let view: MapViewController
     private let posts: PostsCoordinator
+    private let post: PostCoordinator
     
-    init(router: Router, view: MapViewController, posts: PostsCoordinator) {
+    init(router: Router,
+         view: MapViewController,
+         posts: PostsCoordinator,
+         post: PostCoordinator) {
         self.view = view
         self.router = router
         self.posts = posts
+        self.post = post
         
         guard let viewModel = view.viewModel else {
             assertionFailure("ViewModel must be setted")
@@ -39,12 +44,11 @@ final class MapCoordinator: Coordinator {
     
     func start() {}
     
-    func showPostScreen(postIdentifier: PostIdentifier) {
-        // ToDo: - Open single post screen
-        posts.start([postIdentifier])
+    private func showPostScreen(postIdentifier: PostIdentifier) {
+        post.start(postIdentifier)
     }
     
-    func showPostFeed(postIdentifiers: [PostIdentifier]) {
+    private func showPostFeed(postIdentifiers: [PostIdentifier]) {
         posts.start(postIdentifiers)
     }
 }

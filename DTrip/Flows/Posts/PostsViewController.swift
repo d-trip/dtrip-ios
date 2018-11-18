@@ -1,6 +1,7 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 import RxCocoa
+import RxSwift
 import DifferenceKit
 
 enum PanDirection {
@@ -14,14 +15,14 @@ final class PostsViewController: UIViewController {
 
     private let panRecognizer = UIPanGestureRecognizer()
     private var animator = UIViewPropertyAnimator()
-    
+
     private var isOpen = false
     private var animationProgress: CGFloat = 0
     private var closedTransform = CGAffineTransform.identity
     private var interactionInProgress: Bool = false
     private var initialScrollOffset: CGPoint = CGPoint.zero
     private let offsetThreshold: CGFloat = 5.0 // Optimal value from testing
-    
+
     // MARK: - UI properties
 
     private lazy var momentumView: UIView = {
@@ -31,7 +32,7 @@ final class PostsViewController: UIViewController {
         view.layer.cornerRadius = 30
         return view
     }()
-    
+
     private lazy var handleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +40,7 @@ final class PostsViewController: UIViewController {
         view.layer.cornerRadius = 3
         return view
     }()
-    
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         return tableView
@@ -58,7 +59,7 @@ final class PostsViewController: UIViewController {
         super.viewDidAppear(animated)
         showModule()
     }
-    
+
     private func showModule() {
         let transform = CGAffineTransform(translationX: 0, y: view.bounds.height * 0.2)
         let animator = UIViewPropertyAnimator(duration: Constants.animationDurationBackground,
@@ -69,7 +70,7 @@ final class PostsViewController: UIViewController {
         }
         animator.startAnimation()
     }
-    
+
     private func closeModule() {
         let animator = UIViewPropertyAnimator(duration: Constants.animationDurationBackground,
                                               dampingRatio: Constants.dampingRatio)
@@ -83,7 +84,7 @@ final class PostsViewController: UIViewController {
         }
         animator.startAnimation()
     }
-    
+
     // MARK: - Setup
 
     private func setupConstraints() {
@@ -92,12 +93,12 @@ final class PostsViewController: UIViewController {
             momentumView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             momentumView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             momentumView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        
+
             handleView.topAnchor.constraint(equalTo: momentumView.topAnchor, constant: Spaces.single),
             handleView.widthAnchor.constraint(equalToConstant: 50),
             handleView.heightAnchor.constraint(equalToConstant: 5),
             handleView.centerXAnchor.constraint(equalTo: momentumView.centerXAnchor),
-            
+
             tableView.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: Spaces.double),
             tableView.bottomAnchor.constraint(equalTo: momentumView.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: momentumView.leadingAnchor),
@@ -113,20 +114,21 @@ final class PostsViewController: UIViewController {
         tableView.estimatedRowHeight = Spaces.octuple
         tableView.rowHeight = UITableView.automaticDimension
         tableView.showsVerticalScrollIndicator = false
-        
+
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
         tableView.register(PostTableViewLoadingCell.self, forCellReuseIdentifier: Constants.postCellLoadingIdentifier)
         tableView.register(PostTableViewErrorCell.self, forCellReuseIdentifier: Constants.postCellErrorIdentifier)
         tableView.panGestureRecognizer.addTarget(self, action: #selector(panned))
         tableView.dataSource = self
-        
+        tableView.delegate = self
+
         closedTransform = CGAffineTransform(translationX: 0, y: view.bounds.height)
         momentumView.transform = closedTransform
         
         panRecognizer.addTarget(self, action: #selector(panned))
         momentumView.addGestureRecognizer(panRecognizer)
         panRecognizer.delegate = self
-        
+
         view.addSubview(momentumView)
         momentumView.addSubview(handleView)
         momentumView.addSubview(tableView)
@@ -143,9 +145,9 @@ final class PostsViewController: UIViewController {
             })
             .disposed(by: viewModel.disposeBag)
     }
-    
+
     // MARK: - Manage gesture recognizers
-    
+
     @objc
     private func panned(recognizer: UIPanGestureRecognizer) {
         switch recognizer {
@@ -161,7 +163,7 @@ final class PostsViewController: UIViewController {
         case panRecognizer:
             let yVelocity = recognizer.velocity(in: momentumView).y
             let direction: PanDirection = yVelocity > 0 ? .down : .up
-        
+
             guard shouldHandleTouch(tableView, direction: direction) else {
                 return
             }
@@ -183,7 +185,7 @@ final class PostsViewController: UIViewController {
                 animator.fractionComplete = fraction + animationProgress
             case .ended, .cancelled:
                 endInteractive()
-                
+
                 let shouldClose = yVelocity > 0
                 if yVelocity == 0 {
                     animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
@@ -196,24 +198,24 @@ final class PostsViewController: UIViewController {
                     if shouldClose && !animator.isReversed { animator.isReversed.toggle() }
                     if !shouldClose && animator.isReversed { animator.isReversed.toggle() }
                 }
-                
+
                 let fractionRemaining = 1 - animator.fractionComplete
                 let distanceRemaining = fractionRemaining * closedTransform.ty
-                
+
                 if distanceRemaining == 0 {
                     animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
                     break
                 }
-                
+
                 let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 60)
                 let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
-                
+
                 let timingParameters = UISpringTimingParameters(dampingRatio: 0.8,
                                                                 initialVelocity: initialVelocity)
                 let preferredDuration = UIViewPropertyAnimator(duration: Constants.animationDuration,
                                                                timingParameters: timingParameters).duration
                 let durationFactor = CGFloat(preferredDuration / animator.duration)
-                
+
                 animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
             default: break
             }
@@ -221,10 +223,10 @@ final class PostsViewController: UIViewController {
             return
         }
     }
-    
+
     private func startAnimationIfNeeded() {
         guard !animator.isRunning else { return }
-        
+
         let timingParameters = UISpringTimingParameters(dampingRatio: 1)
         animator = UIViewPropertyAnimator(duration: Constants.animationDuration,
                                           timingParameters: timingParameters)
@@ -243,20 +245,20 @@ final class PostsViewController: UIViewController {
         }
         animator.startAnimation()
     }
- 
+
     // MARK: - TableView handling
-    
+
     private func lockTableView() {
         initialScrollOffset = tableView.contentOffset
         tableView.isDirectionalLockEnabled = true
         tableView.bounces = false
     }
-    
+
     private func unlockTableView() {
         tableView.isDirectionalLockEnabled = false
         tableView.bounces = false
     }
-    
+
     private func shouldHandleTouch(_ tableView: UITableView, direction: PanDirection) -> Bool {
         switch (interactionInProgress, isOpen) {
         case (true, _):
@@ -269,16 +271,16 @@ final class PostsViewController: UIViewController {
             return true
         }
     }
-    
+
     private func startInteractive() {
         interactionInProgress = true
         lockTableView()
-        
+
         startAnimationIfNeeded()
         animator.pauseAnimation()
         animationProgress = animator.fractionComplete
     }
-    
+
     private func endInteractive() {
         interactionInProgress = false
         unlockTableView()
@@ -289,9 +291,11 @@ final class PostsViewController: UIViewController {
 
 extension PostsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView
-            .cellForRow(at: indexPath)?
-            .setSelected(false, animated: true)
+        tableView.deselectRow(at: indexPath, animated: false)
+
+        guard postItems.indices.contains(indexPath.row) else { return }
+        let item = postItems[indexPath.row]
+        viewModel.didSelectPost.onNext([item])
     }
 }
 
@@ -333,7 +337,7 @@ extension PostsViewController: UIGestureRecognizerDelegate {
         guard gestureRecognizer == panRecognizer else { return false }
         return otherGestureRecognizer == tableView.panGestureRecognizer
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panRecognizer else { return false }
         if otherGestureRecognizer == tableView.panGestureRecognizer {
@@ -342,7 +346,7 @@ extension PostsViewController: UIGestureRecognizerDelegate {
             return true
         }
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard gestureRecognizer == panRecognizer else { return false }
         if tableView.panGestureRecognizer == otherGestureRecognizer {
@@ -351,7 +355,7 @@ extension PostsViewController: UIGestureRecognizerDelegate {
         if tableView.gestureRecognizers?.contains(otherGestureRecognizer) ?? false {
             return false
         }
-        
+
         switch otherGestureRecognizer {
         case is UIPanGestureRecognizer,
              is UISwipeGestureRecognizer,

@@ -66,7 +66,6 @@ extension MapViewController: MKMapViewDelegate {
            let annotations = annotation.memberAnnotations as? [MapPointModel] {
             viewModel.didSelectMapPoint.onNext(annotations)
         } else if let annotation = view.annotation as? MapPointModel {
-            // ToDo: - Open single post screen
             viewModel.didSelectMapPoint.onNext([annotation])
         }
     }
