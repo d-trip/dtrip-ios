@@ -173,7 +173,6 @@ final class PostView: UIView {
             avatarImageView,
             userNameLabel,
             dateLabel,
-
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview($0)
@@ -244,17 +243,17 @@ final class PostView: UIView {
             postImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             locationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            locationLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.single),
+            locationLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.double),
             locationLabel.trailingAnchor.constraint(equalTo: statusLabel.leadingAnchor, constant: -Spaces.double),
 
             statusLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
-            statusLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.single),
+            statusLabel.bottomAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: -Spaces.double),
 
             titleLabel.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: Spaces.double),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.single),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
 
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.single),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.double),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
 
