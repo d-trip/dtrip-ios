@@ -21,6 +21,6 @@ final class PostTableViewErrorCell: UITableViewCell {
     }
     
     private func setupView() {
-        contentView.backgroundColor = .red
+        
     }
 }

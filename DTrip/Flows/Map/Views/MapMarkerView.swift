@@ -9,7 +9,7 @@
 import MapKit
 
 final class MapMarkerView: MKMarkerAnnotationView {
-
+    
     override var annotation: MKAnnotation? {
         willSet {
             configure(with: annotation)
@@ -20,5 +20,7 @@ final class MapMarkerView: MKMarkerAnnotationView {
 //        guard annotation is MapPointModel else { return }
         markerTintColor = .blue
         clusteringIdentifier = String(describing: MapMarkerView.self)
+        detailCalloutAccessoryView = nil
+        canShowCallout = false
     }
 }

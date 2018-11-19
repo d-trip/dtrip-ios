@@ -21,7 +21,7 @@ final class PostTableViewLoadingCell: UITableViewCell {
     }
     
     private func setupView() {
-        contentView.backgroundColor = .green
+        
     }
 }
 

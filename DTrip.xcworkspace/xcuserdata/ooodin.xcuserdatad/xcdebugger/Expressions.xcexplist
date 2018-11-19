@@ -3,13 +3,18 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "closure #1 in Networking.getContent(author:permlink:):PostManagerNetworking.swift">
-      </ContextState>
-      <ContextState
-         contextName = "PostsViewModelImp.makePostDiffs(_:):PostsViewModel.swift">
+         contextName = "PostsViewController.panned(recognizer:):PostsViewController.swift">
          <PersistentStrings>
             <PersistentString
-               value = "postItems">
+               value = "recognizer.state">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PostsViewController.shouldHandleTouch(_:direction:):PostsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "momentumState">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -25,10 +30,21 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "MapViewModelImp.makeMapPointModel(_:):MapViewModel.swift">
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in PostsViewController.setupRx():PostsViewController.swift">
       </ContextState>
       <ContextState
-         contextName = "MapViewModelImp.makeMapPointModel(_:):MapViewModel.swift">
+         contextName = "PostsViewModelImp.makePostDiffs(_:):PostsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "postItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in Networking.getContent(author:permlink:):PostManagerNetworking.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

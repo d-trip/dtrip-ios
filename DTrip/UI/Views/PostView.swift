@@ -189,7 +189,7 @@ final class PostView: UIView {
 
     private func setupShadowForFooterPost() {
         shadowView.layer.shadowOffset = CGSize(width: 0, height: 3)
-        shadowView.layer.shadowOpacity = 0.3
+        shadowView.layer.shadowOpacity = 0.15
         shadowView.layer.shadowColor = UIColor.black.cgColor
         shadowView.layer.shadowRadius = 5
         shadowView.layer.backgroundColor = UIColor.white.cgColor

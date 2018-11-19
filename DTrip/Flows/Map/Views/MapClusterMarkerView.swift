@@ -29,7 +29,7 @@ final class MapClusterMarkerView: MKAnnotationView {
     
     private func configure(with annotation: MKAnnotation?) {
         guard let annotation = annotation as? MKClusterAnnotation else { return }
-        
+    
         let renderer = UIGraphicsImageRenderer(size: Constants.sizeView)
     
         image = renderer.image { _ in
@@ -48,6 +48,9 @@ final class MapClusterMarkerView: MKAnnotationView {
                                   height: textSize.height)
             text.draw(in: rectText, withAttributes: attributes)
         }
+        
+        detailCalloutAccessoryView = nil
+        canShowCallout = false
     }
 }
 
