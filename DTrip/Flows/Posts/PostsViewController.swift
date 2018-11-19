@@ -33,17 +33,29 @@ final class PostsViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.layer.cornerRadius = 30
+        view.clipsToBounds = true
         return view
     }()
 
     private lazy var handleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .middleGray
-        view.layer.cornerRadius = 3
+        view.backgroundColor = .darkGray
+        view.layer.cornerRadius = 1.5
         return view
     }()
 
+    private lazy var topShadowView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 3)
+        view.layer.shadowOpacity = 0.1
+        view.alpha = 0
+        return view
+    }()
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         return tableView
@@ -89,13 +101,18 @@ final class PostsViewController: UIViewController {
             momentumView.heightAnchor.constraint(equalTo: view.heightAnchor),
             momentumView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                               constant: Spaces.duodecuple),
-
+            
+            topShadowView.leadingAnchor.constraint(equalTo: momentumView.leadingAnchor),
+            topShadowView.trailingAnchor.constraint(equalTo: momentumView.trailingAnchor),
+            topShadowView.topAnchor.constraint(equalTo: momentumView.topAnchor),
+            topShadowView.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+            
             handleView.topAnchor.constraint(equalTo: momentumView.topAnchor, constant: Spaces.single),
-            handleView.widthAnchor.constraint(equalToConstant: 50),
-            handleView.heightAnchor.constraint(equalToConstant: 5),
+            handleView.widthAnchor.constraint(equalToConstant: Spaces.sextuple),
+            handleView.heightAnchor.constraint(equalToConstant: 3),
             handleView.centerXAnchor.constraint(equalTo: momentumView.centerXAnchor),
 
-            tableView.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: Spaces.double),
+            tableView.topAnchor.constraint(equalTo: handleView.bottomAnchor, constant: Spaces.single),
             tableView.bottomAnchor.constraint(equalTo: momentumView.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: momentumView.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: momentumView.trailingAnchor),
@@ -129,8 +146,9 @@ final class PostsViewController: UIViewController {
         panRecognizer.delegate = self
 
         view.addSubview(momentumView)
-        momentumView.addSubview(handleView)
         momentumView.addSubview(tableView)
+        momentumView.addSubview(topShadowView)
+        momentumView.addSubview(handleView)
     }
     
     private func setupRx() {
@@ -138,7 +156,7 @@ final class PostsViewController: UIViewController {
             .drive(onNext: { [weak self] target in
                 guard let strongSelf = self else { return }
                 let diffs = StagedChangeset(source: strongSelf.postItems, target: target)
-                strongSelf.tableView.reload(using: diffs, with: .fade) { postItems in
+                strongSelf.tableView.reload(using: diffs, with: .bottom) { postItems in
                     strongSelf.postItems = postItems
                 }
             })
@@ -182,21 +200,23 @@ final class PostsViewController: UIViewController {
             case .ended, .cancelled:
                 endInteractive()
                 
-                if yVelocity == 0 {
-                    animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-                    break
-                }
                 let shouldRevert: Bool
                 switch animatiorTrasform {
                 case closedTransform:
-                    shouldRevert = direction == .up
+                    shouldRevert = direction == .up ||
+                        animator.fractionComplete < 0.25
                 case openTransform:
-                    shouldRevert = direction == .down
+                    shouldRevert = direction == .down ||
+                        animator.fractionComplete < 0.25
                 default:
-                    shouldRevert = false
+                    shouldRevert = animator.fractionComplete < 0.3
                 }
                 if shouldRevert != animator.isReversed {
                     animator.isReversed.toggle()
+                }
+                if yVelocity == 0 {
+                    animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+                    break
                 }
                 
                 let fractionRemaining = 1 - animator.fractionComplete
@@ -226,16 +246,13 @@ final class PostsViewController: UIViewController {
     private func startAnimationIfNeeded(direction: PanDirection) {
         guard !animator.isRunning else { return }
         let cornerRadius: CGFloat
-        let alpha: CGFloat
         switch direction {
         case .down:
             animatiorTrasform = closedTransform
             cornerRadius = 30
-            alpha = 1
         case .up:
             animatiorTrasform = openTransform
             cornerRadius = 0
-            alpha = 0
         }
         let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio)
         animator = UIViewPropertyAnimator(duration: Constants.animationDuration,
@@ -243,7 +260,6 @@ final class PostsViewController: UIViewController {
         animator.addAnimations { [unowned self] in
             self.momentumView.transform = self.animatiorTrasform
             self.momentumView.layer.cornerRadius = cornerRadius
-            self.handleView.alpha = alpha
         }
         animator.addCompletion { [weak self] position in
             guard let strongSelf = self else { return }
@@ -296,11 +312,26 @@ final class PostsViewController: UIViewController {
         interactionInProgress = false
         unlockTableView()
     }
+    
+    private func updateTopShadow() {
+        let zeroContentOffset = CGFloat(0) - tableView.contentInset.top
+        let alpha: CGFloat = (tableView.contentOffset.y - Spaces.double) > zeroContentOffset ? 1 : 0
+        
+        if topShadowView.alpha != alpha {
+            UIView.animate(withDuration: 0.2) {
+                self.topShadowView.alpha = alpha
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate
 
 extension PostsViewController: UITableViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateTopShadow()
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
 

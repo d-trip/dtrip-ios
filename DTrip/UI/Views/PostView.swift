@@ -81,12 +81,6 @@ final class PostView: UIView {
         return shadowView
     }()
 
-    private lazy var separatorView: UIView = {
-        let separatorView = UIView()
-        separatorView.backgroundColor = .alto
-        return separatorView
-    }()
-
     private lazy var likeButton: UIButton = {
         let likeButton = UIButton(type: .custom)
         likeButton.setImage(UIImage.Feed.Post.likeButton, for: .normal)
@@ -167,7 +161,6 @@ final class PostView: UIView {
             statusLabel,
             titleLabel,
             descriptionLabel,
-            separatorView,
             likeButton,
             shareButton
         ].forEach {
@@ -189,7 +182,7 @@ final class PostView: UIView {
 
     private func setupShadowForFooterPost() {
         shadowView.layer.shadowOffset = CGSize(width: 0, height: 3)
-        shadowView.layer.shadowOpacity = 0.15
+        shadowView.layer.shadowOpacity = 0.1
         shadowView.layer.shadowColor = UIColor.black.cgColor
         shadowView.layer.shadowRadius = 5
         shadowView.layer.backgroundColor = UIColor.white.cgColor
@@ -206,8 +199,8 @@ final class PostView: UIView {
     private func configureShadow(for label: UILabel) {
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOffset = .zero
-        label.layer.shadowOpacity = 1
-        label.layer.shadowRadius = 2
+        label.layer.shadowOpacity = 0.3
+        label.layer.shadowRadius = 1.5
     }
 
     private func setupAvatarShadow() {
@@ -265,21 +258,17 @@ final class PostView: UIView {
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
 
-            separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
-            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spaces.septuple),
-            separatorView.heightAnchor.constraint(equalToConstant: 1),
-            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spaces.double),
-            
-            likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
+            likeButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
             likeButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spaces.double),
-            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
+            likeButton.widthAnchor.constraint(equalToConstant: Spaces.triple),
+            likeButton.heightAnchor.constraint(equalTo: likeButton.widthAnchor),
             
-            shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
+            shareButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
             shareButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spaces.double),
             shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
-            shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
+            shareButton.widthAnchor.constraint(equalToConstant: Spaces.triple),
+            shareButton.heightAnchor.constraint(equalTo: shareButton.widthAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
     }
