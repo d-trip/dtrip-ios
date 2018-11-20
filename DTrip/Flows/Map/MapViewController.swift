@@ -62,13 +62,12 @@ final class MapViewController: UIViewController {
 
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        mapView.deselectAnnotation(view.annotation, animated: true)
-        
         if let annotation = view.annotation as? MKClusterAnnotation,
            let annotations = annotation.memberAnnotations as? [MapPointModel] {
             viewModel.didSelectMapPoint.onNext(annotations)
         } else if let annotation = view.annotation as? MapPointModel {
             viewModel.didSelectMapPoint.onNext([annotation])
         }
+        mapView.deselectAnnotation(view.annotation, animated: true)
     }
 }

@@ -43,7 +43,7 @@ final class PostsCoordinator: Coordinator {
         navigationController.modalPresentationStyle = .overCurrentContext
         navigationController.definesPresentationContext = false
         navigationController.providesPresentationContextTransitionStyle = false
-        router.present(navigationController)
+        router.present(navigationController, animated: false)
     }
 
     private func showPostScreen(_ postModel: PostModel) {

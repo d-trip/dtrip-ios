@@ -26,6 +26,8 @@
 		EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */; };
 		EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */; };
 		EC13ACF3219E0ACA001F0484 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF2219E0ACA001F0484 /* String.swift */; };
+		EC13ACF921A35CAB001F0484 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = EC13ACF821A35CAB001F0484 /* bundle.js */; };
+		EC13ACFB21A4B076001F0484 /* BodyPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
@@ -133,6 +135,8 @@
 		EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewLoadingCell.swift; sourceTree = "<group>"; };
 		EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewErrorCell.swift; sourceTree = "<group>"; };
 		EC13ACF2219E0ACA001F0484 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		EC13ACF821A35CAB001F0484 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
+		EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyPostModel.swift; sourceTree = "<group>"; };
 		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
@@ -348,6 +352,7 @@
 				EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */,
 				EC16E9E9219864780099C4FE /* AccountMetaModel.swift */,
 				EC16E9EF219867F80099C4FE /* AccountModel.swift */,
+				EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -469,6 +474,7 @@
 		ECC3BF1F21793FBC00B6E87B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EC13ACF821A35CAB001F0484 /* bundle.js */,
 				ECC3BF1A21793F7000B6E87B /* LaunchScreen */,
 				ECC3BF2121793FD400B6E87B /* Assets.xcassets */,
 			);
@@ -622,6 +628,7 @@
 			files = (
 				ECC3BF2321793FD500B6E87B /* Assets.xcassets in Resources */,
 				ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */,
+				EC13ACF921A35CAB001F0484 /* bundle.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,6 +817,7 @@
 				402EB47A2AE5C23C9881A6A0 /* PostViewController.swift in Sources */,
 				402EB51C3E541BE22459AFB9 /* PostCoordinator.swift in Sources */,
 				402EB5CE78D41F0E0CE8BA78 /* PostAssembly.swift in Sources */,
+				EC13ACFB21A4B076001F0484 /* BodyPostModel.swift in Sources */,
 				402EB7357A3F197CA31F3F35 /* PostViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

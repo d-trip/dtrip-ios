@@ -8,9 +8,11 @@
 
 import Foundation
 import RxSwift
+import JavaScriptCore
 
 enum PostManagerParserError: Error {
     case authorModelIsNotFound
+    case parseError
 }
 
 protocol PostManagerParser {
@@ -18,8 +20,49 @@ protocol PostManagerParser {
 }
 
 final class PostManagerParserImp: PostManagerParser {
+    
+    let jsContext: JSContext
+    
+    init() {
+        jsContext = JSContext()
+        configureJSContext()
+    }
+    
+    func configureJSContext() {
+        guard let filePath = Bundle.main.path(forResource: Constants.fileName, ofType: Constants.fileExt) else {
+            assertionFailure("Bundle.js is not found!")
+            return
+        }
+        
+        do {
+            let jsSourceContents = try String(contentsOfFile: filePath)
+            jsContext.evaluateScript(jsSourceContents)
+        } catch {
+            Log.handleError(error)
+        }
+        
+        jsContext.exceptionHandler = { context, exception in
+            guard let exc = exception else { return }
+            Log.error("JS Exception: %@", exc.toString())
+        }
+    }
+    
+    func pasreBodyPost(body: String) -> BodyPostModel? {
+        guard let jsObject = jsContext.objectForKeyedSubscript("main") else { return nil }
+        
+        if let bodyString = jsObject.invokeMethod("default", withArguments: [body])?.toString(),
+            let bodyData = bodyString.data(using: .utf8) {
+            do {
+                return try JSONDecoder().decode(BodyPostModel.self, from: bodyData)
+            } catch {
+                Log.handleError(error)
+            }
+        }
+        return nil
+    }
+    
     func makePostModel(_ content: NodeContentModel, _ accounts: [NodeAccountModel]) -> Observable<PostModel> {
-        return Observable.create({ observer -> Disposable in
+        return Observable.create({ [weak self] observer -> Disposable in
             guard let authorNodeModel = accounts.first(where: { $0.name == content.author }) else {
                 observer.onError(PostManagerParserError.authorModelIsNotFound)
                 return Disposables.create()
@@ -34,6 +77,11 @@ final class PostManagerParserImp: PostManagerParser {
                                       github: authorMeta?.github,
                                       website: authorMeta?.website)
             
+            guard let bodyModel = self?.pasreBodyPost(body: content.body) else {
+                observer.onError(PostManagerParserError.parseError)
+                return Disposables.create()
+            }
+            let tags = bodyModel.hashtags + bodyModel.usertags + (postMeta?.tags ?? [])
             let postModel = PostModel(id: content.id,
                                       url: content.url,
                                       category: content.category,
@@ -41,16 +89,23 @@ final class PostManagerParserImp: PostManagerParser {
                                       created: content.created,
                                       lastUpdate: content.lastUpdate,
                                       title: content.title,
-                                      description: "I am glad to present the next update of the application. Here is a list of changes in this version: Sort by created / trending / hot Search for publications by AskSteem Application tag is now optional first tag SPA version is available now Styles updates: (NavBar, comments, etc, avatars, editor) Sidebar to navigate the application.",
+                                      description: bodyModel.html.removeTags(),
                                       location: postMeta?.location.properties.name,
-                                      bodyHTML: content.body,
-                                      images: [],
-                                      tags: postMeta?.tags ?? [],
+                                      bodyHTML: bodyModel.html,
+                                      images: bodyModel.images,
+                                      tags: tags,
                                       author: author,
                                       votes: content.activeVotes.map { $0.voter })
             observer.onNext(postModel)
             observer.onCompleted()
             return Disposables.create()
         })
+    }
+}
+
+private extension PostManagerParserImp {
+    private enum Constants {
+        static let fileName = "bundle"
+        static let fileExt = "js"
     }
 }

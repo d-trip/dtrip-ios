@@ -85,11 +85,7 @@ final class PostsViewController: UIViewController {
     }
 
     private func closeModule() {
-        UIView.animate(withDuration: Constants.animationDurationBackground,
-                       animations: { self.view.backgroundColor = .clear },
-                       completion: { [weak self] _ in
-            self?.dismiss(animated: false, completion: nil)
-        })
+        dismiss(animated: false, completion: nil)
     }
 
     // MARK: - Setup
@@ -189,8 +185,8 @@ final class PostsViewController: UIViewController {
                 startInteractive(direction: direction)
             case .changed:
                 if !interactionInProgress {
-                    recognizer.setTranslation(CGPoint.zero, in: momentumView)
                     startInteractive(direction: direction)
+                    recognizer.setTranslation(CGPoint.zero, in: momentumView)
                 }
                 var fraction = recognizer.translation(in: momentumView).y / animatiorTrasform.ty
                 if animator.isReversed {
@@ -218,15 +214,14 @@ final class PostsViewController: UIViewController {
                     animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
                     break
                 }
-                
                 let fractionRemaining = 1 - animator.fractionComplete
-                let distanceRemaining = fractionRemaining * animatiorTrasform.ty
-
+                let distanceRemaining = min(fractionRemaining * animatiorTrasform.ty, 0)
+                
                 if distanceRemaining == 0 {
                     animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
                     break
                 }
-                let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 30)
+                let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 10)
                 let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
 
                 let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio,
@@ -234,7 +229,6 @@ final class PostsViewController: UIViewController {
                 let preferredDuration = UIViewPropertyAnimator(duration: Constants.animationDuration,
                                                                timingParameters: timingParameters).duration
                 let durationFactor = CGFloat(preferredDuration / animator.duration)
-
                 animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
             default: break
             }
@@ -245,21 +239,24 @@ final class PostsViewController: UIViewController {
 
     private func startAnimationIfNeeded(direction: PanDirection) {
         guard !animator.isRunning else { return }
-        let cornerRadius: CGFloat
-        switch direction {
-        case .down:
-            animatiorTrasform = closedTransform
-            cornerRadius = 30
-        case .up:
-            animatiorTrasform = openTransform
-            cornerRadius = 0
-        }
+        
         let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio)
         animator = UIViewPropertyAnimator(duration: Constants.animationDuration,
                                           timingParameters: timingParameters)
-        animator.addAnimations { [unowned self] in
-            self.momentumView.transform = self.animatiorTrasform
-            self.momentumView.layer.cornerRadius = cornerRadius
+        switch direction {
+        case .down:
+            animatiorTrasform = closedTransform
+            animator.addAnimations { [unowned self] in
+                self.momentumView.transform = self.animatiorTrasform
+                self.momentumView.layer.cornerRadius = 30
+                self.view.backgroundColor = .clear
+            }
+        case .up:
+            animatiorTrasform = openTransform
+            animator.addAnimations { [unowned self] in
+                self.momentumView.transform = self.animatiorTrasform
+                self.momentumView.layer.cornerRadius = 0
+            }
         }
         animator.addCompletion { [weak self] position in
             guard let strongSelf = self else { return }
@@ -278,12 +275,14 @@ final class PostsViewController: UIViewController {
     private func lockTableView() {
         initialScrollOffset = tableView.contentOffset
         tableView.isDirectionalLockEnabled = true
+        tableView.isScrollEnabled = false
         tableView.bounces = false
     }
 
     private func unlockTableView() {
         tableView.isDirectionalLockEnabled = false
-        tableView.bounces = false
+        tableView.isScrollEnabled = true
+        tableView.bounces = true
     }
 
     private func shouldHandleTouch(_ tableView: UITableView, direction: PanDirection) -> Bool {
@@ -416,8 +415,8 @@ extension PostsViewController: UIGestureRecognizerDelegate {
 extension PostsViewController {
     private enum Constants {
         static let dampingRatio: CGFloat = 0.8
-        static let animationDuration: Double = 0.5
-        static let animationDurationBackground: Double = 0.2
+        static let animationDuration: Double = 0.8
+        static let animationDurationBackground: Double = 0.3
         static let postCellIdentifier = "PostCollectionViewCell"
         static let postCellLoadingIdentifier = "PostCollectionViewLoadingCell"
         static let postCellErrorIdentifier = "PostCollectionViewErrorCell"

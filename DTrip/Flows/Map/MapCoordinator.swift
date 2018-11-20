@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 final class MapCoordinator: Coordinator {
     
@@ -28,8 +29,8 @@ final class MapCoordinator: Coordinator {
             assertionFailure("ViewModel must be setted")
             return
         }
-        
         viewModel.showPostsContent
+            .observeOn(MainScheduler.asyncInstance)
             .filter { $0.count == 1 }
             .map { $0.first }
             .unwrap()
@@ -37,6 +38,7 @@ final class MapCoordinator: Coordinator {
             .disposed(by: viewModel.disposeBag)
         
         viewModel.showPostsContent
+            .observeOn(MainScheduler.asyncInstance)
             .filter { $0.count > 1 }
             .bind(onNext: showPostFeed)
             .disposed(by: viewModel.disposeBag)

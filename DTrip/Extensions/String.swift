@@ -9,7 +9,12 @@
 import UIKit
 
 extension String {
-
+    func removeTags() -> String {
+        let regularExpr = "<[^>]+>"
+        return self.replacingOccurrences(of: regularExpr, with: "", options: .regularExpression, range: nil)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin,
