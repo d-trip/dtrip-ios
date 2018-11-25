@@ -18,6 +18,10 @@ extension UIImage {
         }
     }
 
+    enum Common {
+        static let whiteRoundCross = UIImage(named: "white-round-cross-24px")?.withRenderingMode(.alwaysTemplate)
+    }
+
     // MARK: - Tools
 
     static func makeColoredImage(_ color: UIColor, size: CGSize) -> UIImage? {
