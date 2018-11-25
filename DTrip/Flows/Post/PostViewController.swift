@@ -70,7 +70,7 @@ final class PostViewController: UIViewController {
         let statusLabel = UILabel()
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         statusLabel.setContentHuggingPriority(.required, for: .horizontal)
-        statusLabel.textColor = .white
+        statusLabel.textColor = .schoolBusYellow
         statusLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         self.configureShadow(for: statusLabel)
         return statusLabel
@@ -303,7 +303,7 @@ final class PostViewController: UIViewController {
         titleLabel.text = postModel.title
         descriptionLabel.text = postModel.bodyHTML
         locationLabel.text = postModel.location
-        statusLabel.text = postModel.category
+        statusLabel.text = postModel.category.uppercased()
     }
 
     private func setupContentHeaderImageView(_ postModel: PostModel) {

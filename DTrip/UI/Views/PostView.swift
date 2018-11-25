@@ -50,7 +50,7 @@ final class PostView: UIView {
         let statusLabel = UILabel()
         statusLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         statusLabel.setContentHuggingPriority(.required, for: .horizontal)
-        statusLabel.textColor = .white
+        statusLabel.textColor = .schoolBusYellow
         statusLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         self.configureShadow(for: statusLabel)
         return statusLabel
@@ -127,7 +127,7 @@ final class PostView: UIView {
         userNameLabel.text = postViewModel.author.name
         dateLabel.text = postViewModel.timeAgo()
         locationLabel.text = postViewModel.location
-        statusLabel.text = postViewModel.category
+        statusLabel.text = postViewModel.category.uppercased()
         titleLabel.text = postViewModel.title
         descriptionLabel.text = postViewModel.description
     }

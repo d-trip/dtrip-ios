@@ -20,4 +20,5 @@ extension UIColor {
     static let white: UIColor = UIColor(hexString: "#FFFFFF")!
     static let boulder: UIColor = UIColor(hexString: "#777777")!
     static let alto: UIColor = UIColor(hexString: "#DCDCDC")!
+    static let schoolBusYellow: UIColor =  UIColor(hexString: "#FFDD00")!
 }
