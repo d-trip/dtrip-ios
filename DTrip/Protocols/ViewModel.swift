@@ -19,3 +19,9 @@ protocol ViewModel {
     var state: Observable<State> { get}
     var navigation: Observable<Navigation> { get }
 }
+
+extension ViewModel {
+    deinit {
+        Log.info("\(String(describing: self)) - \(#function)")
+    }
+}

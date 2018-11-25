@@ -12,11 +12,13 @@ final class PostsViewModel: ViewModel {
     }
     var state: Observable<State> {
         return stateSubject
-                .catchError { _ in .empty() }
-                .observeOn(MainScheduler.instance)
+            .catchError { _ in .empty() }
+            .observeOn(MainScheduler.instance)
     }
     var navigation: Observable<Navigation> {
         return navigationSubject
+            .catchError { _ in .empty() }
+            .observeOn(MainScheduler.instance)
     }
     
     // MARK: - Public types
@@ -27,7 +29,7 @@ final class PostsViewModel: ViewModel {
         case selectModel(Int)
         case close
     }
-
+    
     enum Mutation {
         case setLoading(Bool)
         case setLoadingNextPage(Bool)
@@ -35,7 +37,7 @@ final class PostsViewModel: ViewModel {
         case openPost(PostModel)
         case close
     }
-
+    
     enum Navigation {
         case openPost(PostModel)
         case dismiss(animated: Bool)
@@ -58,7 +60,7 @@ final class PostsViewModel: ViewModel {
     private let stateSubject = ReplaySubject<State>.create(bufferSize: 1)
     private let navigationSubject = ReplaySubject<Navigation>.create(bufferSize: 1)
     private let initialState: State
-
+    
     private let disposeBag = DisposeBag()
     private let manager: PostManager
     
@@ -66,10 +68,6 @@ final class PostsViewModel: ViewModel {
         self.manager = manager
         self.initialState = State(postIdentifiers: postIdentifiers)
         setBindings()
-    }
-    
-    deinit {
-        Log.info("\(String(describing: self)) - \(#function)")
     }
     
     private func setBindings() {
@@ -114,13 +112,13 @@ final class PostsViewModel: ViewModel {
                         return .empty()
                     }
                     return manager.getPosts(identifiers: postIdentifiers)
-                }
+            }
             
-            return Observable.concat([
+            return .concat([
                 .just(.setLoading(true)),
                 postItems.map { Mutation.addItems($0) },
                 .just(.setLoading(false))
-            ])
+                ])
         case .scrollToBottom:
             let postItems = stateSubject.take(1)
                 .map { state -> [PostIdentifier] in
@@ -135,12 +133,12 @@ final class PostsViewModel: ViewModel {
                         return .empty()
                     }
                     return manager.getPosts(identifiers: postIdentifiers)
-                }
+            }
             return .concat([
                 .just(.setLoadingNextPage(true)),
                 postItems.map { Mutation.addItems($0) },
                 .just(.setLoadingNextPage(false)),
-            ])
+                ])
         case .selectModel(let index):
             return stateSubject.take(1)
                 .map { state -> PostModel? in

@@ -13,10 +13,6 @@ final class PostsCoordinator: Coordinator {
         self.disposeBag = DisposeBag()
     }
 
-    deinit {
-        Log.info("\(String(describing: self)) - \(#function)")
-    }
-    
     func start() {
         assertionFailure("Method is not implemented")
     }

@@ -13,37 +13,37 @@ final class MapCoordinator: Coordinator {
     
     private let router: Router
     private let view: MapViewController
-    private let post: PostCoordinator
+    
+    private let disposeBag = DisposeBag()
     
     init(router: Router,
-         view: MapViewController,
-         post: PostCoordinator) {
+         view: MapViewController) {
         self.view = view
         self.router = router
-        self.post = post
-        
+  
         guard let viewModel = view.viewModel else {
             assertionFailure("ViewModel must be setted")
             return
         }
-        viewModel.showPostsContent
-            .observeOn(MainScheduler.asyncInstance)
-            .filter { $0.count == 1 }
-            .map { $0.first }
-            .unwrap()
-            .bind(onNext: showPostScreen)
-            .disposed(by: viewModel.disposeBag)
         
-        viewModel.showPostsContent
-            .observeOn(MainScheduler.asyncInstance)
-            .filter { $0.count > 1 }
-            .bind(onNext: showPostFeed)
-            .disposed(by: viewModel.disposeBag)
+        viewModel.navigation
+            .bind(onNext: navigate)
+            .disposed(by: disposeBag)
     }
     
     func start() {}
     
+    private func navigate(_ navigation: MapViewModel.Navigation) {
+        switch navigation {
+        case .openPost(let postIdentifier):
+            showPostScreen(postIdentifier: postIdentifier)
+        case .openPostList(let postIdentifiers):
+            showPostFeed(postIdentifiers: postIdentifiers)
+        }
+    }
+    
     private func showPostScreen(postIdentifier: PostIdentifier) {
+        let post: PostCoordinator = try! container.resolve()
         post.start(postIdentifier)
     }
     

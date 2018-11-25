@@ -6,6 +6,8 @@ import DifferenceKit
 
 final class PostsViewController: UIViewController {
 
+    //MARK: - Private properties
+    
     private(set) var viewModel: PostsViewModel!
     private let disposeBag = DisposeBag()
     private var postItems: [PostModel] = []
@@ -61,12 +63,8 @@ final class PostsViewController: UIViewController {
         let tableView = UITableView()
         return tableView
     }()
-    
-    deinit {
-        Log.info("\(String(describing: self)) - \(#function)")
-    }
-    
-    // MARK: Binding
+
+    // MARK: - Binding
     
     func bind(_ viewModel: PostsViewModel) {
         self.viewModel = viewModel
@@ -124,14 +122,6 @@ final class PostsViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func updateLoadingView(show: Bool) {
-        
-    }
-    
-    private func updateNextPageLoadingView(show: Bool) {
-        
-    }
-    
     // MARK: - Managing the View
 
     override func viewDidLoad() {
@@ -153,6 +143,14 @@ final class PostsViewController: UIViewController {
         }
     }
 
+    private func updateLoadingView(show: Bool) {
+        // ToDo: - Add loading view
+    }
+    
+    private func updateNextPageLoadingView(show: Bool) {
+        // ToDo: - Add loading view
+    }
+    
     // MARK: - Setup
 
     private func setupConstraints() {
