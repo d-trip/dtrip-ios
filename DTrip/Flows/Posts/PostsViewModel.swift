@@ -123,7 +123,8 @@ final class PostsViewModel: ViewModel {
             let postItems = stateSubject.take(1)
                 .map { state -> [PostIdentifier] in
                     let lowerBound = state.postItems.count
-                    let upperBound = min(Constants.limitPostsRequest, state.postIdentifiers.endIndex)
+                    let upperBound = min(Constants.limitPostsRequest + lowerBound,
+                                         state.postIdentifiers.endIndex)
                     guard upperBound > lowerBound else {
                         return []
                     }
