@@ -136,7 +136,7 @@ final class PostsViewController: UIViewController {
     }
 
     private func showModule() {
-        guard !isOpen else { return }
+        guard isOpen == false else { return }
         UIView.animate(withDuration: Constants.animationDurationBackground) { [unowned self] in
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
             self.momentumView.transform = .identity
@@ -223,16 +223,13 @@ final class PostsViewController: UIViewController {
                 tableView.contentSize.height > tableView.bounds.height {
                 tableView.bounces = (tableView.contentOffset.y > offsetThreshold)
             }
-            if !isOpen || interactionInProgress {
-                tableView.contentOffset.y = initialScrollOffset.y
-            }
+            guard isOpen == false else { break }
+            tableView.contentOffset.y = initialScrollOffset.y
         case panRecognizer:
             let yVelocity = recognizer.velocity(in: momentumView).y
             let direction: PanDirection = yVelocity > 0 ? .down : .up
 
-            guard shouldHandleTouch(tableView, direction: direction) else {
-                return
-            }
+            guard shouldHandleTouch(tableView, direction: direction) else { break }
             switch recognizer.state {
             case .began:
                 startInteractive(direction: direction)
@@ -246,6 +243,10 @@ final class PostsViewController: UIViewController {
                     fraction *= -1
                 }
                 animator.fractionComplete = fraction + animationProgress
+                
+                if direction == .up, animator.fractionComplete > 0.98 {
+                    isOpen = animatiorTrasform == openTransform
+                }
             case .ended, .cancelled:
                 endInteractive()
                 
@@ -285,13 +286,12 @@ final class PostsViewController: UIViewController {
                 animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
             default: break
             }
-        default:
-            return
+        default: break
         }
     }
 
     private func startAnimationIfNeeded(direction: PanDirection) {
-        guard !animator.isRunning else { return }
+        guard animator.isRunning == false else { return }
         
         let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio)
         animator = UIViewPropertyAnimator(duration: Constants.animationDuration,
@@ -330,13 +330,11 @@ final class PostsViewController: UIViewController {
     private func lockTableView() {
         initialScrollOffset = tableView.contentOffset
         tableView.isDirectionalLockEnabled = true
-        tableView.isScrollEnabled = false
         tableView.bounces = false
     }
 
     private func unlockTableView() {
         tableView.isDirectionalLockEnabled = false
-        tableView.isScrollEnabled = true
         tableView.bounces = true
     }
 
@@ -388,6 +386,11 @@ extension PostsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        guard isOpen == false else { return }
+        scrollView.setContentOffset(scrollView.contentOffset, animated: true)
     }
 }
 
