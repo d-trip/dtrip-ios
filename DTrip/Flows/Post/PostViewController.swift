@@ -274,25 +274,13 @@ final class PostViewController: UIViewController {
     // MARK: - Setup content
 
     private func setupRx() {
-//        viewModel.post
-//            .drive(onNext: { [weak self] item in
-//                guard let self = self else { return }
-//                self.setupPostItem(item)
-//            })
-//            .disposed(by: viewModel.disposeBag)
+        viewModel.post
+            .subscribe(onNext: { [weak self] postModel in
+                guard let self = self else { return }
+                self.handlePostModel(postModel)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
-
-//    private func setupPostItem(_ postItem: PostItem) {
-//        switch postItem {
-//        case let .postItem(postModel):
-//            handlePostModel(postModel)
-//        case let .loadingItem(title, animate):
-//            print(#function)
-//        default:
-//            // TODO: Fix it
-//            fatalError()
-//        }
-//    }
 
     private func handlePostModel(_ postModel: PostModel) {
         setupContentHeaderImageView(postModel)
