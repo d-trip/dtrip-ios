@@ -14,6 +14,8 @@ final class PostViewController: UIViewController {
         view.alwaysBounceVertical = true
         view.backgroundColor = .white
         view.contentInsetAdjustmentBehavior = .never
+        view.showsVerticalScrollIndicator = false
+        view.delegate = self
         return view
     }()
 
@@ -125,10 +127,33 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    private lazy var navigationBar: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var dismissButton: UIButton = {
+        let view = UIButton()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setImage(UIImage.Common.whiteRoundCross, for: .normal)
+        view.addTarget(self, action: #selector(closeBarButtonItemDidPress(_:)), for: .touchUpInside)
+        view.tintColor = .white
+        return view
+    }()
+
+    private var navigationBarOffset: CGFloat {
+        return scrollView.contentOffset.y + navigationBar.frame.maxY
+    }
+
     // MARK: - Managing the Status Bar
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        if navigationBarOffset > locationLabel.frame.minY {
+            return .default
+        } else {
+            return .lightContent
+        }
     }
 
     // MARK: - Managing the View
@@ -137,6 +162,7 @@ final class PostViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupConstraints()
+        setupNavigationBar()
 
         setupRx()
     }
@@ -271,6 +297,27 @@ final class PostViewController: UIViewController {
         label.layer.shadowRadius = 2
     }
 
+    private func setupNavigationBar() {
+        view.addSubview(navigationBar)
+        navigationBar.addSubview(dismissButton)
+        let constraints = [
+            navigationBar.topAnchor.constraint(equalTo: view.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
+
+            dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spaces.single),
+            dismissButton.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor, constant: Spaces.triple),
+            dismissButton.widthAnchor.constraint(equalTo: dismissButton.heightAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    @objc
+    func closeBarButtonItemDidPress(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
+
     // MARK: - Setup content
 
     private func setupRx() {
@@ -309,6 +356,27 @@ final class PostViewController: UIViewController {
             guard url == imageURL else { return }
             if let image = image {
                 view.image = image
+            }
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension PostViewController: UIScrollViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // TODO: Fix in https://trello.com/c/TYHpkGOL/1-postviewcontroller-custom-navigation-bar
+        if navigationBarOffset > locationLabel.frame.minY {
+            UIView.animate(withDuration: 0.3) {
+                self.navigationBar.backgroundColor = .white
+                self.dismissButton.tintColor = .black
+                self.setNeedsStatusBarAppearanceUpdate()
+            }
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.navigationBar.backgroundColor = .clear
+                self.dismissButton.tintColor = .white
+                self.setNeedsStatusBarAppearanceUpdate()
             }
         }
     }
