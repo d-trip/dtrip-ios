@@ -4,15 +4,12 @@ import RxCocoa
 import RxSwift
 import DifferenceKit
 
-enum PanDirection {
-    case up, down
-}
-
 final class PostsViewController: UIViewController {
 
-    var viewModel: PostsViewModel!
-    private var postItems: [PostItem] = []
-
+    private(set) var viewModel: PostsViewModel!
+    private let disposeBag = DisposeBag()
+    private var postItems: [PostModel] = []
+    
     private let panRecognizer = UIPanGestureRecognizer()
     private var animator = UIViewPropertyAnimator()
 
@@ -26,6 +23,10 @@ final class PostsViewController: UIViewController {
     private var initialScrollOffset: CGPoint = CGPoint.zero
     private let offsetThreshold: CGFloat = 5.0 // Optimal value from testing
 
+    private enum PanDirection {
+        case up, down
+    }
+    
     // MARK: - UI properties
 
     private lazy var momentumView: UIView = {
@@ -61,13 +62,82 @@ final class PostsViewController: UIViewController {
         return tableView
     }()
     
+    deinit {
+        Log.info("\(String(describing: self)) - \(#function)")
+    }
+    
+    // MARK: Binding
+    
+    func bind(_ viewModel: PostsViewModel) {
+        self.viewModel = viewModel
+        
+        rx.viewDidLoad
+            .map { PostsViewModel.Action.viewDidLoad }
+            .bind(to: viewModel.action)
+            .disposed(by: self.disposeBag)
+        
+        tableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.setDataSource(self)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .map { PostsViewModel.Action.selectModel($0.row) }
+            .bind(to: viewModel.action)
+            .disposed(by: disposeBag)
+        
+        tableView.rx.willDisplayCell
+            .map { $0.indexPath }
+            .withLatestFrom(viewModel.state) { $0.row == $1.postItems.count - 1 }
+            .filter { $0 }
+            .map { _ in PostsViewModel.Action.scrollToBottom }
+            .bind(to: viewModel.action)
+            .disposed(by: disposeBag)
+        
+        viewModel.state
+            .map { $0.postItems }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] postItems in
+                guard let self = self else { return }
+                let diffs = StagedChangeset(source: self.postItems, target: postItems)
+                self.tableView.reload(using: diffs, with: .bottom) { postItems in
+                    self.postItems = postItems
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.state
+            .map { $0.isLoading }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isLoading in
+                self?.updateLoadingView(show: isLoading)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.state
+            .map { $0.isLoadingNextPage }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isLoadingNextPage in
+                self?.updateNextPageLoadingView(show: isLoadingNextPage)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateLoadingView(show: Bool) {
+        
+    }
+    
+    private func updateNextPageLoadingView(show: Bool) {
+        
+    }
+    
     // MARK: - Managing the View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        setupRx()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -77,15 +147,10 @@ final class PostsViewController: UIViewController {
 
     private func showModule() {
         guard !isOpen else { return }
-        
         UIView.animate(withDuration: Constants.animationDurationBackground) { [unowned self] in
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
             self.momentumView.transform = .identity
         }
-    }
-
-    private func closeModule() {
-        dismiss(animated: false, completion: nil)
     }
 
     // MARK: - Setup
@@ -113,25 +178,12 @@ final class PostsViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: momentumView.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: momentumView.trailingAnchor),
         ]
+        
         NSLayoutConstraint.activate(constraints)
     }
 
     private func setupViews() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = Spaces.octuple
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.showsVerticalScrollIndicator = false
-        tableView.decelerationRate = .normal
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Spaces.quadruple, right: 0)
-        
-        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
-        tableView.register(PostTableViewLoadingCell.self, forCellReuseIdentifier: Constants.postCellLoadingIdentifier)
-        tableView.register(PostTableViewErrorCell.self, forCellReuseIdentifier: Constants.postCellErrorIdentifier)
-        tableView.panGestureRecognizer.addTarget(self, action: #selector(panned))
-        tableView.dataSource = self
-        tableView.delegate = self
+        setupTableView(tableView)
 
         openTransform = CGAffineTransform(translationX: 0, y: -Spaces.duodecuple)
         closedTransform = CGAffineTransform(translationX: 0, y: view.bounds.height)
@@ -142,23 +194,27 @@ final class PostsViewController: UIViewController {
         panRecognizer.delegate = self
 
         view.addSubview(momentumView)
-        momentumView.addSubview(tableView)
-        momentumView.addSubview(topShadowView)
-        momentumView.addSubview(handleView)
+        [
+            tableView,
+            topShadowView,
+            handleView
+        ].forEach(momentumView.addSubview)
     }
     
-    private func setupRx() {
-        viewModel.posts
-            .drive(onNext: { [weak self] target in
-                guard let strongSelf = self else { return }
-                let diffs = StagedChangeset(source: strongSelf.postItems, target: target)
-                strongSelf.tableView.reload(using: diffs, with: .bottom) { postItems in
-                    strongSelf.postItems = postItems
-                }
-            })
-            .disposed(by: viewModel.disposeBag)
+    private func setupTableView(_ tableView: UITableView) {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = Spaces.octuple
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.showsVerticalScrollIndicator = false
+        tableView.decelerationRate = .normal
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Spaces.quadruple, right: 0)
+        
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
+        tableView.panGestureRecognizer.addTarget(self, action: #selector(panned))
     }
-
+    
     // MARK: - Manage gesture recognizers
 
     @objc
@@ -169,7 +225,6 @@ final class PostsViewController: UIViewController {
                 tableView.contentSize.height > tableView.bounds.height {
                 tableView.bounces = (tableView.contentOffset.y > offsetThreshold)
             }
-
             if !isOpen || interactionInProgress {
                 tableView.contentOffset.y = initialScrollOffset.y
             }
@@ -246,24 +301,26 @@ final class PostsViewController: UIViewController {
         switch direction {
         case .down:
             animatiorTrasform = closedTransform
-            animator.addAnimations { [unowned self] in
+            animator.addAnimations { [weak self] in
+                guard let self = self else { return }
                 self.momentumView.transform = self.animatiorTrasform
                 self.momentumView.layer.cornerRadius = 30
                 self.view.backgroundColor = .clear
             }
         case .up:
             animatiorTrasform = openTransform
-            animator.addAnimations { [unowned self] in
+            animator.addAnimations { [weak self] in
+                guard let self = self else { return }
                 self.momentumView.transform = self.animatiorTrasform
                 self.momentumView.layer.cornerRadius = 0
             }
         }
         animator.addCompletion { [weak self] position in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
             if position == .end {
-                strongSelf.isOpen = strongSelf.animatiorTrasform == strongSelf.openTransform
-                if strongSelf.momentumView.transform == strongSelf.closedTransform {
-                    strongSelf.closeModule()
+                self.isOpen = self.animatiorTrasform == self.openTransform
+                if self.momentumView.transform == self.closedTransform {
+                    self.viewModel.action.onNext(.close)
                 }
             }
         }
@@ -333,10 +390,6 @@ extension PostsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-
-        guard postItems.indices.contains(indexPath.row) else { return }
-        let item = postItems[indexPath.row]
-        viewModel.didSelectPost.onNext([item])
     }
 }
 
@@ -348,25 +401,15 @@ extension PostsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard postItems.indices.contains(indexPath.row) else {
-            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellErrorIdentifier,
-                                                 for: indexPath)
-        }
+        guard postItems.indices.contains(indexPath.row) else { return UITableViewCell() }
         let item = postItems[indexPath.row]
         
-        switch item {
-        case .postItem(post: let post):
-            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellIdentifier,
-                                                     for: indexPath) as! PostTableViewCell
-            cell.configure(post)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Constants.postCellIdentifier,
+                                                    for: indexPath) as? PostTableViewCell {
+            cell.configure(item)
             return cell
-        case .errorItem(title: _):
-            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellErrorIdentifier,
-                                                 for: indexPath)
-        case .loadingItem(title: _, animate: _):
-            return tableView.dequeueReusableCell(withIdentifier: Constants.postCellLoadingIdentifier,
-                                                 for: indexPath)
         }
+        return UITableViewCell()
     }
 }
 
@@ -418,7 +461,5 @@ extension PostsViewController {
         static let animationDuration: Double = 0.8
         static let animationDurationBackground: Double = 0.3
         static let postCellIdentifier = "PostCollectionViewCell"
-        static let postCellLoadingIdentifier = "PostCollectionViewLoadingCell"
-        static let postCellErrorIdentifier = "PostCollectionViewErrorCell"
     }
 }

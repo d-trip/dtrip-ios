@@ -13,16 +13,13 @@ final class MapCoordinator: Coordinator {
     
     private let router: Router
     private let view: MapViewController
-    private let posts: PostsCoordinator
     private let post: PostCoordinator
     
     init(router: Router,
          view: MapViewController,
-         posts: PostsCoordinator,
          post: PostCoordinator) {
         self.view = view
         self.router = router
-        self.posts = posts
         self.post = post
         
         guard let viewModel = view.viewModel else {
@@ -51,6 +48,7 @@ final class MapCoordinator: Coordinator {
     }
     
     private func showPostFeed(postIdentifiers: [PostIdentifier]) {
+        let posts: PostsCoordinator = try! container.resolve()
         posts.start(postIdentifiers)
     }
 }

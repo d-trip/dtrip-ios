@@ -8,6 +8,15 @@
             <PersistentString
                value = "recognizer.state">
             </PersistentString>
+            <PersistentString
+               value = "momentumView.transform">
+            </PersistentString>
+            <PersistentString
+               value = "openTransform">
+            </PersistentString>
+            <PersistentString
+               value = "animator.fractionComplete">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
@@ -31,6 +40,14 @@
       </ContextState>
       <ContextState
          contextName = "MapViewModelImp.makeMapPointModel(_:):MapViewModel.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PostsViewController.scrollViewDidScroll(_:):PostsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "scrollView.contentOffset.y">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "closure #1 in PostsViewController.setupRx():PostsViewController.swift">

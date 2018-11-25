@@ -3,41 +3,33 @@ import RxSwift
 import RxCocoa
 
 final class PostsCoordinator: Coordinator {
-
+    typealias PostsModule = (viewModel: PostsViewModel, viewController: PostsViewController)
+    
     private let router: Router
-    private let view: PostsViewController
-    private let postCoordinator: PostCoordinator
+    private let disposeBag: DisposeBag
 
-    init(router: Router,
-         view: PostsViewController,
-         postCoordinator: PostCoordinator) {
-        self.view = view
+    init(router: Router) {
         self.router = router
-        self.postCoordinator = postCoordinator
-
-        guard let viewModel = view.viewModel else {
-            assertionFailure("ViewModel must be setted")
-            return
-        }
-
-        viewModel.showPostContent
-            .bind(onNext: showPostScreen)
-            .disposed(by: viewModel.disposeBag)
+        self.disposeBag = DisposeBag()
     }
 
+    deinit {
+        Log.info("\(String(describing: self)) - \(#function)")
+    }
+    
     func start() {
         assertionFailure("Method is not implemented")
     }
 
     func start(_ postIdentifiers: [PostIdentifier]) {
-        guard let viewModel = view.viewModel else {
-            assertionFailure("ViewModel is not found")
-            return
-        }
-
-        viewModel.setPostIdentifiers.onNext(postIdentifiers)
-
-        let navigationController = UINavigationController(rootViewController: view)
+        let postsModule: PostsModule = try! container.resolve(arguments: postIdentifiers)
+        
+        postsModule.viewModel
+            .navigation
+            .bind(onNext: navigate)
+            .disposed(by: disposeBag)
+        
+        let navigationController = UINavigationController(rootViewController: postsModule.viewController)
         navigationController.isNavigationBarHidden = true
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .overCurrentContext
@@ -46,7 +38,20 @@ final class PostsCoordinator: Coordinator {
         router.present(navigationController, animated: false)
     }
 
+    private func navigate(_ navigation: PostsViewModel.Navigation) {
+        switch navigation {
+        case .dismiss(let animated):
+            dismissModule(animated)
+        case .openPost(let post):
+            showPostScreen(post)
+        }
+    }
+    
+    private func dismissModule(_ animated: Bool) {
+        router.dismissModule(animated: animated, completion: nil)
+    }
+    
     private func showPostScreen(_ postModel: PostModel) {
-        postCoordinator.start(postModel)
+//        postCoordinator.start(postModel)
     }
 }

@@ -21,13 +21,14 @@
 		402EBA918B2067D20E27A49F /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB6BB06DF361CDFAC2B9E /* PostView.swift */; };
 		402EBDB9411F180B51039C2D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB37ADD3CF024C578508E /* UIImage.swift */; };
 		402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */; };
-		EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACE8219A351E001F0484 /* PostItem.swift */; };
 		EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */; };
 		EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */; };
 		EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */; };
 		EC13ACF3219E0ACA001F0484 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF2219E0ACA001F0484 /* String.swift */; };
 		EC13ACF921A35CAB001F0484 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = EC13ACF821A35CAB001F0484 /* bundle.js */; };
 		EC13ACFB21A4B076001F0484 /* BodyPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */; };
+		EC13ACFE21AA1716001F0484 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACFD21AA1716001F0484 /* ViewModel.swift */; };
+		EC13AD0021AABB02001F0484 /* UIViewController+Reactive.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACFF21AABB02001F0484 /* UIViewController+Reactive.swift */; };
 		EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E98E219171270099C4FE /* LocatioGeometryType.swift */; };
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
@@ -130,13 +131,14 @@
 		72FC80167E76CC747D51DC26 /* Pods-DTrip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.debug.xcconfig"; sourceTree = "<group>"; };
 		A4497E4F816E7CC5F8E66E66 /* Pods-DTrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.release.xcconfig"; sourceTree = "<group>"; };
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
-		EC13ACE8219A351E001F0484 /* PostItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItem.swift; sourceTree = "<group>"; };
 		EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageIndicator.swift; sourceTree = "<group>"; };
 		EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewLoadingCell.swift; sourceTree = "<group>"; };
 		EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewErrorCell.swift; sourceTree = "<group>"; };
 		EC13ACF2219E0ACA001F0484 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		EC13ACF821A35CAB001F0484 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
 		EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyPostModel.swift; sourceTree = "<group>"; };
+		EC13ACFD21AA1716001F0484 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		EC13ACFF21AABB02001F0484 /* UIViewController+Reactive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Reactive.swift"; sourceTree = "<group>"; };
 		EC16E98E219171270099C4FE /* LocatioGeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatioGeometryType.swift; sourceTree = "<group>"; };
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
@@ -281,7 +283,6 @@
 				402EBBA03A4535984C140B9A /* PostsCoordinator.swift */,
 				402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */,
 				402EBEA07B3BD74D5316F68F /* PostsViewController.swift */,
-				EC13ACE7219A350D001F0484 /* Models */,
 			);
 			path = Posts;
 			sourceTree = "<group>";
@@ -295,14 +296,6 @@
 				C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		EC13ACE7219A350D001F0484 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				EC13ACE8219A351E001F0484 /* PostItem.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		EC16E992219171CA0099C4FE /* Models */ = {
@@ -458,6 +451,7 @@
 				EC78E72A2190AED000C19421 /* Observable.swift */,
 				EC16E9DF21973AA90099C4FE /* Date.swift */,
 				402EB37ADD3CF024C578508E /* UIImage.swift */,
+				EC13ACFF21AABB02001F0484 /* UIViewController+Reactive.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -504,6 +498,7 @@
 				ECC3BF392179400300B6E87B /* Coordinator.swift */,
 				ECC3BF382179400300B6E87B /* Router.swift */,
 				ECC3BF372179400300B6E87B /* Presentable.swift */,
+				EC13ACFD21AA1716001F0484 /* ViewModel.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -749,7 +744,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECC3BF1621793F0700B6E87B /* AppCoordinator.swift in Sources */,
-				EC13ACE9219A351E001F0484 /* PostItem.swift in Sources */,
 				ECC3BF3F2179400300B6E87B /* LogManager.swift in Sources */,
 				EC16E9EA219864780099C4FE /* AccountMetaModel.swift in Sources */,
 				ECC3BF3E2179400300B6E87B /* Log.swift in Sources */,
@@ -789,11 +783,13 @@
 				EC78E7202190999A00C19421 /* Data.swift in Sources */,
 				ECC3BF462179400300B6E87B /* Coordinator.swift in Sources */,
 				EC16E9DE21964A650099C4FE /* PostModel.swift in Sources */,
+				EC13AD0021AABB02001F0484 /* UIViewController+Reactive.swift in Sources */,
 				EC16E9E421974DDF0099C4FE /* PostIdentifier.swift in Sources */,
 				ECC3BEF621793BF900B6E87B /* AppDelegate.swift in Sources */,
 				ECC3BF65217BC02A00B6E87B /* MapAssembly.swift in Sources */,
 				ECC3BF432179400300B6E87B /* RouterImp.swift in Sources */,
 				ECC3BF2821793FF500B6E87B /* MainViewController.swift in Sources */,
+				EC13ACFE21AA1716001F0484 /* ViewModel.swift in Sources */,
 				EC16E9CE219647200099C4FE /* NodeContentResponseModel.swift in Sources */,
 				EC16E9D8219648F20099C4FE /* ContentMetaModel.swift in Sources */,
 				EC16E9D4219648170099C4FE /* ContentType.swift in Sources */,

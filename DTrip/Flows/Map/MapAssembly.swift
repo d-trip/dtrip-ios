@@ -16,7 +16,7 @@ func configureMap(_ container: DependencyContainer) {
     }
     
     container.register {
-        MapCoordinator(router: $0, view: $1, posts: $2, post: $3)
+        MapCoordinator(router: $0, view: $1, post: $2)
     }
     
     container.register { (model: MapViewModel) -> MapViewController in

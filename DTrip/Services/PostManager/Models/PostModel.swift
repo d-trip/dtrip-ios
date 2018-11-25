@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import protocol DifferenceKit.Differentiable
 
 struct PostModel {
     let id: Int
@@ -38,6 +39,16 @@ extension PostModel {
     }
 }
 
+// MARK: - Hashable
+
+extension PostModel: Hashable {
+    public var hashValue: Int {
+        return (author.name + permlink).hashValue
+    }
+}
+
+// MARK: - Equatable
+
 extension PostModel: Equatable {
     static func == (lhs: PostModel, rhs: PostModel) -> Bool {
         return lhs.id == rhs.id &&
@@ -45,3 +56,7 @@ extension PostModel: Equatable {
             lhs.permlink == rhs.permlink
     }
 }
+
+// MARK: - Differentiable
+
+extension PostModel: Differentiable { }
