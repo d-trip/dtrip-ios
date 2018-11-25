@@ -5,8 +5,9 @@ import RxSwift
 
 final class PostViewController: UIViewController {
 
-    var viewModel: PostViewModel!
-
+    private(set) var viewModel: PostViewModel!
+    private let disposeBag = DisposeBag()
+    
     // MARK: - UI properties
 
     private lazy var scrollView: UIScrollView = {
@@ -163,8 +164,6 @@ final class PostViewController: UIViewController {
         setupView()
         setupConstraints()
         setupNavigationBar()
-
-        setupRx()
     }
 
     // MARK: - SetupView
@@ -320,13 +319,32 @@ final class PostViewController: UIViewController {
 
     // MARK: - Setup content
 
-    private func setupRx() {
-        viewModel.post
+    func bind(_ viewModel: PostViewModel) {
+        self.viewModel = viewModel
+        
+        rx.viewDidLoad
+            .map { PostViewModel.Action.viewDidLoad }
+            .bind(to: viewModel.action)
+            .disposed(by: self.disposeBag)
+        
+        viewModel.state
+            .map { $0.postModel }
+            .unwrap()
             .subscribe(onNext: { [weak self] postModel in
-                guard let self = self else { return }
-                self.handlePostModel(postModel)
+                self?.handlePostModel(postModel)
             })
-            .disposed(by: viewModel.disposeBag)
+            .disposed(by: disposeBag)
+        
+        viewModel.state
+            .map { $0.isLoading }
+            .subscribe(onNext: { [weak self] isLoading in
+                self?.updateLoadingView(show: isLoading)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func updateLoadingView(show: Bool) {
+        // ToDo: - Add loading view
     }
 
     private func handlePostModel(_ postModel: PostModel) {

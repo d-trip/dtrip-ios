@@ -2,13 +2,13 @@ import Foundation
 import RxSwift
 
 final class PostCoordinator: Coordinator {
-
+    typealias PostModule = (viewModel: PostViewModel, viewController: PostViewController)
+    
     private let router: Router
-    private let view: PostViewController
-
-    init(router: Router, view: PostViewController) {
+    private let disposeBag = DisposeBag()
+    
+    init(router: Router) {
         self.router = router
-        self.view = view
     }
 
     func start() {
@@ -16,22 +16,36 @@ final class PostCoordinator: Coordinator {
     }
 
     func start(_ postIdentifier: PostIdentifier) {
-        guard let viewModel = view.viewModel else {
-            assertionFailure("ViewModel is not found")
-            return
-        }
-
-        viewModel.setPostIdentifier.onNext(postIdentifier)
-        router.present(view, animated: true)
+        let postsModule: PostModule = try! container.resolve(arguments: postIdentifier)
+        
+        postsModule.viewModel
+            .navigation
+            .bind(onNext: navigate)
+            .disposed(by: disposeBag)
+        
+        router.present(postsModule.viewController, animated: true)
     }
 
     func start(_ postModel: PostModel) {
-        guard let viewModel = view.viewModel else {
-            assertionFailure("ViewModel is not found")
-            return
-        }
-
-        viewModel.setPostModel.onNext(postModel)
-        router.present(view, animated: true)
+        let postsModule: PostModule = try! container.resolve(arguments: postModel)
+        
+        postsModule.viewModel
+            .navigation
+            .bind(onNext: navigate)
+            .disposed(by: disposeBag)
+        
+        router.present(postsModule.viewController, animated: true)
     }
+    
+    private func navigate(_ navigation: PostViewModel.Navigation) {
+        switch navigation {
+        case .dismiss(let animated):
+            dismissModule(animated)
+        }
+    }
+    
+    private func dismissModule(_ animated: Bool) {
+        router.dismissModule(animated: animated, completion: nil)
+    }
+    
 }

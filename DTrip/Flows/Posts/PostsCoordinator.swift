@@ -48,6 +48,7 @@ final class PostsCoordinator: Coordinator {
     }
     
     private func showPostScreen(_ postModel: PostModel) {
-//        postCoordinator.start(postModel)
+        let postCoordinator: PostCoordinator = try! container.resolve()
+        postCoordinator.start(postModel)
     }
 }
