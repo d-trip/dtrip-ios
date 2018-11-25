@@ -22,8 +22,6 @@
 		402EBDB9411F180B51039C2D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB37ADD3CF024C578508E /* UIImage.swift */; };
 		402EBF0E7227564E50E13F3D /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBCE58329BCEE428B4CC1 /* PostsViewModel.swift */; };
 		EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */; };
-		EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */; };
-		EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */; };
 		EC13ACF3219E0ACA001F0484 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACF2219E0ACA001F0484 /* String.swift */; };
 		EC13ACF921A35CAB001F0484 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = EC13ACF821A35CAB001F0484 /* bundle.js */; };
 		EC13ACFB21A4B076001F0484 /* BodyPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */; };
@@ -132,8 +130,6 @@
 		A4497E4F816E7CC5F8E66E66 /* Pods-DTrip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTrip.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTrip/Pods-DTrip.release.xcconfig"; sourceTree = "<group>"; };
 		C3C6BD1CD8F8345241D0FC43 /* Pods-DTripTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DTripTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DTripTests/Pods-DTripTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageIndicator.swift; sourceTree = "<group>"; };
-		EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewLoadingCell.swift; sourceTree = "<group>"; };
-		EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewErrorCell.swift; sourceTree = "<group>"; };
 		EC13ACF2219E0ACA001F0484 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		EC13ACF821A35CAB001F0484 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bundle.js; sourceTree = "<group>"; };
 		EC13ACFA21A4B076001F0484 /* BodyPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyPostModel.swift; sourceTree = "<group>"; };
@@ -240,8 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				402EB1258331CBAF48EEBADA /* PostTableViewCell.swift */,
-				EC13ACEC219CD786001F0484 /* PostTableViewLoadingCell.swift */,
-				EC13ACF0219E08B1001F0484 /* PostTableViewErrorCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -760,13 +754,11 @@
 				EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */,
 				EC16E98F219171270099C4FE /* LocatioGeometryType.swift in Sources */,
 				ECC3BF452179400300B6E87B /* Router.swift in Sources */,
-				EC13ACED219CD786001F0484 /* PostTableViewLoadingCell.swift in Sources */,
 				ECC3BF2921793FF500B6E87B /* MainCoordinator.swift in Sources */,
 				EC78E72B2190AED000C19421 /* Observable.swift in Sources */,
 				EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */,
 				ECC3BF2A21793FF500B6E87B /* MainAssembly.swift in Sources */,
 				EC16E9E021973AA90099C4FE /* Date.swift in Sources */,
-				EC13ACF1219E08B1001F0484 /* PostTableViewErrorCell.swift in Sources */,
 				ECC3BF5D217BBD6500B6E87B /* FeedAssembly.swift in Sources */,
 				ECC3BF2221793FD500B6E87B /* UIColor.swift in Sources */,
 				EC16E9CA219639420099C4FE /* PostManagerParser.swift in Sources */,

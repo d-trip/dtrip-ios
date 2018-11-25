@@ -129,7 +129,7 @@ final class PostViewModel: ViewModel {
     private func navigate(mutation: Mutation) -> Observable<Navigation> {
         switch mutation {
         case .close:
-            return .just(.dismiss(animated: false))
+            return .just(.dismiss(animated: true))
         default:
             return .empty()
         }

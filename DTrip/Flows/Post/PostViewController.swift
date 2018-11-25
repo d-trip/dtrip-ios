@@ -34,7 +34,6 @@ final class PostViewController: UIViewController {
     private lazy var headerImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "noPostImage")
         return view
     }()
 
@@ -55,7 +54,6 @@ final class PostViewController: UIViewController {
         view.clipsToBounds = true
         view.layer.cornerRadius = 16
         view.contentMode = .scaleAspectFill
-        view.image = UIImage(named: "noAvatar")
         return view
     }()
 
@@ -78,7 +76,6 @@ final class PostViewController: UIViewController {
         self.configureShadow(for: statusLabel)
         return statusLabel
     }()
-
 
     private lazy var userNameLabel: UILabel = {
         let view = UILabel()
@@ -138,7 +135,6 @@ final class PostViewController: UIViewController {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage.Common.whiteRoundCross, for: .normal)
-        view.addTarget(self, action: #selector(closeBarButtonItemDidPress(_:)), for: .touchUpInside)
         view.tintColor = .white
         return view
     }()
@@ -312,11 +308,6 @@ final class PostViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
-    @objc
-    func closeBarButtonItemDidPress(_ sender: UIButton) {
-        dismiss(animated: true)
-    }
-
     // MARK: - Setup content
 
     func bind(_ viewModel: PostViewModel) {
@@ -324,6 +315,11 @@ final class PostViewController: UIViewController {
         
         rx.viewDidLoad
             .map { PostViewModel.Action.viewDidLoad }
+            .bind(to: viewModel.action)
+            .disposed(by: self.disposeBag)
+        
+        dismissButton.rx.controlEvent(.touchUpInside)
+            .map { PostViewModel.Action.close }
             .bind(to: viewModel.action)
             .disposed(by: self.disposeBag)
         
