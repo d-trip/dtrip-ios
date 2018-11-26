@@ -76,8 +76,10 @@ final class LoadingView: UIView {
                     clockwise: false)
 
         let layer: CAShapeLayer = CAShapeLayer()
-        layer.fillColor = color.cgColor
+        layer.fillColor = nil
+        layer.strokeColor = color.cgColor
         layer.backgroundColor = nil
+        layer.lineWidth = 2
         layer.path = path.cgPath
         layer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         

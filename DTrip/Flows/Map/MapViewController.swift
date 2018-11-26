@@ -82,7 +82,7 @@ final class MapViewController: UIViewController {
     func bind(_ viewModel: MapViewModel) {
         self.viewModel = viewModel
         
-        rx.viewWillAppear
+        rx.viewDidLoad
             .map { _ in MapViewModel.Action.viewDidLoad }
             .bind(to: viewModel.action)
             .disposed(by: self.disposeBag)
@@ -97,6 +97,7 @@ final class MapViewController: UIViewController {
         
         viewModel.state
             .map { $0.isLoading }
+            .delay(0.3, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
             })
