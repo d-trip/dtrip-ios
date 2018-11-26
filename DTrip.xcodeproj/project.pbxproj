@@ -56,6 +56,7 @@
 		EC78E722219099FB00C19421 /* DateDecodingStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */; };
 		EC78E7252190A86700C19421 /* SearchContentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */; };
 		EC78E72B2190AED000C19421 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E72A2190AED000C19421 /* Observable.swift */; };
+		ECBAC41C21ACA26B00215738 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAC41B21ACA26B00215738 /* LoadingView.swift */; };
 		ECC3BEF621793BF900B6E87B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BEF521793BF900B6E87B /* AppDelegate.swift */; };
 		ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECC3BEFE21793BFA00B6E87B /* LaunchScreen.storyboard */; };
 		ECC3BF0B21793BFA00B6E87B /* DTripTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF0A21793BFA00B6E87B /* DTripTests.swift */; };
@@ -164,6 +165,7 @@
 		EC78E721219099FB00C19421 /* DateDecodingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateDecodingStrategy.swift; sourceTree = "<group>"; };
 		EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContentResponseModel.swift; sourceTree = "<group>"; };
 		EC78E72A2190AED000C19421 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		ECBAC41B21ACA26B00215738 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		ECC3BEF221793BF900B6E87B /* DTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECC3BEF521793BF900B6E87B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECC3BEFF21793BFA00B6E87B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 			children = (
 				402EB6BB06DF361CDFAC2B9E /* PostView.swift */,
 				EC13ACEA219CBC35001F0484 /* LoadImageIndicator.swift */,
+				ECBAC41B21ACA26B00215738 /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -790,6 +793,7 @@
 				ECC3BF4A217940D500B6E87B /* UIViewController+Presentable.swift in Sources */,
 				EC16E997219242240099C4FE /* MapClusterMarkerView.swift in Sources */,
 				EC13ACEB219CBC35001F0484 /* LoadImageIndicator.swift in Sources */,
+				ECBAC41C21ACA26B00215738 /* LoadingView.swift in Sources */,
 				ECC3BF442179400300B6E87B /* Presentable.swift in Sources */,
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
 				EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */,

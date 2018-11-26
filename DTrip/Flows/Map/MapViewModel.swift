@@ -76,7 +76,6 @@ final class MapViewModel: ViewModel {
             .startWith(initialState)
         
         let mutation = actionSubject
-            .debounce(0.5, scheduler: MainScheduler.instance)
             .flatMap { [weak self] action -> Observable<Mutation> in
                 guard let self = self else { return .empty() }
                 return self.mutate(action: action)
@@ -104,7 +103,7 @@ final class MapViewModel: ViewModel {
     private func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
-            let points = manager.content
+            let points = manager.content.take(1)
                 .map { [weak self] content -> [MapPointModel] in
                     guard let self = self else { return [] }
                     return self.performContentCoordinates(content)

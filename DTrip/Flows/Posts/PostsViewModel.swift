@@ -75,7 +75,6 @@ final class PostsViewModel: ViewModel {
             .startWith(initialState)
         
         let mutation = actionSubject
-            .debounce(0.5, scheduler: MainScheduler.instance)
             .flatMap { [weak self] action -> Observable<Mutation> in
                 guard let self = self else { return .empty() }
                 return self.mutate(action: action)

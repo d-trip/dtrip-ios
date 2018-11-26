@@ -244,8 +244,8 @@ final class PostsViewController: UIViewController {
                 }
                 animator.fractionComplete = fraction + animationProgress
                 
-                if direction == .up, animator.fractionComplete > 0.98 {
-                    isOpen = animatiorTrasform == openTransform
+                if isOpen == false {
+                    isOpen = animator.fractionComplete == 1
                 }
             case .ended, .cancelled:
                 endInteractive()

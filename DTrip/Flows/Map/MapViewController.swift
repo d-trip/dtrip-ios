@@ -19,7 +19,14 @@ final class MapViewController: UIViewController {
     
     // MARK: - UI properties
 
-    var mapView: MKMapView = {
+    private lazy var loadingAnimation: LoadingView = {
+        let view = LoadingView()
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        view.alpha = 0
+        return view
+    }()
+    
+    private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
         mapView.register(MapMarkerView.self,
                          forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -32,16 +39,31 @@ final class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setupView()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         mapView.frame = view.bounds
+        loadingAnimation.frame = view.bounds
     }
     
     private func updateLoadingView(show: Bool) {
-        // ToDo: - Add loading view
+        if show {
+            view.addSubview(loadingAnimation)
+            UIView.animate(withDuration: 0.2, animations: {
+                self.loadingAnimation.alpha = 1
+            }) { _ in
+                self.loadingAnimation.startAnimation()
+            }
+        } else {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.loadingAnimation.alpha = 0
+            }) { _ in
+                self.loadingAnimation.stopAnimation()
+                self.loadingAnimation.removeFromSuperview()
+            }
+        }
     }
     
     private func setupMapPoints(_ points: [MapPointModel]) {
@@ -50,22 +72,23 @@ final class MapViewController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setupUI() {
+    private func setupView() {
         view.addSubview(mapView)
         mapView.delegate = self
     }
-
+    
     // MARK: - Binding
     
     func bind(_ viewModel: MapViewModel) {
         self.viewModel = viewModel
         
-        rx.viewDidLoad
-            .map { MapViewModel.Action.viewDidLoad }
+        rx.viewWillAppear
+            .map { _ in MapViewModel.Action.viewDidLoad }
             .bind(to: viewModel.action)
             .disposed(by: self.disposeBag)
         
         viewModel.state
+            .debug()
             .map { $0.points }
             .subscribe(onNext: { [weak self] points in
                 self?.setupMapPoints(points)
