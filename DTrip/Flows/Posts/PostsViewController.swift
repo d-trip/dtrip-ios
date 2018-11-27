@@ -62,7 +62,7 @@ final class PostsViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = loadingAnimation
-        tableView.contentInset.bottom = Spaces.nonuple
+        tableView.contentInset.bottom = Spaces.duodecuple
         return tableView
     }()
 
@@ -191,7 +191,7 @@ final class PostsViewController: UIViewController {
         momentumView.addGestureRecognizer(panRecognizer)
         panRecognizer.delegate = self
         
-        let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.nonuple)
+        let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.duodecuple)
         loadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
         
         view.addSubview(momentumView)
@@ -257,12 +257,12 @@ final class PostsViewController: UIViewController {
                 switch animatiorTrasform {
                 case closedTransform:
                     shouldRevert = direction == .up ||
-                        animator.fractionComplete < 0.25
+                        animator.fractionComplete < 0.15
                 case openTransform:
                     shouldRevert = direction == .down ||
-                        animator.fractionComplete < 0.25
+                        animator.fractionComplete < 0.15
                 default:
-                    shouldRevert = animator.fractionComplete < 0.3
+                    shouldRevert = animator.fractionComplete < 0.15
                 }
                 if shouldRevert != animator.isReversed {
                     animator.isReversed.toggle()
@@ -272,13 +272,13 @@ final class PostsViewController: UIViewController {
                     break
                 }
                 let fractionRemaining = 1 - animator.fractionComplete
-                let distanceRemaining = min(fractionRemaining * animatiorTrasform.ty, 0)
+                let distanceRemaining = fractionRemaining * animatiorTrasform.ty
                 
-                if distanceRemaining == 0 {
+                if distanceRemaining <= 0 {
                     animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
                     break
                 }
-                let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 10)
+                let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 30)
                 let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
 
                 let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio,
@@ -393,7 +393,7 @@ extension PostsViewController: UITableViewDelegate {
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         guard isOpen == false else { return }
-        scrollView.setContentOffset(scrollView.contentOffset, animated: true)
+        scrollView.setContentOffset(scrollView.contentOffset, animated: false)
     }
 }
 
@@ -461,9 +461,9 @@ extension PostsViewController: UIGestureRecognizerDelegate {
 
 extension PostsViewController {
     private enum Constants {
-        static let dampingRatio: CGFloat = 0.8
+        static let dampingRatio: CGFloat = 0.7
         static let animationDuration: Double = 0.8
-        static let animationDurationBackground: Double = 0.3
+        static let animationDurationBackground: Double = 0.4
         static let postCellIdentifier = "PostCollectionViewCell"
     }
 }
