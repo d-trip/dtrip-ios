@@ -96,6 +96,7 @@ final class MapViewModel: ViewModel {
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
+            .delay(0.2, scheduler: MainScheduler.instance)
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }

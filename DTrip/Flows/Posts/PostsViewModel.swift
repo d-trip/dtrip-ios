@@ -32,7 +32,6 @@ final class PostsViewModel: ViewModel {
     
     enum Mutation {
         case setLoading(Bool)
-        case setLoadingNextPage(Bool)
         case addItems([PostModel])
         case openPost(PostModel)
         case close
@@ -44,8 +43,7 @@ final class PostsViewModel: ViewModel {
     }
     
     struct State {
-        var isLoading = true
-        var isLoadingNextPage = false
+        var isLoading = true        
         var postItems: [PostModel] = []
         let postIdentifiers: [PostIdentifier]
         
@@ -95,6 +93,7 @@ final class PostsViewModel: ViewModel {
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
+            .delay(0.2, scheduler: MainScheduler.instance)
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }
@@ -111,12 +110,12 @@ final class PostsViewModel: ViewModel {
                         return .empty()
                     }
                     return manager.getPosts(identifiers: postIdentifiers)
-            }
-            
-            return .concat([
+                }.flatMap { posts -> Observable<Mutation> in
+                    return .concat([.just(.setLoading(false)), .just(.addItems(posts))])
+                }
+            return Observable.concat([
                 .just(.setLoading(true)),
-                postItems.map { Mutation.addItems($0) },
-                .just(.setLoading(false))
+                postItems,
                 ])
         case .scrollToBottom:
             let postItems = stateSubject.take(1)
@@ -133,11 +132,11 @@ final class PostsViewModel: ViewModel {
                         return .empty()
                     }
                     return manager.getPosts(identifiers: postIdentifiers)
-            }
+                }
             return .concat([
-                .just(.setLoadingNextPage(true)),
-                postItems.map { Mutation.addItems($0) },
-                .just(.setLoadingNextPage(false)),
+                .just(.setLoading(true)),
+                postItems.map { .addItems($0) },
+                .just(.setLoading(false)),
                 ])
         case .selectModel(let index):
             return stateSubject.take(1)
@@ -146,7 +145,7 @@ final class PostsViewModel: ViewModel {
                     return state.postItems[index]
                 }
                 .unwrap()
-                .map { Mutation.openPost($0) }
+                .map { .openPost($0) }
         case .close:
             return .just(.close)
         }

@@ -20,10 +20,7 @@ final class MapViewController: UIViewController {
     // MARK: - UI properties
 
     private lazy var loadingAnimation: LoadingView = {
-        let view = LoadingView()
-        view.backgroundColor = UIColor.white.withAlphaComponent(0.4)
-        view.alpha = 0
-        return view
+        return LoadingView()        
     }()
     
     private lazy var mapView: MKMapView = {
@@ -42,27 +39,11 @@ final class MapViewController: UIViewController {
         setupView()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        mapView.frame = view.bounds
-        loadingAnimation.frame = view.bounds
-    }
-    
     private func updateLoadingView(show: Bool) {
         if show {
-            view.addSubview(loadingAnimation)
-            UIView.animate(withDuration: 0.2, animations: {
-                self.loadingAnimation.alpha = 1
-            }) { _ in
-                self.loadingAnimation.startAnimation()
-            }
+            loadingAnimation.startAnimation(for: mapView)
         } else {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.loadingAnimation.alpha = 0
-            }) { _ in
-                self.loadingAnimation.stopAnimation()
-                self.loadingAnimation.removeFromSuperview()
-            }
+            loadingAnimation.stopAnimation()
         }
     }
     
@@ -75,6 +56,14 @@ final class MapViewController: UIViewController {
     private func setupView() {
         view.addSubview(mapView)
         mapView.delegate = self
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            mapView.topAnchor.constraint(equalTo: view.topAnchor),
+            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
     }
     
     // MARK: - Binding
@@ -88,7 +77,6 @@ final class MapViewController: UIViewController {
             .disposed(by: self.disposeBag)
         
         viewModel.state
-            .debug()
             .map { $0.points }
             .subscribe(onNext: { [weak self] points in
                 self?.setupMapPoints(points)
@@ -97,7 +85,6 @@ final class MapViewController: UIViewController {
         
         viewModel.state
             .map { $0.isLoading }
-            .delay(0.3, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
             })

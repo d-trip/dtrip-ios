@@ -9,7 +9,6 @@ final class PostView: UIView {
         let avatarImageView = UIImageView()
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.clipsToBounds = true
-        avatarImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         return avatarImageView
     }()
 
@@ -32,7 +31,6 @@ final class PostView: UIView {
         let postImageView = UIImageView()
         postImageView.contentMode = .scaleAspectFill
         postImageView.clipsToBounds = true
-        postImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         return postImageView
     }()
 
@@ -93,10 +91,15 @@ final class PostView: UIView {
         return shareButton
     }()
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        postImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
+    }
+    
     // MARK: - Configure
 
     func configure(_ postViewModel: PostModel) {
-        
+
         if let profileImage = postViewModel.author.profileImage {
             let profileImageUrl = URL(string: profileImage)
             avatarImageView.kf.setImage(with: profileImageUrl) { [weak self] (image, _, _, url) in

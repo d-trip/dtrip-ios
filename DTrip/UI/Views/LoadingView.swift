@@ -11,75 +11,138 @@ import UIKit
 final class LoadingView: UIView {
     
     private var isActive: Bool = false
+    private var hasSuperView: Bool = false
+    var sizeAnimation = CGSize(width: Spaces.septuple, height: Spaces.septuple)
     
-    func startAnimation() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupDefault()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupDefault()
+    }
+    
+    private func setupDefault() {
+        backgroundColor = UIColor.white.withAlphaComponent(0.6)
+        alpha = 0
+    }
+    
+    func startAnimation(animate: Bool = true) {
         guard isActive == false else { return }
-        let size = CGSize(width: 64, height: 64)
-        setUpAnimation(in: layer, size: size, color: .blue)
+        
+        setUpAnimation(in: layer, size: sizeAnimation, color: .blue)
+        if animate {
+            UIView.animate(withDuration: 0.2) {
+                self.alpha = 1
+            }
+        } else {
+            alpha = 1
+        }
         isActive = true
     }
     
-    func stopAnimation() {
+    func startAnimation(for view: UIView, animate: Bool = true) {
+        guard isActive == false else { return }
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        hasSuperView = true
+        frame = view.bounds
+        
+        view.addSubview(self)
+        NSLayoutConstraint.activate([
+            topAnchor.constraint(equalTo: view.topAnchor),
+            bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+        startAnimation()
+    }
+    
+    func stopAnimation(animate: Bool = true) {
         guard isActive else { return }
-        layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        
+        if animate {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.alpha = 0
+            }) { _ in
+                self.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+                if self.hasSuperView {
+                    self.removeFromSuperview()
+                    self.hasSuperView.toggle()
+                }
+            }
+        } else {
+            alpha = 0
+            layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+            if hasSuperView {
+                removeFromSuperview()
+                hasSuperView.toggle()
+            }
+        }
         isActive = false
     }
     
     private func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
-        let duration: CFTimeInterval = 1
-        let timingFunction = CAMediaTimingFunction(controlPoints: 0.21, 0.53, 0.56, 0.8)
+        let beginTime: Double = 0.5
+        let strokeStartDuration: Double = 1.2
+        let strokeEndDuration: Double = 0.7
         
-        // Scale animation
-        let scaleAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        rotationAnimation.byValue = Float.pi * 2
+        rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
         
-        scaleAnimation.keyTimes = [0, 0.7]
-        scaleAnimation.timingFunction = timingFunction
-        scaleAnimation.values = [0.1, 1]
-        scaleAnimation.duration = duration
+        let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEndAnimation.duration = strokeEndDuration
+        strokeEndAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0)
+        strokeEndAnimation.fromValue = 0
+        strokeEndAnimation.toValue = 1
         
-        // Opacity animation
-        let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
+        strokeStartAnimation.duration = strokeStartDuration
+        strokeStartAnimation.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0)
+        strokeStartAnimation.fromValue = 0
+        strokeStartAnimation.toValue = 1
+        strokeStartAnimation.beginTime = beginTime
         
-        opacityAnimation.keyTimes = [0, 0.7, 1]
-        opacityAnimation.timingFunctions = [timingFunction, timingFunction]
-        opacityAnimation.values = [1, 0.7, 0]
-        opacityAnimation.duration = duration
+        let groupAnimation = CAAnimationGroup()
+        groupAnimation.animations = [rotationAnimation, strokeEndAnimation, strokeStartAnimation]
+        groupAnimation.duration = strokeStartDuration + beginTime
+        groupAnimation.repeatCount = .infinity
+        groupAnimation.isRemovedOnCompletion = false
+        groupAnimation.fillMode = .forwards
         
-        // Animation
-        let animation = CAAnimationGroup()
-        
-        animation.animations = [scaleAnimation, opacityAnimation]
-        animation.duration = duration
-        animation.repeatCount = HUGE
-        animation.isRemovedOnCompletion = false
-        
-        // Draw circle
         let circle = makeLayer(size: size, color: color)
-        let frame = CGRect(x: (layer.bounds.size.width - size.width) / 2,
-                           y: (layer.bounds.size.height - size.height) / 2,
-                           width: size.width,
-                           height: size.height)
+        let frame = CGRect(
+            x: (layer.bounds.width - size.width) / 2,
+            y: (layer.bounds.height - size.height) / 2,
+            width: size.width,
+            height: size.height
+        )
         
         circle.frame = frame
-        circle.add(animation, forKey: "animation")
+        circle.add(groupAnimation, forKey: "animation")
         layer.addSublayer(circle)
     }
     
     private func makeLayer(size: CGSize, color: UIColor) -> CALayer {
-        let path = UIBezierPath()
-        let point = CGPoint(x: size.width / 2, y: size.height / 2)
-        
-        path.addArc(withCenter: point,
-                    radius: size.width / 2,
-                    startAngle: 0,
-                    endAngle: CGFloat(2 * Double.pi),
-                    clockwise: false)
-
         let layer: CAShapeLayer = CAShapeLayer()
+        let path: UIBezierPath = UIBezierPath()
+        let lineWidth: CGFloat = 2
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        
+        path.addArc(withCenter: center,
+                    radius: size.width / 2,
+                    startAngle: -(.pi / 2),
+                    endAngle: .pi + .pi / 2,
+                    clockwise: true)
+        
         layer.fillColor = nil
         layer.strokeColor = color.cgColor
         layer.backgroundColor = nil
-        layer.lineWidth = 2
+        
+        layer.lineWidth = lineWidth
         layer.path = path.cgPath
         layer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         

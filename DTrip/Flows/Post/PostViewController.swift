@@ -366,12 +366,9 @@ final class PostViewController: UIViewController {
     private func setupImage(on view: UIImageView, with urlString: String?) {
         guard let urlString = urlString else { return }
         let imageURL = URL(string: urlString)
-        view.kf.setImage(with: imageURL) { (image, _, _, url) in
-            guard url == imageURL else { return }
-            if let image = image {
-                view.image = image
-            }
-        }
+        
+        view.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
+        view.kf.setImage(with: imageURL)
     }
 }
 

@@ -61,9 +61,17 @@ final class PostsViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
+        tableView.tableFooterView = loadingAnimation
+        tableView.contentInset.bottom = Spaces.nonuple
         return tableView
     }()
 
+    private lazy var loadingAnimation: LoadingView = {
+        let view = LoadingView()
+        view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
+        return view
+    }()
+    
     // MARK: - Binding
     
     func bind(_ viewModel: PostsViewModel) {
@@ -99,7 +107,7 @@ final class PostsViewController: UIViewController {
             .subscribe(onNext: { [weak self] postItems in
                 guard let self = self else { return }
                 let diffs = StagedChangeset(source: self.postItems, target: postItems)
-                self.tableView.reload(using: diffs, with: .bottom) { postItems in
+                self.tableView.reload(using: diffs, with: .none) { postItems in
                     self.postItems = postItems
                 }
             })
@@ -110,14 +118,6 @@ final class PostsViewController: UIViewController {
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.state
-            .map { $0.isLoadingNextPage }
-            .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] isLoadingNextPage in
-                self?.updateNextPageLoadingView(show: isLoadingNextPage)
             })
             .disposed(by: disposeBag)
     }
@@ -144,13 +144,13 @@ final class PostsViewController: UIViewController {
     }
 
     private func updateLoadingView(show: Bool) {
-        // ToDo: - Add loading view
+        if show {
+            loadingAnimation.startAnimation(animate: false)
+        } else {
+            loadingAnimation.stopAnimation(animate: false)
+        }
     }
-    
-    private func updateNextPageLoadingView(show: Bool) {
-        // ToDo: - Add loading view
-    }
-    
+ 
     // MARK: - Setup
 
     private func setupConstraints() {
@@ -190,7 +190,10 @@ final class PostsViewController: UIViewController {
         panRecognizer.addTarget(self, action: #selector(panned))
         momentumView.addGestureRecognizer(panRecognizer)
         panRecognizer.delegate = self
-
+        
+        let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.nonuple)
+        loadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
+        
         view.addSubview(momentumView)
         [
             tableView,
