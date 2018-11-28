@@ -140,9 +140,23 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    // MARK: - NavigationBar interactions
+
+    private var isNavigationBarShadowVisible = false
+
     private var navigationBarOffset: CGFloat {
         return scrollView.contentOffset.y + navigationBar.frame.maxY
     }
+
+    private var navigationBarShadowOffset: CGFloat {
+        return bottomContentView.frame.minY + avatarImageView.frame.minY
+    }
+
+    private var isNavigationBarShouldColored: Bool {
+        return navigationBarOffset > locationLabel.frame.minY
+    }
+
+    // MARK: - Constraints
 
     private lazy var webViewHeightConstraint: NSLayoutConstraint = {
         return self.descriptionWebView.heightAnchor.constraint(equalToConstant: 0)
@@ -151,7 +165,7 @@ final class PostViewController: UIViewController {
     // MARK: - Managing the Status Bar
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if navigationBarOffset > locationLabel.frame.minY {
+        if isNavigationBarShouldColored {
             return .default
         } else {
             return .lightContent
@@ -165,6 +179,13 @@ final class PostViewController: UIViewController {
         setupView()
         setupConstraints()
         setupNavigationBar()
+    }
+
+    // MARK: - Configuring the View’s Layout Behavior
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupNavigationBarShadow()
     }
 
     // MARK: - SetupView
@@ -318,6 +339,20 @@ final class PostViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
+    private func setupNavigationBarShadow() {
+        let roundedRect = CGRect(x: (navigationBar.bounds.origin.x - (Spaces.double / 2)),
+                                 y: navigationBar.bounds.origin.y,
+                                 width: navigationBar.bounds.size.width + Spaces.double,
+                                 height: navigationBar.bounds.size.height)
+        let shadowPath = UIBezierPath(roundedRect: roundedRect,
+                                      byRoundingCorners: [.bottomLeft, .bottomRight],
+                                      cornerRadii: CGSize(width: 0, height: 3))
+        navigationBar.layer.shadowPath = shadowPath.cgPath
+        navigationBar.layer.shadowColor = UIColor.black.cgColor
+        navigationBar.layer.shadowOpacity = 0
+        navigationBar.layer.shadowRadius = 5
+    }
+
     // MARK: - Setup content
 
     func bind(_ viewModel: PostViewModel) {
@@ -380,28 +415,76 @@ final class PostViewController: UIViewController {
         view.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         view.kf.setImage(with: imageURL)
     }
+
+    // MARK: - NavigationBar color and shadow configuring
+
+    private func updateNavigationBarColor() {
+        if isNavigationBarShouldColored {
+            makeColoredNavigationBar()
+        } else {
+            makeClearNavigationBar()
+        }
+    }
+
+    private func makeColoredNavigationBar() {
+        guard navigationBar.backgroundColor != .white else { return }
+        UIView.animate(withDuration: 0.3) {
+            self.navigationBar.backgroundColor = .white
+            self.dismissButton.tintColor = .black
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    private func makeClearNavigationBar() {
+        guard navigationBar.backgroundColor != .clear else { return }
+        UIView.animate(withDuration: 0.3) {
+            self.navigationBar.backgroundColor = .clear
+            self.dismissButton.tintColor = .white
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    private func updateNavigationBarShadow() {
+        let key = "shadowOpacity"
+
+        if navigationBarOffset > navigationBarShadowOffset {
+            if isNavigationBarShadowVisible == false {
+                isNavigationBarShadowVisible = true
+                let animation = CABasicAnimation(keyPath: key)
+                animation.fromValue = 0.0
+                animation.toValue = 0.5
+                animation.isRemovedOnCompletion = false
+                animation.fillMode = .forwards
+                animation.duration = 0.3
+                navigationBar.layer.removeAnimation(forKey: key)
+                navigationBar.layer.add(animation, forKey: key)
+            }
+        } else {
+            if isNavigationBarShadowVisible {
+                let animation = CABasicAnimation(keyPath: key)
+                isNavigationBarShadowVisible = false
+                animation.fromValue = 0.5
+                animation.toValue = 0.0
+                animation.isRemovedOnCompletion = false
+                animation.fillMode = .forwards
+                animation.duration = 0.3
+                navigationBar.layer.removeAnimation(forKey: key)
+                navigationBar.layer.add(animation, forKey: key)
+            }
+        }
+    }
 }
 
 // MARK: - UIScrollViewDelegate
 
 extension PostViewController: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // TODO: Fix in https://trello.com/c/TYHpkGOL/1-postviewcontroller-custom-navigation-bar
-        if navigationBarOffset > locationLabel.frame.minY {
-            UIView.animate(withDuration: 0.3) {
-                self.navigationBar.backgroundColor = .white
-                self.dismissButton.tintColor = .black
-                self.setNeedsStatusBarAppearanceUpdate()
-            }
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                self.navigationBar.backgroundColor = .clear
-                self.dismissButton.tintColor = .white
-                self.setNeedsStatusBarAppearanceUpdate()
-            }
-        }
+        updateNavigationBarColor()
+        updateNavigationBarShadow()
     }
 }
+
+// MARK: - WKNavigationDelegate
 
 extension PostViewController: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
