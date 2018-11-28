@@ -2,12 +2,13 @@ import UIKit
 import Kingfisher
 import RxCocoa
 import RxSwift
+import WebKit
 
 final class PostViewController: UIViewController {
 
     private(set) var viewModel: PostViewModel!
     private let disposeBag = DisposeBag()
-    
+
     // MARK: - UI properties
 
     private lazy var scrollView: UIScrollView = {
@@ -99,11 +100,11 @@ final class PostViewController: UIViewController {
         return view
     }()
 
-    private lazy var descriptionLabel: UILabel = {
-        let view = UILabel()
-        view.numberOfLines = 0
-        view.font = UIFont.preferredFont(forTextStyle: .footnote)
-        view.textColor = .boulder
+    private lazy var descriptionWebView: WKWebView = {
+        let view = WKWebView()
+        view.navigationDelegate = self
+        view.scrollView.isScrollEnabled = false
+        view.contentMode = .scaleAspectFit
         return view
     }()
 
@@ -142,6 +143,10 @@ final class PostViewController: UIViewController {
     private var navigationBarOffset: CGFloat {
         return scrollView.contentOffset.y + navigationBar.frame.maxY
     }
+
+    private lazy var webViewHeightConstraint: NSLayoutConstraint = {
+        return self.descriptionWebView.heightAnchor.constraint(equalToConstant: 0)
+    }()
 
     // MARK: - Managing the Status Bar
 
@@ -193,7 +198,7 @@ final class PostViewController: UIViewController {
             userNameLabel,
             dateLabel,
             titleLabel,
-            descriptionLabel,
+            descriptionWebView,
             separatorView,
             likeButton,
             shareButton,
@@ -226,12 +231,16 @@ final class PostViewController: UIViewController {
             headerImageView.trailingAnchor.constraint(equalTo: headerImageContainerView.trailingAnchor),
             headerImageView.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor),
 
-            locationLabel.leadingAnchor.constraint(equalTo: headerImageContainerView.leadingAnchor, constant: Spaces.double),
-            locationLabel.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor, constant: -Spaces.sextuple),
+            locationLabel.leadingAnchor.constraint(equalTo: headerImageContainerView.leadingAnchor,
+                                                   constant: Spaces.double),
+            locationLabel.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor,
+                                                  constant: -Spaces.sextuple),
             locationLabel.trailingAnchor.constraint(equalTo: statusLabel.leadingAnchor, constant: -Spaces.double),
 
-            statusLabel.trailingAnchor.constraint(equalTo: headerImageContainerView.trailingAnchor, constant: -Spaces.double),
-            statusLabel.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor, constant: -Spaces.sextuple),
+            statusLabel.trailingAnchor.constraint(equalTo: headerImageContainerView.trailingAnchor,
+                                                  constant: -Spaces.double),
+            statusLabel.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor,
+                                                constant: -Spaces.sextuple),
 
             bottomContentView.topAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor,
                                                    constant: -Spaces.quadruple),
@@ -257,13 +266,14 @@ final class PostViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
                                                  constant: -Spaces.quadruple),
 
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.double),
-            descriptionLabel.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                      constant: Spaces.quadruple),
-            descriptionLabel.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                       constant: -Spaces.quadruple),
+            descriptionWebView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.double),
+            descriptionWebView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
+                                                        constant: Spaces.quadruple),
+            descriptionWebView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
+                                                         constant: -Spaces.quadruple),
+            webViewHeightConstraint,
 
-            separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Spaces.double),
+            separatorView.topAnchor.constraint(equalTo: descriptionWebView.bottomAnchor, constant: Spaces.double),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
             separatorView.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.septuple),
             separatorView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
@@ -312,17 +322,17 @@ final class PostViewController: UIViewController {
 
     func bind(_ viewModel: PostViewModel) {
         self.viewModel = viewModel
-        
+
         rx.viewDidLoad
             .map { PostViewModel.Action.viewDidLoad }
             .bind(to: viewModel.action)
             .disposed(by: self.disposeBag)
-        
+
         dismissButton.rx.controlEvent(.touchUpInside)
             .map { PostViewModel.Action.close }
             .bind(to: viewModel.action)
             .disposed(by: self.disposeBag)
-        
+
         viewModel.state
             .map { $0.postModel }
             .unwrap()
@@ -330,7 +340,7 @@ final class PostViewController: UIViewController {
                 self?.handlePostModel(postModel)
             })
             .disposed(by: disposeBag)
-        
+
         viewModel.state
             .map { $0.isLoading }
             .subscribe(onNext: { [weak self] isLoading in
@@ -338,7 +348,7 @@ final class PostViewController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
+
     private func updateLoadingView(show: Bool) {
         // ToDo: - Add loading view
     }
@@ -350,9 +360,9 @@ final class PostViewController: UIViewController {
         userNameLabel.text = postModel.author.name
         dateLabel.text = postModel.timeAgo()
         titleLabel.text = postModel.title
-        descriptionLabel.text = postModel.bodyHTML
         locationLabel.text = postModel.location
         statusLabel.text = postModel.category.uppercased()
+        descriptionWebView.loadHTMLString(postModel.bodyHTML, baseURL: Bundle.main.bundleURL)
     }
 
     private func setupContentHeaderImageView(_ postModel: PostModel) {
@@ -366,7 +376,7 @@ final class PostViewController: UIViewController {
     private func setupImage(on view: UIImageView, with urlString: String?) {
         guard let urlString = urlString else { return }
         let imageURL = URL(string: urlString)
-        
+
         view.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
         view.kf.setImage(with: imageURL)
     }
@@ -390,5 +400,23 @@ extension PostViewController: UIScrollViewDelegate {
                 self.setNeedsStatusBarAppearanceUpdate()
             }
         }
+    }
+}
+
+extension PostViewController: WKNavigationDelegate {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        descriptionWebView.evaluateJavaScript(
+            "document.readyState",
+            completionHandler: { [weak self] (complete, error) in
+                guard let self = self else { return }
+                if complete != nil {
+                    self.descriptionWebView.evaluateJavaScript(
+                        "document.body.scrollHeight",
+                        completionHandler: { (height, error) in
+                            guard let height = height as? CGFloat else { return }
+                            self.webViewHeightConstraint.constant = height
+                        })
+                }
+            })
     }
 }
