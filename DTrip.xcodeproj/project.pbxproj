@@ -50,6 +50,7 @@
 		EC16E9EE219867360099C4FE /* NodeAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9ED219867360099C4FE /* NodeAccountModel.swift */; };
 		EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9EF219867F80099C4FE /* AccountModel.swift */; };
 		EC3CB7E221ADEB5400A2FB30 /* ImageLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB7E121ADEB5400A2FB30 /* ImageLoadingIndicator.swift */; };
+		EC3CB7E421B09A0800A2FB30 /* PostViewWebViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB7E321B09A0800A2FB30 /* PostViewWebViewFactory.swift */; };
 		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
 		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
 		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
@@ -159,6 +160,7 @@
 		EC16E9ED219867360099C4FE /* NodeAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeAccountModel.swift; sourceTree = "<group>"; };
 		EC16E9EF219867F80099C4FE /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		EC3CB7E121ADEB5400A2FB30 /* ImageLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingIndicator.swift; sourceTree = "<group>"; };
+		EC3CB7E321B09A0800A2FB30 /* PostViewWebViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewWebViewFactory.swift; sourceTree = "<group>"; };
 		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
 		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				402EBC40718D4213F61D4F61 /* PostCoordinator.swift */,
 				402EB84A62BBD794DF13A279 /* PostViewModel.swift */,
 				402EB67541300FE0C51095B4 /* PostViewController.swift */,
+				EC3CB7E321B09A0800A2FB30 /* PostViewWebViewFactory.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -797,6 +800,7 @@
 				ECC3BF442179400300B6E87B /* Presentable.swift in Sources */,
 				ECC3BF61217BC01300B6E87B /* MapCoordinator.swift in Sources */,
 				EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */,
+				EC3CB7E421B09A0800A2FB30 /* PostViewWebViewFactory.swift in Sources */,
 				ECC3BF63217BC01D00B6E87B /* MapViewModel.swift in Sources */,
 				402EB1F6318E6927219DE41C /* PostsAssembly.swift in Sources */,
 				402EBA2620E63F5E719FC8F7 /* PostsCoordinator.swift in Sources */,

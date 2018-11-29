@@ -101,11 +101,9 @@ final class PostViewController: UIViewController {
     }()
 
     private lazy var descriptionWebView: WKWebView = {
-        let view = WKWebView()
-        view.navigationDelegate = self
-        view.scrollView.isScrollEnabled = false
-        view.contentMode = .scaleAspectFit
-        return view
+        let webView = PostViewWebViewFactory.makeWebView()
+        webView.navigationDelegate = self
+        return webView
     }()
 
     private lazy var separatorView: UIView = {
@@ -397,9 +395,21 @@ final class PostViewController: UIViewController {
         titleLabel.text = postModel.title
         locationLabel.text = postModel.location
         statusLabel.text = postModel.category.uppercased()
-        descriptionWebView.loadHTMLString(postModel.bodyHTML, baseURL: Bundle.main.bundleURL)
+        
+        setupHtmlPost(postModel.bodyHTML)
     }
 
+    private func setupHtmlPost(_ bodyHTML: String) {
+        let html = bodyHTML.replacingOccurrences(of: "<html>", with: """
+            <html>
+                <head><style>
+                    img { max-width: \(descriptionWebView.bounds.width)px; };
+                </style></head>
+            <body style='margin:0; padding:0;'>
+        """)
+        descriptionWebView.loadHTMLString(html, baseURL: nil)
+    }
+    
     private func setupContentHeaderImageView(_ postModel: PostModel) {
         setupImage(on: headerImageView, with: postModel.titleImage())
     }

@@ -23,8 +23,7 @@ final class PostsViewController: UIViewController {
     
     private var interactionInProgress: Bool = false
     private var initialScrollOffset: CGPoint = CGPoint.zero
-    private let offsetThreshold: CGFloat = 5.0 // Optimal value from testing
-
+    
     private enum PanDirection {
         case up, down
     }
@@ -215,23 +214,23 @@ final class PostsViewController: UIViewController {
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
         tableView.panGestureRecognizer.addTarget(self, action: #selector(panned))
     }
-    
-    // MARK: - Manage gesture recognizers
 
+}
+
+// MARK: - Manage gesture recognizers
+
+extension PostsViewController {
+    
     @objc
     private func panned(recognizer: UIPanGestureRecognizer) {
         switch recognizer {
         case tableView.panGestureRecognizer:
-            if tableView.isDecelerating == false,
-                tableView.contentSize.height > tableView.bounds.height {
-                tableView.bounces = (tableView.contentOffset.y > offsetThreshold)
-            }
             guard isOpen == false else { break }
             tableView.contentOffset.y = initialScrollOffset.y
         case panRecognizer:
             let yVelocity = recognizer.velocity(in: momentumView).y
             let direction: PanDirection = yVelocity > 0 ? .down : .up
-
+            
             guard shouldHandleTouch(tableView, direction: direction) else { break }
             switch recognizer.state {
             case .began:
@@ -246,10 +245,7 @@ final class PostsViewController: UIViewController {
                     fraction *= -1
                 }
                 animator.fractionComplete = fraction + animationProgress
-                
-                if isOpen == false {
-                    isOpen = animator.fractionComplete == 1
-                }
+                isOpen = animator.fractionComplete == 1 && animatiorTrasform == openTransform
             case .ended, .cancelled:
                 endInteractive()
                 
@@ -257,12 +253,12 @@ final class PostsViewController: UIViewController {
                 switch animatiorTrasform {
                 case closedTransform:
                     shouldRevert = direction == .up ||
-                        animator.fractionComplete < 0.15
+                        animator.fractionComplete < Constants.fractionLimit
                 case openTransform:
                     shouldRevert = direction == .down ||
-                        animator.fractionComplete < 0.15
+                        animator.fractionComplete < Constants.fractionLimit
                 default:
-                    shouldRevert = animator.fractionComplete < 0.15
+                    shouldRevert = animator.fractionComplete < Constants.fractionLimit
                 }
                 if shouldRevert != animator.isReversed {
                     animator.isReversed.toggle()
@@ -280,7 +276,7 @@ final class PostsViewController: UIViewController {
                 }
                 let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 30)
                 let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
-
+                
                 let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio,
                                                                 initialVelocity: initialVelocity)
                 let preferredDuration = UIViewPropertyAnimator(duration: Constants.animationDuration,
@@ -292,7 +288,7 @@ final class PostsViewController: UIViewController {
         default: break
         }
     }
-
+    
     private func startAnimationIfNeeded(direction: PanDirection) {
         guard animator.isRunning == false else { return }
         
@@ -320,27 +316,14 @@ final class PostsViewController: UIViewController {
             guard let self = self else { return }
             if position == .end {
                 self.isOpen = self.animatiorTrasform == self.openTransform
-                if self.momentumView.transform == self.closedTransform {
+                if self.animatiorTrasform == self.closedTransform {
                     self.viewModel.action.onNext(.close)
                 }
             }
         }
         animator.startAnimation()
     }
-
-    // MARK: - TableView handling
-
-    private func lockTableView() {
-        initialScrollOffset = tableView.contentOffset
-        tableView.isDirectionalLockEnabled = true
-        tableView.bounces = false
-    }
-
-    private func unlockTableView() {
-        tableView.isDirectionalLockEnabled = false
-        tableView.bounces = true
-    }
-
+    
     private func shouldHandleTouch(_ tableView: UITableView, direction: PanDirection) -> Bool {
         switch (interactionInProgress, isOpen) {
         case (true, _):
@@ -353,30 +336,34 @@ final class PostsViewController: UIViewController {
             return true
         }
     }
-
+    
     private func startInteractive(direction: PanDirection) {
         interactionInProgress = true
         lockTableView()
-
+        
         startAnimationIfNeeded(direction: direction)
         animator.pauseAnimation()
         animationProgress = animator.fractionComplete
     }
-
+    
     private func endInteractive() {
         interactionInProgress = false
         unlockTableView()
     }
+}
+
+// MARK: - TableView handling
+
+extension PostsViewController {
+    private func lockTableView() {
+        initialScrollOffset = tableView.contentOffset
+        tableView.isDirectionalLockEnabled = true
+        tableView.bounces = false
+    }
     
-    private func updateTopShadow() {
-        let zeroContentOffset = CGFloat(0) - tableView.contentInset.top
-        let alpha: CGFloat = (tableView.contentOffset.y - Spaces.double) > zeroContentOffset ? 1 : 0
-        
-        if topShadowView.alpha != alpha {
-            UIView.animate(withDuration: 0.2) {
-                self.topShadowView.alpha = alpha
-            }
-        }
+    private func unlockTableView() {
+        tableView.isDirectionalLockEnabled = false
+        tableView.bounces = true
     }
 }
 
@@ -394,6 +381,17 @@ extension PostsViewController: UITableViewDelegate {
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         guard isOpen == false else { return }
         scrollView.setContentOffset(scrollView.contentOffset, animated: false)
+    }
+    
+    private func updateTopShadow() {
+        let zeroContentOffset = CGFloat(0) - tableView.contentInset.top
+        let alpha: CGFloat = (tableView.contentOffset.y - Spaces.double) > zeroContentOffset ? 1 : 0
+        
+        if topShadowView.alpha != alpha {
+            UIView.animate(withDuration: 0.2) {
+                self.topShadowView.alpha = alpha
+            }
+        }
     }
 }
 
@@ -461,6 +459,7 @@ extension PostsViewController: UIGestureRecognizerDelegate {
 
 extension PostsViewController {
     private enum Constants {
+        static let fractionLimit: CGFloat = 0.15
         static let dampingRatio: CGFloat = 0.7
         static let animationDuration: Double = 0.8
         static let animationDurationBackground: Double = 0.4
