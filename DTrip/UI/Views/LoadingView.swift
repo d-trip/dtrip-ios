@@ -10,6 +10,7 @@ import UIKit
 
 final class LoadingView: UIView {
     
+    private var animateLayer: CALayer = CALayer()
     private var isActive: Bool = false
     private var hasSuperView: Bool = false
     var sizeAnimation = CGSize(width: Spaces.septuple, height: Spaces.septuple)
@@ -84,6 +85,10 @@ final class LoadingView: UIView {
         isActive = false
     }
     
+    func updateViewCenter(_ point: CGPoint) {
+        animateLayer.position = point
+    }
+    
     private func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
         let beginTime: Double = 0.5
         let strokeStartDuration: Double = 1.2
@@ -113,7 +118,7 @@ final class LoadingView: UIView {
         groupAnimation.isRemovedOnCompletion = false
         groupAnimation.fillMode = .forwards
         
-        let circle = makeLayer(size: size, color: color)
+        animateLayer = makeLayer(size: size, color: color)
         let frame = CGRect(
             x: (layer.bounds.width - size.width) / 2,
             y: (layer.bounds.height - size.height) / 2,
@@ -121,13 +126,13 @@ final class LoadingView: UIView {
             height: size.height
         )
         
-        circle.frame = frame
-        circle.add(groupAnimation, forKey: "animation")
-        layer.addSublayer(circle)
+        animateLayer.frame = frame
+        animateLayer.add(groupAnimation, forKey: "animation")
+        layer.addSublayer(animateLayer)
     }
     
     private func makeLayer(size: CGSize, color: UIColor) -> CALayer {
-        let layer: CAShapeLayer = CAShapeLayer()
+        let layer = CAShapeLayer()
         let path: UIBezierPath = UIBezierPath()
         let lineWidth: CGFloat = 2
         let center = CGPoint(x: size.width / 2, y: size.height / 2)

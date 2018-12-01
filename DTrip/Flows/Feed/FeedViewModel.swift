@@ -49,7 +49,7 @@ final class FeedViewModel: ViewModel {
     
     struct State {
         var isLoading = true
-        var isNextPageLoading = true
+        var isNextPageLoading = false
         var postItems: [PostModel] = []
     }
     
@@ -98,6 +98,9 @@ final class FeedViewModel: ViewModel {
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
+            .do(onNext: { [weak self] state in
+                self?.currentState = state
+            })
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }
@@ -115,7 +118,7 @@ final class FeedViewModel: ViewModel {
                 .just(.setLoading(false)),
                 ])
         case .scrollToBottom:
-            guard totalItems < currentState.postItems.count else { return .empty() }
+            guard totalItems > currentState.postItems.count else { return .empty() }
             
             page += 1
             let addPostItems = fetchPosts(page: page).map {
@@ -152,6 +155,9 @@ final class FeedViewModel: ViewModel {
         switch mutation {
         case .setLoading(let loading):
             state.isLoading = loading
+            return .just(state)
+        case .setNextPageLoading(let loading):
+            state.isNextPageLoading = loading
             return .just(state)
         case .setItems(let items):
             state.postItems = items

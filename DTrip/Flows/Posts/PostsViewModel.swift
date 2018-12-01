@@ -59,20 +59,20 @@ final class PostsViewModel: ViewModel {
     private let actionSubject = PublishSubject<Action>()
     private let stateSubject = ReplaySubject<State>.create(bufferSize: 1)
     private let navigationSubject = ReplaySubject<Navigation>.create(bufferSize: 1)
-    private let initialState: State
+    private var currentState: State
     
     private let disposeBag = DisposeBag()
     private let manager: PostManager
     
     init(manager: PostManager, postIdentifiers: [PostIdentifier]) {
         self.manager = manager
-        self.initialState = State(postIdentifiers: postIdentifiers)
+        self.currentState = State(postIdentifiers: postIdentifiers)
         setBindings()
     }
     
     private func setBindings() {
-        let currentState = stateSubject
-            .startWith(initialState)
+        let state = stateSubject
+            .startWith(currentState)
         
         let mutation = actionSubject
             .flatMap { [weak self] action -> Observable<Mutation> in
@@ -90,11 +90,14 @@ final class PostsViewModel: ViewModel {
             .disposed(by: disposeBag)
         
         mutation
-            .withLatestFrom(currentState) { ($1, $0) }
+            .withLatestFrom(state) { ($1, $0) }
             .flatMap { [weak self] (state, mutation) -> Observable<State> in
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
+            .do(onNext: { [weak self] state in
+                self?.currentState = state
+            })
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }

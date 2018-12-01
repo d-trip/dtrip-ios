@@ -4,6 +4,11 @@ extension UIImage {
 
     // MARK: - Images
 
+    enum EmptyState {
+        static let post = UIImage(named: "noPostImage")
+        static let avatar = UIImage(named: "noAvatar")
+    }
+    
     enum TabBar {
         static let map = UIImage(named: "map")
         static let mapSelected = UIImage(named: "map_selected")

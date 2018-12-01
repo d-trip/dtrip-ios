@@ -90,43 +90,22 @@ final class PostView: UIView {
         shareButton.setImage(UIImage.Feed.Post.shareButton, for: .normal)
         return shareButton
     }()
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        postImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
-    }
-    
+
     // MARK: - Configure
 
     func configure(_ postViewModel: PostModel) {
 
-        if let profileImage = postViewModel.author.profileImage {
-            let profileImageUrl = URL(string: profileImage)
-            avatarImageView.kf.setImage(with: profileImageUrl) { [weak self] (image, _, _, url) in
-                guard url == profileImageUrl else { return }
-                if let image = image {
-                    self?.avatarImageView.image = image
-                } else {
-                    self?.avatarImageView.image = UIImage(named: "noAvatar")
-                }
-            }
-        } else {
-            avatarImageView.image = UIImage(named: "noAvatar")
-        }
+        let profileImage = postViewModel.author.profileImage ?? ""
+        let profileImageUrl = URL(string: profileImage)
+        avatarImageView.kf.setImage(with: profileImageUrl,
+                                    placeholder: UIImage.EmptyState.avatar)
         
-        if let postImage = postViewModel.titleImage() {
-            let postImageUrl = URL(string: postImage)
-            postImageView.kf.setImage(with: postImageUrl) { [weak self] (image, _, _, url) in
-                guard url == postImageUrl else { return }
-                if let image = image {
-                    self?.postImageView.image = image
-                } else {
-                    self?.postImageView.image = UIImage(named: "noPostImage")
-                }
-            }
-        } else {
-            postImageView.image = UIImage(named: "noPostImage")
-        }
+        let postImage = postViewModel.titleImage() ?? ""
+        let postImageUrl = URL(string: postImage)
+        postImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
+        postImageView.kf.setImage(with: postImageUrl,
+                                  placeholder: UIImage.EmptyState.post)
+        
         userNameLabel.text = postViewModel.author.name
         dateLabel.text = postViewModel.timeAgo()
         locationLabel.text = postViewModel.location

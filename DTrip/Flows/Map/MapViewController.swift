@@ -25,6 +25,15 @@ final class MapViewController: UIViewController {
     
     private lazy var mapView: MKMapView = {
         let mapView = MKMapView()
+        mapView.mapType = .mutedStandard
+        mapView.isRotateEnabled = false
+        mapView.showsCompass = false
+        mapView.showsScale = false
+        mapView.showsBuildings = false
+        mapView.showsTraffic = false
+        
+        mapView.userTrackingMode = .none
+        
         mapView.register(MapMarkerView.self,
                          forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         mapView.register(MapClusterMarkerView.self,

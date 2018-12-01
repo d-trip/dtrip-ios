@@ -9,24 +9,40 @@
 import UIKit
 import Kingfisher
 
-struct ImageLoadingIndicator: Indicator {
-    
+final class ImageLoadingIndicator: Indicator {
+
     private var loadingView: LoadingView = {
-        let view = LoadingView()
-        view.backgroundColor = .red
-        view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
+        let size = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
+        let frame = CGRect(origin: .zero, size: size)
+        let view = LoadingView(frame: frame)
+        view.sizeAnimation = size
+        view.backgroundColor = .clear
+        view.autoresizingMask = [.flexibleLeftMargin,
+                                 .flexibleRightMargin,
+                                 .flexibleBottomMargin,
+                                 .flexibleTopMargin
+                                ]
         return view
     }()
     
     var view: IndicatorView {
-        return self.loadingView
+        return loadingView
     }
-
+    
+    var viewCenter: CGPoint = .zero {
+        didSet {
+            loadingView.center = viewCenter
+            loadingView.updateViewCenter(viewCenter)
+        }
+    }
+    
     func startAnimatingView() {
+        loadingView.isHidden = false
         loadingView.startAnimation()
     }
     
     func stopAnimatingView() {
+        loadingView.isHidden = true
         loadingView.stopAnimation()
     }
 }

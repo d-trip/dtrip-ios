@@ -24,7 +24,7 @@ final class FeedViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.tableFooterView = footerLoadingAnimation
-        tableView.contentInset.bottom = Spaces.duodecuple
+        tableView.contentInset.bottom = Spaces.octuple
         return tableView
     }()
     
@@ -88,6 +88,14 @@ final class FeedViewController: UIViewController {
                 self?.updateLoadingView(show: isLoading)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.state
+            .map { $0.isNextPageLoading }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isLoading in
+                self?.updateNextPageLoadingView(show: isLoading)
+            })
+            .disposed(by: disposeBag)
     }
     
     //MARK: - Lifecycle
@@ -114,8 +122,8 @@ final class FeedViewController: UIViewController {
         setupTableView(tableView)
         view.backgroundColor = .white
         
-        let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.duodecuple)
-        loadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
+        let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.octuple)
+        footerLoadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
     }
     
     private func setupTableView(_ tableView: UITableView) {
@@ -126,7 +134,6 @@ final class FeedViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.showsVerticalScrollIndicator = false
         tableView.decelerationRate = .normal
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Spaces.quadruple, right: 0)
         
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
         
@@ -138,6 +145,14 @@ final class FeedViewController: UIViewController {
             loadingAnimation.startAnimation(for: view)
         } else {
             loadingAnimation.stopAnimation()
+        }
+    }
+    
+    private func updateNextPageLoadingView(show: Bool) {
+        if show {
+            footerLoadingAnimation.startAnimation(animate: false)
+        } else {
+            footerLoadingAnimation.stopAnimation(animate: false)
         }
     }
 }
