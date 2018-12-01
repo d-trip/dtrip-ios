@@ -126,6 +126,7 @@ final class PostViewController: UIViewController {
 
     private lazy var navigationBar: UIView = {
         let view = UIView()
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -138,7 +139,27 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    private lazy var animator: UIViewPropertyAnimator = {
+        let timingParameters = UICubicTimingParameters(animationCurve: .easeIn)
+        let animator = UIViewPropertyAnimator(duration: 0.3,
+                                              timingParameters: timingParameters)
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
+            self.navigationBar.backgroundColor = .white
+            self.dismissButton.tintColor = .black
+        }
+        animator.startAnimation()
+        animator.pauseAnimation()
+        return animator
+    }()
+
     // MARK: - NavigationBar interactions
+
+    private var navigationBarAnimationProgress: CGFloat {
+        let offset = scrollView.contentOffset.y - locationLabel.frame.minY
+        let point = navigationBar.frame.maxY + Spaces.duodecuple
+        return (offset + point) / 100.0
+    }
 
     private var isNavigationBarShadowVisible = false
 
@@ -163,10 +184,19 @@ final class PostViewController: UIViewController {
     // MARK: - Managing the Status Bar
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if isNavigationBarShouldColored {
+        if navigationBarAnimationProgress > 0.4 {
             return .default
         } else {
             return .lightContent
+        }
+    }
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return .fade
+    }
+
+    private func updateStatusBarVisibility() {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.setNeedsStatusBarAppearanceUpdate()
         }
     }
 
@@ -179,11 +209,17 @@ final class PostViewController: UIViewController {
         setupNavigationBar()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        animator.stopAnimation(true)
+    }
+
     // MARK: - Configuring the View’s Layout Behavior
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupNavigationBarShadow()
+        updateStatusBarVisibility()
     }
 
     // MARK: - SetupView
@@ -426,33 +462,7 @@ final class PostViewController: UIViewController {
         view.kf.setImage(with: imageURL)
     }
 
-    // MARK: - NavigationBar color and shadow configuring
-
-    private func updateNavigationBarColor() {
-        if isNavigationBarShouldColored {
-            makeColoredNavigationBar()
-        } else {
-            makeClearNavigationBar()
-        }
-    }
-
-    private func makeColoredNavigationBar() {
-        guard navigationBar.backgroundColor != .white else { return }
-        UIView.animate(withDuration: 0.3) {
-            self.navigationBar.backgroundColor = .white
-            self.dismissButton.tintColor = .black
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-
-    private func makeClearNavigationBar() {
-        guard navigationBar.backgroundColor != .clear else { return }
-        UIView.animate(withDuration: 0.3) {
-            self.navigationBar.backgroundColor = .clear
-            self.dismissButton.tintColor = .white
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
+    // MARK: - NavigationBar shadow configuring
 
     private func updateNavigationBarShadow() {
         let key = "shadowOpacity"
@@ -489,8 +499,8 @@ final class PostViewController: UIViewController {
 
 extension PostViewController: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateNavigationBarColor()
-        updateNavigationBarShadow()
+        animator.fractionComplete = navigationBarAnimationProgress
+        updateStatusBarVisibility()
     }
 }
 
