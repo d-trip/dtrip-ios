@@ -15,14 +15,9 @@ final class PostsViewController: UIViewController {
     private let panRecognizer = UIPanGestureRecognizer()
     private var animator = UIViewPropertyAnimator()
 
-    private var isOpen = false
     private var animationProgress: CGFloat = 0
     private var closedTransform = CGAffineTransform.identity
-    private var openTransform = CGAffineTransform.identity
-    private var animatiorTrasform = CGAffineTransform.identity
-    
     private var interactionInProgress: Bool = false
-    private var initialScrollOffset: CGPoint = CGPoint.zero
     
     private enum PanDirection {
         case up, down
@@ -34,7 +29,6 @@ final class PostsViewController: UIViewController {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
-        view.layer.cornerRadius = 30
         view.clipsToBounds = true
         return view
     }()
@@ -60,15 +54,21 @@ final class PostsViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.tableFooterView = loadingAnimation
+        tableView.tableFooterView = footerLoadingAnimation
         tableView.contentInset.bottom = Spaces.duodecuple
         return tableView
     }()
 
-    private lazy var loadingAnimation: LoadingView = {
+    private lazy var footerLoadingAnimation: LoadingView = {
         let view = LoadingView()
         view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
         return view
+    }()
+    
+    private lazy var loadingAnimation: LoadingView = {
+        let loadingAnimation = LoadingView()
+        loadingAnimation.backgroundColor = .clear
+        return loadingAnimation
     }()
     
     // MARK: - Binding
@@ -113,6 +113,14 @@ final class PostsViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.state
+            .map { $0.isNextPageLoading }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] isLoading in
+                self?.updateNextPageLoadingView(show: isLoading)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.state
             .map { $0.isLoading }
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] isLoading in
@@ -123,33 +131,41 @@ final class PostsViewController: UIViewController {
     
     // MARK: - Managing the View
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         setupViews()
         setupConstraints()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showModule()
+        showMomentumView()
     }
 
-    private func showModule() {
-        guard isOpen == false else { return }
+    private func showMomentumView() {
         UIView.animate(withDuration: Constants.animationDurationBackground) { [unowned self] in
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0.3)
             self.momentumView.transform = .identity
         }
     }
 
+    private func updateNextPageLoadingView(show: Bool) {
+        if show {
+            footerLoadingAnimation.startAnimation(animate: false)
+        } else {
+            footerLoadingAnimation.stopAnimation(animate: false)
+        }
+    }
+ 
     private func updateLoadingView(show: Bool) {
         if show {
-            loadingAnimation.startAnimation(animate: false)
+            momentumView.frame = view.bounds
+            loadingAnimation.startAnimation(for: momentumView)
         } else {
             loadingAnimation.stopAnimation(animate: false)
         }
     }
- 
+    
     // MARK: - Setup
 
     private func setupConstraints() {
@@ -157,8 +173,7 @@ final class PostsViewController: UIViewController {
             momentumView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             momentumView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             momentumView.heightAnchor.constraint(equalTo: view.heightAnchor),
-            momentumView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                              constant: Spaces.duodecuple),
+            momentumView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             
             topShadowView.leadingAnchor.constraint(equalTo: momentumView.leadingAnchor),
             topShadowView.trailingAnchor.constraint(equalTo: momentumView.trailingAnchor),
@@ -181,8 +196,7 @@ final class PostsViewController: UIViewController {
 
     private func setupViews() {
         setupTableView(tableView)
-
-        openTransform = CGAffineTransform(translationX: 0, y: -Spaces.duodecuple)
+        
         closedTransform = CGAffineTransform(translationX: 0, y: view.bounds.height)
         momentumView.transform = closedTransform
         
@@ -191,7 +205,7 @@ final class PostsViewController: UIViewController {
         panRecognizer.delegate = self
         
         let loadingViewSize = CGSize(width: tableView.bounds.width, height: Spaces.duodecuple)
-        loadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
+        footerLoadingAnimation.frame = CGRect(origin: .zero, size: loadingViewSize)
         
         view.addSubview(momentumView)
         [
@@ -214,7 +228,6 @@ final class PostsViewController: UIViewController {
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: Constants.postCellIdentifier)
         tableView.panGestureRecognizer.addTarget(self, action: #selector(panned))
     }
-
 }
 
 // MARK: - Manage gesture recognizers
@@ -223,152 +236,102 @@ extension PostsViewController {
     
     @objc
     private func panned(recognizer: UIPanGestureRecognizer) {
+        let velocity = recognizer.velocity(in: momentumView).y
+        let direction: PanDirection = velocity > 0 ? .down : .up
+        
+        guard shouldHandleTouch(tableView, direction: direction) else { return }
+        
         switch recognizer {
         case tableView.panGestureRecognizer:
-            guard isOpen == false else { break }
-            tableView.contentOffset.y = initialScrollOffset.y
+            tableView.contentOffset = .zero
         case panRecognizer:
-            let yVelocity = recognizer.velocity(in: momentumView).y
-            let direction: PanDirection = yVelocity > 0 ? .down : .up
-            
-            guard shouldHandleTouch(tableView, direction: direction) else { break }
             switch recognizer.state {
             case .began:
-                startInteractive(direction: direction)
+                startInteractive()
             case .changed:
                 if !interactionInProgress {
-                    startInteractive(direction: direction)
+                    startInteractive()
                     recognizer.setTranslation(CGPoint.zero, in: momentumView)
                 }
-                var fraction = recognizer.translation(in: momentumView).y / animatiorTrasform.ty
+                var fraction = recognizer.translation(in: momentumView).y / closedTransform.ty
                 if animator.isReversed {
                     fraction *= -1
                 }
                 animator.fractionComplete = fraction + animationProgress
-                
-                if animatiorTrasform == openTransform {
-                    isOpen = animator.fractionComplete == 1
-                } else {
-                    isOpen = true
-                }
             case .ended, .cancelled:
-                endInteractive()
-                
-                let shouldRevert: Bool
-                switch animatiorTrasform {
-                case closedTransform:
-                    shouldRevert = direction == .up ||
-                        animator.fractionComplete < Constants.fractionLimit
-                case openTransform:
-                    shouldRevert = direction == .down ||
-                        animator.fractionComplete < Constants.fractionLimit
-                default:
-                    shouldRevert = animator.fractionComplete < Constants.fractionLimit
-                }
-                if shouldRevert != animator.isReversed {
-                    animator.isReversed.toggle()
-                }
-                if yVelocity == 0 {
-                    animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-                    break
-                }
-                let fractionRemaining = 1 - animator.fractionComplete
-                let distanceRemaining = fractionRemaining * animatiorTrasform.ty
-                
-                if distanceRemaining <= 0 {
-                    animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-                    break
-                }
-                let relativeVelocity = min(abs(yVelocity) / distanceRemaining, 30)
-                let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
-                
-                let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio,
-                                                                initialVelocity: initialVelocity)
-                let preferredDuration = UIViewPropertyAnimator(duration: Constants.animationDuration,
-                                                               timingParameters: timingParameters).duration
-                let durationFactor = CGFloat(preferredDuration / animator.duration)
-                animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
+                endInteractive(velocity: velocity, direction: direction)
             default: break
             }
         default: break
         }
     }
     
-    private func startAnimationIfNeeded(direction: PanDirection) {
+    private func startAnimationIfNeeded() {
         guard animator.isRunning == false else { return }
         
         let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio)
         animator = UIViewPropertyAnimator(duration: Constants.animationDuration,
                                           timingParameters: timingParameters)
-        switch direction {
-        case .down:
-            animatiorTrasform = closedTransform
-            animator.addAnimations { [weak self] in
-                guard let self = self else { return }
-                self.momentumView.transform = self.animatiorTrasform
-                self.momentumView.layer.cornerRadius = 30
-                self.view.backgroundColor = .clear
-            }
-        case .up:
-            animatiorTrasform = openTransform
-            animator.addAnimations { [weak self] in
-                guard let self = self else { return }
-                self.momentumView.transform = self.animatiorTrasform
-                self.momentumView.layer.cornerRadius = 0
-            }
+        
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
+            self.momentumView.transform = self.closedTransform
+            self.view.backgroundColor = .clear
         }
+        
         animator.addCompletion { [weak self] position in
             guard let self = self else { return }
             if position == .end {
-                self.isOpen = self.animatiorTrasform == self.openTransform
-                if self.animatiorTrasform == self.closedTransform {
-                    self.viewModel.action.onNext(.close)
-                }
+                self.viewModel.action.onNext(.close)
             }
         }
         animator.startAnimation()
     }
     
     private func shouldHandleTouch(_ tableView: UITableView, direction: PanDirection) -> Bool {
-        switch (interactionInProgress, isOpen) {
-        case (true, _):
-            return true
-        case (_, true):
-            let zeroContentOffset = CGFloat(0) - tableView.contentInset.top
-            return direction == .down &&
-                tableView.contentOffset.y <= zeroContentOffset
-        default:
-            return true
-        }
+        guard interactionInProgress == false else { return true }
+        
+        let zeroContentOffset = CGFloat(0) - tableView.contentInset.top
+        return direction == .down &&
+            tableView.contentOffset.y <= zeroContentOffset
     }
     
-    private func startInteractive(direction: PanDirection) {
+    private func startInteractive() {
         interactionInProgress = true
-        lockTableView()
-        
-        startAnimationIfNeeded(direction: direction)
+        startAnimationIfNeeded()
         animator.pauseAnimation()
         animationProgress = animator.fractionComplete
     }
     
-    private func endInteractive() {
+    private func endInteractive(velocity: CGFloat, direction: PanDirection) {
         interactionInProgress = false
-        unlockTableView()
-    }
-}
-
-// MARK: - TableView handling
-
-extension PostsViewController {
-    private func lockTableView() {
-        initialScrollOffset = tableView.contentOffset
-        tableView.isDirectionalLockEnabled = true
-        tableView.bounces = false
-    }
-    
-    private func unlockTableView() {
-        tableView.isDirectionalLockEnabled = false
-        tableView.bounces = true
+        
+        let shouldRevert: Bool = direction == .up ||
+            animator.fractionComplete < Constants.fractionLimit
+        
+        if shouldRevert != animator.isReversed {
+            animator.isReversed.toggle()
+        }
+        if velocity == 0 {
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+            return
+        }
+        let fractionRemaining = 1 - animator.fractionComplete
+        let distanceRemaining = fractionRemaining * closedTransform.ty
+        
+        if distanceRemaining <= 0 {
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+            return
+        }
+        let relativeVelocity = min(abs(velocity) / distanceRemaining, 30)
+        let initialVelocity = CGVector(dx: relativeVelocity, dy: relativeVelocity)
+        
+        let timingParameters = UISpringTimingParameters(dampingRatio: Constants.dampingRatio,
+                                                        initialVelocity: initialVelocity)
+        let preferredDuration = UIViewPropertyAnimator(duration: Constants.animationDuration,
+                                                       timingParameters: timingParameters).duration
+        let durationFactor = CGFloat(preferredDuration / animator.duration)
+        animator.continueAnimation(withTimingParameters: timingParameters, durationFactor: durationFactor)
     }
 }
 
@@ -381,11 +344,6 @@ extension PostsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-    }
-    
-    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        guard isOpen == false else { return }
-        scrollView.setContentOffset(scrollView.contentOffset, animated: false)
     }
     
     private func updateTopShadow() {

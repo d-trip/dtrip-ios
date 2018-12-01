@@ -47,8 +47,8 @@ final class PostsCoordinator: Coordinator {
         router.dismissModule(animated: animated, completion: nil)
     }
     
-    private func showPostScreen(_ postModel: PostModel) {
+    private func showPostScreen(_ postIdentifier: PostIdentifier) {
         let postCoordinator: PostCoordinator = try! container.resolve()
-        postCoordinator.start(postModel)
+        postCoordinator.start(postIdentifier)
     }
 }

@@ -13,7 +13,7 @@ import SwiftyConnect
 
 final class Networking {
  
-    let searchURL: String = Parameters.API.searchURL
+    let searchPostURL: String = Parameters.API.searchPostURL
     let steem = Steem.sharedInstance
     
     init() {

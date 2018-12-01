@@ -12,13 +12,10 @@ import RxSwift
 final class MapCoordinator: Coordinator {
     
     private let router: Router
-    private let view: MapViewController
-    
     private let disposeBag = DisposeBag()
     
     init(router: Router,
          view: MapViewController) {
-        self.view = view
         self.router = router
   
         guard let viewModel = view.viewModel else {

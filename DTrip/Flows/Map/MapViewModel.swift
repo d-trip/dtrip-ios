@@ -96,7 +96,6 @@ final class MapViewModel: ViewModel {
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
-            .delay(0.2, scheduler: MainScheduler.instance)
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }
@@ -104,12 +103,11 @@ final class MapViewModel: ViewModel {
     private func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
-            let points = manager.content.take(1)
+            let points = manager.getContent(page: 0, limit: Constants.limitPostsRequest)
                 .map { [weak self] content -> [MapPointModel] in
                     guard let self = self else { return [] }
-                    return self.performContentCoordinates(content)
+                    return self.performContentCoordinates(content.items)
                 }
-
             return .concat([
                 .just(.setLoading(true)),
                 points.map { .addItems($0) },
@@ -149,17 +147,14 @@ final class MapViewModel: ViewModel {
         }
     }
     
-    private func performContentCoordinates(_ content: [SearchContenResultModel]) -> [MapPointModel] {
+    private func performContentCoordinates(_ content: [SearchContenItemModel]) -> [MapPointModel] {
         return content
             .map(makeMapPointModel)
             .compactMap { $0 }
     }
 
-    private func makeMapPointModel(_ content: SearchContenResultModel) -> MapPointModel? {
-        guard content.type == .post,
-            content.meta.location.geometry.type == .point else { return nil }
-
-        let coordinatesArray = content.meta.location.geometry.coordinates
+    private func makeMapPointModel(_ content: SearchContenItemModel) -> MapPointModel? {
+        let coordinatesArray = content.location.geometry.coordinates
         let latitudeIndex = 1
         let longitudeIndex = 0
 
@@ -170,9 +165,17 @@ final class MapViewModel: ViewModel {
         let longitude = coordinatesArray[longitudeIndex]
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 
-        return MapPointModel(name: content.meta.location.properties.name,
+        return MapPointModel(name: content.location.properties.name,
                              permlink: content.permlink,
                              author: content.author,
                              coordinate: coordinate)
+    }
+}
+
+// MARK: - Constants
+
+private extension MapViewModel {
+    enum Constants {
+        static let limitPostsRequest = 1000
     }
 }

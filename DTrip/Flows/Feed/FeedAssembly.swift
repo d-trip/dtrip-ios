@@ -12,7 +12,7 @@ func configureFeed(_ container: DependencyContainer) {
     unowned let container = container
     
     container.register() {
-        FeedViewModelImp() as FeedViewModel
+        FeedViewModel(manager: $0)
     }
     
     container.register {
@@ -21,7 +21,7 @@ func configureFeed(_ container: DependencyContainer) {
     
     container.register { (model: FeedViewModel) -> FeedViewController in
         let controller = FeedViewController()
-        controller.viewModel = model
+        controller.bind(model)
         return controller
     }
 }

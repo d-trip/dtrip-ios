@@ -10,7 +10,7 @@ import Foundation
 
 enum Parameters {
     enum API {
-        static let searchURL = "https://api.asksteem.com/search"
+        static let searchPostURL = "https://api.dtrip.app/rest/posts"
         static let steemURL = "https://api.steemit.com"
     }
 }

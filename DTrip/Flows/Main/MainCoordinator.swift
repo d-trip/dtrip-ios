@@ -13,11 +13,16 @@ final class MainCoordinator: Coordinator {
     private let router: Router
     private let view: MainViewController
     private let map: MapCoordinator
+    private let feed: FeedCoordinator
     
-    init(router: Router, view: MainViewController, map: MapCoordinator) {
+    init(router: Router,
+         view: MainViewController,
+         map: MapCoordinator,
+         feed: FeedCoordinator) {
         self.view = view
         self.router = router
         self.map = map
+        self.feed = feed
         
     }
     

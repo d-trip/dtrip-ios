@@ -7,30 +7,41 @@
 //
 
 import Foundation
+import RxSwift
 
 final class FeedCoordinator: Coordinator {
     
     private let router: Router
-    private let view: FeedViewController
+    private let disposeBag = DisposeBag()
     
     init(router: Router, view: FeedViewController) {
-        self.view = view
         self.router = router
         
-        //        let viewModel = view.viewModel!
-        //
-        //        viewModel.showNextPage
-        //            .bind(onNext: onNext)
-        //            .disposed(by: viewModel.disposeBag)
+        guard let viewModel = view.viewModel else {
+            assertionFailure("ViewModel must be setted")
+            return
+        }
+        
+        viewModel.navigation
+            .bind(onNext: navigate)
+            .disposed(by: disposeBag)
     }
     
-    func start() {
-        //        router.setRootModule(view, hideBar: true, animated: true)
-        //        router.push(view, animated: true)
-        //        router.present(view)
+    func start() { }
+    
+    private func navigate(_ navigation: FeedViewModel.Navigation) {
+        switch navigation {
+        case .openPost(let post):
+            showPostScreen(post)
+        }
     }
     
-    //    func onNext() {
-    //
-    //    }
+    private func dismissModule(_ animated: Bool) {
+        router.dismissModule(animated: animated, completion: nil)
+    }
+    
+    private func showPostScreen(_ postIdentifier: PostIdentifier) {
+        let postCoordinator: PostCoordinator = try! container.resolve()
+        postCoordinator.start(postIdentifier)
+    }
 }

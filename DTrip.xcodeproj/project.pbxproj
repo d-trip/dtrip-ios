@@ -43,7 +43,7 @@
 		EC16E9DA2196490C0099C4FE /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9D92196490C0099C4FE /* LocationModel.swift */; };
 		EC16E9DE21964A650099C4FE /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9DD21964A650099C4FE /* PostModel.swift */; };
 		EC16E9E021973AA90099C4FE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9DF21973AA90099C4FE /* Date.swift */; };
-		EC16E9E221974BCA0099C4FE /* SearchContenResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */; };
+		EC16E9E221974BCA0099C4FE /* SearchContenItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E121974BCA0099C4FE /* SearchContenItemModel.swift */; };
 		EC16E9E421974DDF0099C4FE /* PostIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */; };
 		EC16E9EA219864780099C4FE /* AccountMetaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9E9219864780099C4FE /* AccountMetaModel.swift */; };
 		EC16E9EC219867130099C4FE /* NodeAccountResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9EB219867120099C4FE /* NodeAccountResponseModel.swift */; };
@@ -153,7 +153,7 @@
 		EC16E9D92196490C0099C4FE /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		EC16E9DD21964A650099C4FE /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		EC16E9DF21973AA90099C4FE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContenResultModel.swift; sourceTree = "<group>"; };
+		EC16E9E121974BCA0099C4FE /* SearchContenItemModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContenItemModel.swift; sourceTree = "<group>"; };
 		EC16E9E321974DDF0099C4FE /* PostIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostIdentifier.swift; sourceTree = "<group>"; };
 		EC16E9E9219864780099C4FE /* AccountMetaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMetaModel.swift; sourceTree = "<group>"; };
 		EC16E9EB219867120099C4FE /* NodeAccountResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeAccountResponseModel.swift; sourceTree = "<group>"; };
@@ -330,7 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */,
-				EC16E9E121974BCA0099C4FE /* SearchContenResultModel.swift */,
+				EC16E9E121974BCA0099C4FE /* SearchContenItemModel.swift */,
 				EC16E9D92196490C0099C4FE /* LocationModel.swift */,
 				EC16E9D7219648F20099C4FE /* ContentMetaModel.swift */,
 				EC16E9D5219648370099C4FE /* Reputation.swift */,
@@ -773,7 +773,7 @@
 				ECF93B98217BEA2800641225 /* PostsManager.swift in Sources */,
 				EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */,
 				ECC3BF5F217BC00400B6E87B /* MapViewController.swift in Sources */,
-				EC16E9E221974BCA0099C4FE /* SearchContenResultModel.swift in Sources */,
+				EC16E9E221974BCA0099C4FE /* SearchContenItemModel.swift in Sources */,
 				ECC3BF5B217BBD5400B6E87B /* FeedViewModel.swift in Sources */,
 				EC16E9DA2196490C0099C4FE /* LocationModel.swift in Sources */,
 				EC16E9EC219867130099C4FE /* NodeAccountResponseModel.swift in Sources */,

@@ -10,8 +10,7 @@ import Foundation
 import RxSwift
 
 protocol PostManager {
-    var updateContent: AnyObserver<Void> { get }
-    var content: Observable<[SearchContenResultModel]> { get }
+    func getContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel>
     
     func getPost(identifier: PostIdentifier) -> Observable<PostModel>
     func getPosts(identifiers: [PostIdentifier]) -> Observable<[PostModel]>
@@ -21,16 +20,6 @@ protocol PostManager {
 
 final class PostManagerImp: PostManager {
     
-    var updateContent: AnyObserver<Void> {
-        return updateContentSubject.asObserver()
-    }
-    var content: Observable<[SearchContenResultModel]> {
-        return contentSubject
-    }
-    
-    private let contentSubject = ReplaySubject<[SearchContenResultModel]>.create(bufferSize: 1)
-    private let updateContentSubject = PublishSubject<Void>()
-
     let disposeBag = DisposeBag()
     let network: PostManagerNetworking
     let parser: PostManagerParser
@@ -38,21 +27,10 @@ final class PostManagerImp: PostManager {
     init(network: PostManagerNetworking, parser: PostManagerParser) {
         self.network = network
         self.parser = parser
-
-        updateContentSubject
-            .startWith(())
-            .flatMap(getAllContent)
-            .bind { [weak self] (content) in
-                self?.contentSubject.onNext(content)
-            }
-            .disposed(by: disposeBag)
     }
     
-    func getAllContent() -> Observable<[SearchContenResultModel]> {
-        return network.getAllContent(page: 0)
-            .scan([]) { $0 + $1.results }
-            .takeLast(1)
-            .map { $0.filter { $0.type == .post } }
+    func getContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel> {
+        return network.getSearchContent(page: page, limit: limit)
     }
     
     func getPost(identifier: PostIdentifier) -> Observable<PostModel> {

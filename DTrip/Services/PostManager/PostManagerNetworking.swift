@@ -12,34 +12,19 @@ import SwiftyConnect
 
 protocol PostManagerNetworking {
     func getAccounts(accounts: [String]) -> Observable<NodeAccountResponseModel>
-    func getAllContent(page: Int) -> Observable<SearchContentResponseModel>
+    func getSearchContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel>
     func getContent(author: String, permlink: String) -> Observable<NodeContentResponseModel>
 }
 
 extension Networking: PostManagerNetworking {
-    func getContent(page: Int) -> Observable<SearchContentResponseModel> {
-        let parameters: [String: Any] = ["q": "meta.app:dtrip AND meta.location.geometry.type:Point",
-                                         "include": "meta",
-                                         "pg": page]
+    func getSearchContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel> {
+        let parameters: [String: Any] = ["page": page, "max_results": limit]
         
-        return request(url: searchURL, method: .get, parameters: parameters)
+        return request(url: searchPostURL, method: .get, parameters: parameters)
             .retry(2)
             .catchError(handleError)
             .map(to: SearchContentResponseModel.self)
             .catchError(handleError)
-    }
-    
-    func getAllContent(page: Int) -> Observable<SearchContentResponseModel> {
-        
-        // ToDo: - Now it's sync operations. not very fast:(
-        return getContent(page: page)
-            .flatMap { content -> Observable<SearchContentResponseModel> in
-                guard content.pages.hasNext else {
-                    return Observable.just(content)
-                }
-                return Observable.just(content)
-                    .concat(self.getAllContent(page: content.pages.current + 1))
-        }
     }
     
     func getContent(author: String, permlink: String) -> Observable<NodeContentResponseModel> {

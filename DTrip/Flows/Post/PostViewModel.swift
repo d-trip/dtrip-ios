@@ -39,16 +39,11 @@ final class PostViewModel: ViewModel {
     
     struct State {
         var isLoading = true
-        var postModel: PostModel?
-        var postIdentifier: PostIdentifier?
+        var postModel: PostModel? = nil
+        let postIdentifier: PostIdentifier
         
         init(postIdentifier: PostIdentifier) {
             self.postIdentifier = postIdentifier
-            self.postModel = nil
-        }
-        init(postModel: PostModel) {
-            self.postIdentifier = nil
-            self.postModel = postModel
         }
     }
     
@@ -65,12 +60,6 @@ final class PostViewModel: ViewModel {
     init(manager: PostManager, postIdentifier: PostIdentifier) {
         self.manager = manager
         self.initialState = State(postIdentifier: postIdentifier)
-        setBindings()
-    }
-    
-    init(manager: PostManager, postModel: PostModel) {
-        self.manager = manager
-        self.initialState = State(postModel: postModel)
         setBindings()
     }
     
@@ -108,12 +97,8 @@ final class PostViewModel: ViewModel {
         case .viewDidLoad:
             let postModel = stateSubject.take(1)
                 .flatMap { [weak self] state -> Observable<PostModel> in
-                    if let postModel = state.postModel {
-                        return .just(postModel)
-                    } else if let postIdentifier = state.postIdentifier, let manager = self?.manager {
-                        return manager.getPost(identifier: postIdentifier)
-                    }
-                    return .never()
+                    guard let manager = self?.manager else { return .never() }
+                    return manager.getPost(identifier: state.postIdentifier)
                 }
             return .concat([
                 .just(.setLoading(true)),

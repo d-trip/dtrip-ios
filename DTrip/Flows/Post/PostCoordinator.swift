@@ -25,17 +25,6 @@ final class PostCoordinator: Coordinator {
         
         router.present(postsModule.viewController, animated: true)
     }
-
-    func start(_ postModel: PostModel) {
-        let postsModule: PostModule = try! container.resolve(arguments: postModel)
-        
-        postsModule.viewModel
-            .navigation
-            .bind(onNext: navigate)
-            .disposed(by: disposeBag)
-        
-        router.present(postsModule.viewController, animated: true)
-    }
     
     private func navigate(_ navigation: PostViewModel.Navigation) {
         switch navigation {
@@ -47,5 +36,4 @@ final class PostCoordinator: Coordinator {
     private func dismissModule(_ animated: Bool) {
         router.dismissModule(animated: animated, completion: nil)
     }
-    
 }

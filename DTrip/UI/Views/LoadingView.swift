@@ -43,7 +43,7 @@ final class LoadingView: UIView {
         isActive = true
     }
     
-    func startAnimation(for view: UIView, animate: Bool = true) {
+    func startAnimation(for view: UIView, animate: Bool = true, insets: UIEdgeInsets = .zero) {
         guard isActive == false else { return }
         
         translatesAutoresizingMaskIntoConstraints = false
@@ -52,12 +52,12 @@ final class LoadingView: UIView {
         
         view.addSubview(self)
         NSLayoutConstraint.activate([
-            topAnchor.constraint(equalTo: view.topAnchor),
-            bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top),
+            bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: insets.bottom),
+            leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: insets.right),
         ])
-        startAnimation()
+        startAnimation(animate: animate)
     }
     
     func stopAnimation(animate: Bool = true) {

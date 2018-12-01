@@ -9,19 +9,23 @@
 import Foundation
 
 struct SearchContentResponseModel: Codable {
-    let results: [SearchContenResultModel]
-    let hits: Int
-    let error: Bool
-    let pages: Pages
-}
-
-struct Pages: Codable {
-    let hasNext, hasPrevious: Bool
-    let current: Int
+    let items: [SearchContenItemModel]
+    let meta: SearchContentMeta
     
     enum CodingKeys: String, CodingKey {
-        case hasNext = "has_next"
-        case hasPrevious = "has_previous"
-        case current
+        case items = "_items"
+        case meta = "_meta"
+    }
+}
+
+struct SearchContentMeta: Codable {
+    let page: Int
+    let maxResults: Int
+    let total: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case page
+        case maxResults = "max_results"
+        case total
     }
 }

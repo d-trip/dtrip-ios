@@ -32,18 +32,20 @@ final class PostsViewModel: ViewModel {
     
     enum Mutation {
         case setLoading(Bool)
+        case setNextPageLoading(Bool)
         case addItems([PostModel])
         case openPost(PostModel)
         case close
     }
     
     enum Navigation {
-        case openPost(PostModel)
+        case openPost(PostIdentifier)
         case dismiss(animated: Bool)
     }
     
     struct State {
-        var isLoading = true        
+        var isLoading = true
+        var isNextPageLoading = false
         var postItems: [PostModel] = []
         let postIdentifiers: [PostIdentifier]
         
@@ -93,7 +95,6 @@ final class PostsViewModel: ViewModel {
                 guard let self = self else { return .empty() }
                 return self.reduce(state: state, mutation: mutation)
             }
-            .delay(0.2, scheduler: MainScheduler.instance)
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }
@@ -134,9 +135,9 @@ final class PostsViewModel: ViewModel {
                     return manager.getPosts(identifiers: postIdentifiers)
                 }
             return .concat([
-                .just(.setLoading(true)),
+                .just(.setNextPageLoading(true)),
                 postItems.map { .addItems($0) },
-                .just(.setLoading(false)),
+                .just(.setNextPageLoading(false)),
                 ])
         case .selectModel(let index):
             return stateSubject.take(1)
@@ -156,7 +157,8 @@ final class PostsViewModel: ViewModel {
         case .close:
             return .just(.dismiss(animated: false))
         case .openPost(let post):
-            return .just(.openPost(post))
+            let postIdentifier = PostIdentifier(post.author.name, post.permlink)
+            return .just(.openPost(postIdentifier))
         default:
             return .empty()
         }
@@ -167,6 +169,9 @@ final class PostsViewModel: ViewModel {
         switch mutation {
         case .setLoading(let loading):
             state.isLoading = loading
+            return .just(state)
+        case .setNextPageLoading(let loading):
+            state.isNextPageLoading = loading
             return .just(state)
         case .addItems(let items):
             state.postItems += items

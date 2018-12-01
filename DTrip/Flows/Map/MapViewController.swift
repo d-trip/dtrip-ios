@@ -34,14 +34,14 @@ final class MapViewController: UIViewController {
 
     // MARK: - Managing the View
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         setupView()
     }
 
     private func updateLoadingView(show: Bool) {
         if show {
-            loadingAnimation.startAnimation(for: mapView)
+            loadingAnimation.startAnimation(for: view)
         } else {
             loadingAnimation.stopAnimation()
         }
@@ -85,6 +85,7 @@ final class MapViewController: UIViewController {
         
         viewModel.state
             .map { $0.isLoading }
+            .delay(0.2, scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
             })
