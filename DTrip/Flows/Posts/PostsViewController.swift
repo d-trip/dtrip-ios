@@ -245,7 +245,12 @@ extension PostsViewController {
                     fraction *= -1
                 }
                 animator.fractionComplete = fraction + animationProgress
-                isOpen = animator.fractionComplete == 1 && animatiorTrasform == openTransform
+                
+                if animatiorTrasform == openTransform {
+                    isOpen = animator.fractionComplete == 1
+                } else {
+                    isOpen = true
+                }
             case .ended, .cancelled:
                 endInteractive()
                 
