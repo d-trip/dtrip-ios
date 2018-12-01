@@ -168,11 +168,7 @@ final class PostViewController: UIViewController {
     }
 
     private var navigationBarShadowOffset: CGFloat {
-        return bottomContentView.frame.minY + avatarImageView.frame.minY
-    }
-
-    private var isNavigationBarShouldColored: Bool {
-        return navigationBarOffset > locationLabel.frame.minY
+        return bottomContentView.frame.minY
     }
 
     // MARK: - Constraints
@@ -501,6 +497,7 @@ extension PostViewController: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         animator.fractionComplete = navigationBarAnimationProgress
         updateStatusBarVisibility()
+        updateNavigationBarShadow()
     }
 }
 
