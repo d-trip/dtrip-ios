@@ -82,6 +82,16 @@ final class PostManagerParserImp: PostManagerParser {
                 return Disposables.create()
             }
             let tags = bodyModel.hashtags + bodyModel.usertags + (postMeta?.tags ?? [])
+            
+            let location: String?
+            if let postLocation = postMeta?.location {
+                location = postLocation.properties.name.isEmpty ?
+                    postLocation.properties.desc :
+                    postLocation.properties.name
+            } else {
+                location = nil
+            }
+            
             let postModel = PostModel(id: content.id,
                                       url: content.url,
                                       category: content.category,
@@ -90,7 +100,7 @@ final class PostManagerParserImp: PostManagerParser {
                                       lastUpdate: content.lastUpdate,
                                       title: content.title,
                                       description: bodyModel.html.removeTags(),
-                                      location: postMeta?.location.properties.name,
+                                      location: location,
                                       bodyHTML: bodyModel.html,
                                       images: bodyModel.images,
                                       tags: tags,

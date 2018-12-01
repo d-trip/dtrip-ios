@@ -10,8 +10,8 @@ import Foundation
 
 struct ContentMetaModel: Codable {
     let tags: [String]
-    let location: LocationModel
-    let format: String
-    let app: String
-    let community: String
+    let location: LocationModel?
+    let format: String?
+    let app: String?
+    let community: String?
 }

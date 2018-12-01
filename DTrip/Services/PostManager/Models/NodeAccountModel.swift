@@ -16,7 +16,6 @@ struct NodeAccountModel: Codable {
     let canVote: Bool
     let votingPower: Int
     let balance: String
-    let reputation: String
     let jsonMetadata: String
     
     enum CodingKeys: String, CodingKey {
@@ -28,7 +27,6 @@ struct NodeAccountModel: Codable {
         case name = "name"
         case balance = "balance"
         case jsonMetadata = "json_metadata"
-        case reputation = "reputation"
     }
 }
 
@@ -45,6 +43,7 @@ extension NodeAccountModel {
     }
 }
 
+//    let reputation: String?
 //    let proxy: String
 //    let lastPost: String
 //    let savingsSbdBalance: String

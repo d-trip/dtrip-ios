@@ -14,5 +14,5 @@ struct ActiveVoteModel: Codable {
     let weight: Int
 //    let rshares: Int
     let percent: Int
-    let reputation: Reputation
+    let reputation: Reputation?
 }

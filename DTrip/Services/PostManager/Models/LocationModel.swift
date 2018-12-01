@@ -20,4 +20,5 @@ struct LocatioGeometry: Codable {
 
 struct LocationProperties: Codable {
     let name: String
+    let desc: String?
 }
