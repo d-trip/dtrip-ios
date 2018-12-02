@@ -154,6 +154,13 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    private lazy var loadingAnimation: LoadingView = {
+        let view = LoadingView()
+        view.backgroundColor = .clear
+        view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
+        return view
+    }()
+
     // MARK: - Animator
 
     private lazy var animator: UIViewPropertyAnimator = {
@@ -191,7 +198,7 @@ final class PostViewController: UIViewController {
     // MARK: - Constraints
 
     private lazy var webViewHeightConstraint: NSLayoutConstraint = {
-        return self.descriptionWebView.heightAnchor.constraint(equalToConstant: 0)
+        return self.descriptionWebView.heightAnchor.constraint(equalToConstant: Spaces.octuple)
     }()
 
     // MARK: - Managing the Status Bar
@@ -446,10 +453,16 @@ final class PostViewController: UIViewController {
     }
 
     private func updateLoadingView(show: Bool) {
-        // ToDo: - Add loading view
+        print("\(#function) show \(show) bottomContentView.frame = \(bottomContentView.frame)")
+        if show {
+            loadingAnimation.startAnimation(for: bottomContentView)
+        } else {
+            loadingAnimation.stopAnimation(animate: false)
+        }
     }
 
     private func handlePostModel(_ postModel: PostModel) {
+        print("\(#function)")
         descriptionWebView.loadHTMLString(postModel.bodyHTML, baseURL: nil)
         setupContentHeaderImageView(postModel)
         setupAvatarImageView(postModel)
@@ -462,19 +475,18 @@ final class PostViewController: UIViewController {
     }
 
     private func setupContentHeaderImageView(_ postModel: PostModel) {
-        setupImage(on: headerImageView, with: postModel.titleImage())
+        let headerImage = postModel.titleImage() ?? ""
+        let headerImageURL = URL(string: headerImage)
+        headerImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
+        headerImageView.kf.setImage(with: headerImageURL,
+                                    placeholder: UIImage.EmptyState.post)
     }
 
     private func setupAvatarImageView(_ postModel: PostModel) {
-        setupImage(on: avatarImageView, with: postModel.author.profileImage)
-    }
-
-    private func setupImage(on view: UIImageView, with urlString: String?) {
-        guard let urlString = urlString else { return }
-        let imageURL = URL(string: urlString)
-
-        view.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
-        view.kf.setImage(with: imageURL)
+        let profileImage = postModel.author.profileImage ?? ""
+        let profileImageUrl = URL(string: profileImage)
+        avatarImageView.kf.setImage(with: profileImageUrl,
+                                    placeholder: UIImage.EmptyState.avatar)
     }
 
     // MARK: - NavigationBar shadow configuring
