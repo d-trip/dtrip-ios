@@ -135,6 +135,7 @@ final class PostViewController: UIViewController {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(UIImage.Common.whiteRoundCross, for: .normal)
+        view.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         view.tintColor = .white
         return view
     }()
@@ -387,12 +388,14 @@ final class PostViewController: UIViewController {
 
             dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spaces.single),
             dismissButton.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor, constant: Spaces.triple),
+            dismissButton.widthAnchor.constraint(equalToConstant: Spaces.quadruple),
             dismissButton.widthAnchor.constraint(equalTo: dismissButton.heightAnchor),
 
             topGradientView.topAnchor.constraint(equalTo: view.topAnchor),
             topGradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topGradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topGradientView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spaces.octuple),
+            topGradientView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                                    constant: Spaces.octuple),
         ]
         NSLayoutConstraint.activate(constraints)
     }
