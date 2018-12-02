@@ -139,6 +139,22 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    private lazy var topGradientView: GradientView = {
+        let view = GradientView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.configure(.top)
+        return view
+    }()
+
+    private lazy var bottomGradientView: GradientView = {
+        let view = GradientView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.configure(.bottom)
+        return view
+    }()
+
+    // MARK: - Animator
+
     private lazy var animator: UIViewPropertyAnimator = {
         let timingParameters = UICubicTimingParameters(animationCurve: .easeIn)
         let animator = UIViewPropertyAnimator(duration: 0.3,
@@ -237,6 +253,7 @@ final class PostViewController: UIViewController {
 
         [
             headerImageView,
+            bottomGradientView,
             locationLabel,
             statusLabel,
         ].forEach {
@@ -341,6 +358,11 @@ final class PostViewController: UIViewController {
             shareButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
             shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
             shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
+
+            bottomGradientView.topAnchor.constraint(equalTo: locationLabel.topAnchor, constant: -Spaces.triple),
+            bottomGradientView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            bottomGradientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            bottomGradientView.bottomAnchor.constraint(equalTo: headerImageContainerView.bottomAnchor),
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -349,11 +371,12 @@ final class PostViewController: UIViewController {
     private func configureShadow(for label: UILabel) {
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOffset = .zero
-        label.layer.shadowOpacity = 1
-        label.layer.shadowRadius = 2
+        label.layer.shadowOpacity = 0.6
+        label.layer.shadowRadius = 1.5
     }
 
     private func setupNavigationBar() {
+        view.addSubview(topGradientView)
         view.addSubview(navigationBar)
         navigationBar.addSubview(dismissButton)
         let constraints = [
@@ -365,6 +388,11 @@ final class PostViewController: UIViewController {
             dismissButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spaces.single),
             dismissButton.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor, constant: Spaces.triple),
             dismissButton.widthAnchor.constraint(equalTo: dismissButton.heightAnchor),
+
+            topGradientView.topAnchor.constraint(equalTo: view.topAnchor),
+            topGradientView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topGradientView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topGradientView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spaces.octuple),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -427,12 +455,13 @@ final class PostViewController: UIViewController {
         titleLabel.text = postModel.title
         locationLabel.text = postModel.location
         statusLabel.text = postModel.category.uppercased()
-        
+
         setupHtmlPost(postModel.bodyHTML)
     }
 
     private func setupHtmlPost(_ bodyHTML: String) {
-        let html = bodyHTML.replacingOccurrences(of: "<html>", with: """
+        let html = bodyHTML.replacingOccurrences(of: "<html>", with:
+        """
             <html>
                 <head><style>
                     img { max-width: \(descriptionWebView.bounds.width)px; };
@@ -441,7 +470,7 @@ final class PostViewController: UIViewController {
         """)
         descriptionWebView.loadHTMLString(html, baseURL: nil)
     }
-    
+
     private func setupContentHeaderImageView(_ postModel: PostModel) {
         setupImage(on: headerImageView, with: postModel.titleImage())
     }
