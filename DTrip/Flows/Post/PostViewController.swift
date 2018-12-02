@@ -550,4 +550,14 @@ extension PostViewController: WKNavigationDelegate {
                 }
             })
     }
+
+    public func webView(_ webView: WKWebView,
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType == .other || navigationAction.navigationType == .reload else {
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
+    }
 }
