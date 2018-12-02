@@ -51,6 +51,7 @@
 		EC16E9F0219867F80099C4FE /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9EF219867F80099C4FE /* AccountModel.swift */; };
 		EC3CB7E221ADEB5400A2FB30 /* ImageLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB7E121ADEB5400A2FB30 /* ImageLoadingIndicator.swift */; };
 		EC3CB7E421B09A0800A2FB30 /* PostViewWebViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3CB7E321B09A0800A2FB30 /* PostViewWebViewFactory.swift */; };
+		EC3CB7E621B3F7B200A2FB30 /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = EC3CB7E521B3F7B200A2FB30 /* style.css */; };
 		EC78E71B2190935800C19421 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71A2190935800C19421 /* Networking.swift */; };
 		EC78E71E2190998A00C19421 /* PostManagerNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */; };
 		EC78E7202190999A00C19421 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E71F2190999A00C19421 /* Data.swift */; };
@@ -161,6 +162,7 @@
 		EC16E9EF219867F80099C4FE /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
 		EC3CB7E121ADEB5400A2FB30 /* ImageLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingIndicator.swift; sourceTree = "<group>"; };
 		EC3CB7E321B09A0800A2FB30 /* PostViewWebViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewWebViewFactory.swift; sourceTree = "<group>"; };
+		EC3CB7E521B3F7B200A2FB30 /* style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		EC78E71A2190935800C19421 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		EC78E71D2190998A00C19421 /* PostManagerNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerNetworking.swift; sourceTree = "<group>"; };
 		EC78E71F2190999A00C19421 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				EC13ACF821A35CAB001F0484 /* bundle.js */,
+				EC3CB7E521B3F7B200A2FB30 /* style.css */,
 				ECC3BF1A21793F7000B6E87B /* LaunchScreen */,
 				ECC3BF2121793FD400B6E87B /* Assets.xcassets */,
 			);
@@ -622,6 +625,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECC3BF2321793FD500B6E87B /* Assets.xcassets in Resources */,
+				EC3CB7E621B3F7B200A2FB30 /* style.css in Resources */,
 				ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */,
 				EC13ACF921A35CAB001F0484 /* bundle.js in Resources */,
 			);

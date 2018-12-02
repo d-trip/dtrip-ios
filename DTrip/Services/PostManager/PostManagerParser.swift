@@ -63,7 +63,8 @@ final class PostManagerParserImp: PostManagerParser {
     
     func makePostModel(_ content: NodeContentModel, _ accounts: [NodeAccountModel]) -> Observable<PostModel> {
         return Observable.create({ [weak self] observer -> Disposable in
-            guard let authorNodeModel = accounts.first(where: { $0.name == content.author }) else {
+            guard let self = self,
+                let authorNodeModel = accounts.first(where: { $0.name == content.author }) else {
                 observer.onError(PostManagerParserError.authorModelIsNotFound)
                 return Disposables.create()
             }
@@ -77,7 +78,7 @@ final class PostManagerParserImp: PostManagerParser {
                                       github: authorMeta?.github,
                                       website: authorMeta?.website)
             
-            guard let bodyModel = self?.pasreBodyPost(body: content.body) else {
+            guard let bodyModel = self.pasreBodyPost(body: content.body) else {
                 observer.onError(PostManagerParserError.parseError)
                 return Disposables.create()
             }
@@ -91,7 +92,7 @@ final class PostManagerParserImp: PostManagerParser {
             } else {
                 location = nil
             }
-            
+            let bodyHTML = self.normalizeHTML(bodyModel.html)
             let postModel = PostModel(id: content.id,
                                       url: content.url,
                                       category: content.category,
@@ -101,7 +102,7 @@ final class PostManagerParserImp: PostManagerParser {
                                       title: content.title,
                                       description: bodyModel.html.removeTags(),
                                       location: location,
-                                      bodyHTML: bodyModel.html,
+                                      bodyHTML: bodyHTML,
                                       images: bodyModel.images,
                                       tags: tags,
                                       author: author,
@@ -110,6 +111,26 @@ final class PostManagerParserImp: PostManagerParser {
             observer.onCompleted()
             return Disposables.create()
         })
+    }
+    
+    func normalizeHTML(_ html: String) -> String {
+        guard let pathsCSS =  Bundle.main.path(forResource: "style", ofType: "css"),
+            let rawCSS = try? String(contentsOfFile: pathsCSS, encoding: .utf8) else {
+            return html
+        }
+        let rawHtml = html.replacingOccurrences(of: "<[^>][html, body]+>",
+                                                with: "",
+                                                options: .regularExpression,
+                                                range: nil)
+        let startPage = """
+        <html><head>
+        <meta charset="utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1">
+        <style>\(rawCSS)</style>
+        </head><body ontouchstart="">
+        """
+        let closePage = "</body></html>"
+        return startPage + rawHtml + closePage
     }
 }
 

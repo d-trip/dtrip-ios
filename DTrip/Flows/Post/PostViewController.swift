@@ -395,19 +395,7 @@ final class PostViewController: UIViewController {
         titleLabel.text = postModel.title
         locationLabel.text = postModel.location
         statusLabel.text = postModel.category.uppercased()
-        
-        setupHtmlPost(postModel.bodyHTML)
-    }
-
-    private func setupHtmlPost(_ bodyHTML: String) {
-        let html = bodyHTML.replacingOccurrences(of: "<html>", with: """
-            <html>
-                <head><style>
-                    img { max-width: \(descriptionWebView.bounds.width)px; };
-                </style></head>
-            <body style='margin:0; padding:0;'>
-        """)
-        descriptionWebView.loadHTMLString(html, baseURL: nil)
+        descriptionWebView.loadHTMLString(postModel.bodyHTML, baseURL: nil)
     }
     
     private func setupContentHeaderImageView(_ postModel: PostModel) {

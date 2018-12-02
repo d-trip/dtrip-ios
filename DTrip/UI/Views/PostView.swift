@@ -180,7 +180,7 @@ final class PostView: UIView {
     private func configureShadow(for label: UILabel) {
         label.layer.shadowColor = UIColor.black.cgColor
         label.layer.shadowOffset = .zero
-        label.layer.shadowOpacity = 0.3
+        label.layer.shadowOpacity = 0.6
         label.layer.shadowRadius = 1.5
     }
 
