@@ -439,6 +439,7 @@ final class PostViewController: UIViewController {
         viewModel.state
             .map { $0.postModel }
             .unwrap()
+            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] postModel in
                 self?.handlePostModel(postModel)
             })
@@ -446,6 +447,7 @@ final class PostViewController: UIViewController {
 
         viewModel.state
             .map { $0.isLoading }
+            .distinctUntilChanged()
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
             })

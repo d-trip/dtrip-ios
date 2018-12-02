@@ -95,11 +95,11 @@ final class PostViewModel: ViewModel {
     private func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
-            let postModel = stateSubject.take(1)
+            let postModel = stateSubject
                 .flatMap { [weak self] state -> Observable<PostModel> in
                     guard let manager = self?.manager else { return .never() }
                     return manager.getPost(identifier: state.postIdentifier)
-                }
+                }.take(1)
             return .concat([
                 .just(.setLoading(true)),
                 postModel.map { Mutation.setPost($0) },
