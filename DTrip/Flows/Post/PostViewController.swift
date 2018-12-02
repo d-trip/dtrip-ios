@@ -112,12 +112,6 @@ final class PostViewController: UIViewController {
         return separatorView
     }()
 
-    private lazy var likeButton: UIButton = {
-        let view = UIButton(type: .custom)
-        view.setImage(UIImage.Feed.Post.likeButton, for: .normal)
-        return view
-    }()
-
     private lazy var shareButton: UIButton = {
         let view = UIButton(type: .custom)
         view.setImage(UIImage.Feed.Post.shareButton, for: .normal)
@@ -276,7 +270,6 @@ final class PostViewController: UIViewController {
             titleLabel,
             descriptionWebView,
             separatorView,
-            likeButton,
             shareButton,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -327,7 +320,7 @@ final class PostViewController: UIViewController {
             avatarImageView.topAnchor.constraint(equalTo: bottomContentView.topAnchor,
                                                  constant: Spaces.quadruple),
             avatarImageView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                     constant: Spaces.quadruple),
+                                                     constant: Spaces.double),
             avatarImageView.widthAnchor.constraint(equalToConstant: 30),
             avatarImageView.heightAnchor.constraint(equalToConstant: 30),
 
@@ -338,33 +331,28 @@ final class PostViewController: UIViewController {
             dateLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
 
             titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: Spaces.triple),
-            titleLabel.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.quadruple),
+            titleLabel.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.double),
             titleLabel.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                 constant: -Spaces.quadruple),
+                                                 constant: -Spaces.double),
 
             descriptionWebView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.double),
             descriptionWebView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                        constant: Spaces.quadruple),
+                                                        constant: Spaces.double),
             descriptionWebView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                         constant: -Spaces.quadruple),
+                                                         constant: -Spaces.double),
             webViewHeightConstraint,
 
             separatorView.topAnchor.constraint(equalTo: descriptionWebView.bottomAnchor, constant: Spaces.double),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
             separatorView.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.septuple),
             separatorView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                   constant: Spaces.quadruple),
+                                                   constant: Spaces.double),
             separatorView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                    constant: -Spaces.quadruple),
-
-            likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
-            likeButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
-            likeButton.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.quadruple),
-            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
+                                                    constant: -Spaces.double),
 
             shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             shareButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
-            shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
+            shareButton.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.triple),
             shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
 
             bottomGradientView.topAnchor.constraint(equalTo: locationLabel.topAnchor, constant: -Spaces.triple),
@@ -551,5 +539,15 @@ extension PostViewController: WKNavigationDelegate {
                         })
                 }
             })
+    }
+
+    public func webView(_ webView: WKWebView,
+                        decidePolicyFor navigationAction: WKNavigationAction,
+                        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType == .other || navigationAction.navigationType == .reload else {
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
     }
 }
