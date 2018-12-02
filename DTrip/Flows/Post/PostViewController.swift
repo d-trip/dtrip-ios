@@ -449,6 +449,11 @@ final class PostViewController: UIViewController {
                 self?.updateLoadingView(show: isLoading)
             })
             .disposed(by: disposeBag)
+
+        shareButton.rx.controlEvent(.touchUpInside)
+            .map { PostViewModel.Action.share }
+            .bind(to: viewModel.action)
+            .disposed(by: disposeBag)
     }
 
     private func updateLoadingView(show: Bool) {

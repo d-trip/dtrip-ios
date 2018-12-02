@@ -25,16 +25,19 @@ final class PostViewModel: ViewModel {
     enum Action {
         case viewDidLoad
         case close
+        case share
     }
     
     enum Mutation {
         case setLoading(Bool)
         case setPost(PostModel)
         case close
+        case share(PostModel)
     }
     
     enum Navigation {
         case dismiss(animated: Bool)
+        case openShareModule(postModel: PostModel, animated: Bool)
     }
     
     struct State {
@@ -91,7 +94,7 @@ final class PostViewModel: ViewModel {
             .bind(to: stateSubject.asObserver())
             .disposed(by: disposeBag)
     }
-    
+
     private func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
@@ -100,13 +103,20 @@ final class PostViewModel: ViewModel {
                     guard let manager = self?.manager else { return .never() }
                     return manager.getPost(identifier: state.postIdentifier)
                 }.take(1)
-            return .concat([
-                .just(.setLoading(true)),
-                postModel.map { Mutation.setPost($0) },
-                .just(.setLoading(false))
+            return .concat(
+                [
+                    .just(.setLoading(true)),
+                    postModel.map { Mutation.setPost($0) },
+                    .just(.setLoading(false))
                 ])
         case .close:
             return .just(.close)
+        case .share:
+            return stateSubject
+                .take(1)
+                .map { $0.postModel }
+                .unwrap()
+                .map { Mutation.share($0) }
         }
     }
     
@@ -114,6 +124,8 @@ final class PostViewModel: ViewModel {
         switch mutation {
         case .close:
             return .just(.dismiss(animated: true))
+        case .share(let postModel):
+            return .just(.openShareModule(postModel: postModel, animated: true))
         default:
             return .empty()
         }
