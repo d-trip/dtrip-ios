@@ -112,12 +112,6 @@ final class PostViewController: UIViewController {
         return separatorView
     }()
 
-    private lazy var likeButton: UIButton = {
-        let view = UIButton(type: .custom)
-        view.setImage(UIImage.Feed.Post.likeButton, for: .normal)
-        return view
-    }()
-
     private lazy var shareButton: UIButton = {
         let view = UIButton(type: .custom)
         view.setImage(UIImage.Feed.Post.shareButton, for: .normal)
@@ -276,7 +270,6 @@ final class PostViewController: UIViewController {
             titleLabel,
             descriptionWebView,
             separatorView,
-            likeButton,
             shareButton,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -357,14 +350,9 @@ final class PostViewController: UIViewController {
             separatorView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
                                                     constant: -Spaces.double),
 
-            likeButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
-            likeButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
-            likeButton.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.triple),
-            likeButton.widthAnchor.constraint(equalTo: likeButton.heightAnchor),
-
             shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             shareButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
-            shareButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: Spaces.double),
+            shareButton.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.triple),
             shareButton.widthAnchor.constraint(equalTo: shareButton.heightAnchor),
 
             bottomGradientView.topAnchor.constraint(equalTo: locationLabel.topAnchor, constant: -Spaces.triple),
