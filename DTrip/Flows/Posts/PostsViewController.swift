@@ -158,8 +158,7 @@ final class PostsViewController: UIViewController {
     }
  
     private func updateLoadingView(show: Bool) {
-        if show {
-            momentumView.frame = view.bounds
+        if show {            
             loadingAnimation.startAnimation(for: momentumView)
         } else {
             loadingAnimation.stopAnimation(animate: false)

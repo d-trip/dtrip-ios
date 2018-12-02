@@ -17,6 +17,7 @@ final class PostViewController: UIViewController {
         view.backgroundColor = .white
         view.contentInsetAdjustmentBehavior = .never
         view.showsVerticalScrollIndicator = false
+        view.contentInset.bottom = Spaces.septuple
         view.delegate = self
         return view
     }()
@@ -150,7 +151,7 @@ final class PostViewController: UIViewController {
 
     private lazy var loadingAnimation: LoadingView = {
         let view = LoadingView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .white
         view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
         return view
     }()
@@ -216,8 +217,8 @@ final class PostViewController: UIViewController {
 
     // MARK: - Managing the View
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         setupView()
         setupConstraints()
         setupNavigationBar()
@@ -318,9 +319,9 @@ final class PostViewController: UIViewController {
             bottomContentView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             avatarImageView.topAnchor.constraint(equalTo: bottomContentView.topAnchor,
-                                                 constant: Spaces.quadruple),
+                                                 constant: Spaces.triple),
             avatarImageView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                     constant: Spaces.double),
+                                                     constant: Spaces.triple),
             avatarImageView.widthAnchor.constraint(equalToConstant: 30),
             avatarImageView.heightAnchor.constraint(equalToConstant: 30),
 
@@ -331,24 +332,24 @@ final class PostViewController: UIViewController {
             dateLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
 
             titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: Spaces.triple),
-            titleLabel.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.double),
+            titleLabel.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor, constant: Spaces.triple),
             titleLabel.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                 constant: -Spaces.double),
+                                                 constant: -Spaces.triple),
 
             descriptionWebView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spaces.double),
             descriptionWebView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                        constant: Spaces.double),
+                                                        constant: Spaces.triple),
             descriptionWebView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                         constant: -Spaces.double),
+                                                         constant: -Spaces.triple),
             webViewHeightConstraint,
 
             separatorView.topAnchor.constraint(equalTo: descriptionWebView.bottomAnchor, constant: Spaces.double),
             separatorView.heightAnchor.constraint(equalToConstant: 1),
             separatorView.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.septuple),
             separatorView.leadingAnchor.constraint(equalTo: bottomContentView.leadingAnchor,
-                                                   constant: Spaces.double),
+                                                   constant: Spaces.triple),
             separatorView.trailingAnchor.constraint(equalTo: bottomContentView.trailingAnchor,
-                                                    constant: -Spaces.double),
+                                                    constant: -Spaces.triple),
 
             shareButton.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: Spaces.double),
             shareButton.bottomAnchor.constraint(equalTo: bottomContentView.bottomAnchor, constant: -Spaces.double),
@@ -436,6 +437,7 @@ final class PostViewController: UIViewController {
         viewModel.state
             .map { $0.isLoading }
             .distinctUntilChanged()
+            .ignore(value: false)
             .subscribe(onNext: { [weak self] isLoading in
                 self?.updateLoadingView(show: isLoading)
             })
@@ -443,16 +445,14 @@ final class PostViewController: UIViewController {
     }
 
     private func updateLoadingView(show: Bool) {
-        print("\(#function) show \(show) bottomContentView.frame = \(bottomContentView.frame)")
         if show {
-            loadingAnimation.startAnimation(for: bottomContentView)
+            loadingAnimation.startAnimation(for: descriptionWebView)
         } else {
             loadingAnimation.stopAnimation(animate: false)
         }
     }
 
     private func handlePostModel(_ postModel: PostModel) {
-        print("\(#function)")
         descriptionWebView.loadHTMLString(postModel.bodyHTML, baseURL: nil)
         setupContentHeaderImageView(postModel)
         setupAvatarImageView(postModel)
@@ -536,6 +536,7 @@ extension PostViewController: WKNavigationDelegate {
                         completionHandler: { (height, error) in
                             guard let height = height as? CGFloat else { return }
                             self.webViewHeightConstraint.constant = height
+                            self.updateLoadingView(show: false)
                         })
                 }
             })

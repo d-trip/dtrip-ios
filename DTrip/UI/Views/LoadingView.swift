@@ -25,6 +25,18 @@ final class LoadingView: UIView {
         setupDefault()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let frame = CGRect(
+            x: (layer.bounds.width - sizeAnimation.width) / 2,
+            y: (layer.bounds.height - sizeAnimation.height) / 2,
+            width: sizeAnimation.width,
+            height: sizeAnimation.height
+        )
+        animateLayer.frame = frame
+    }
+    
     private func setupDefault() {
         backgroundColor = UIColor.white.withAlphaComponent(0.6)
         alpha = 0
