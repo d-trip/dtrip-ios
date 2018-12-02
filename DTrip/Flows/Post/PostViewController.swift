@@ -149,6 +149,13 @@ final class PostViewController: UIViewController {
         return view
     }()
 
+    private lazy var imageloadingAnimation: LoadingView = {
+        let view = LoadingView()
+        view.backgroundColor = .clear
+        view.sizeAnimation = CGSize(width: Spaces.quadruple, height: Spaces.quadruple)
+        return view
+    }()
+    
     private lazy var loadingAnimation: LoadingView = {
         let view = LoadingView()
         view.backgroundColor = .white
@@ -446,6 +453,7 @@ final class PostViewController: UIViewController {
 
     private func updateLoadingView(show: Bool) {
         if show {
+            imageloadingAnimation.startAnimation(for: headerImageView)
             loadingAnimation.startAnimation(for: descriptionWebView)
         } else {
             loadingAnimation.stopAnimation(animate: false)
@@ -467,9 +475,16 @@ final class PostViewController: UIViewController {
     private func setupContentHeaderImageView(_ postModel: PostModel) {
         let headerImage = postModel.titleImage() ?? ""
         let headerImageURL = URL(string: headerImage)
-        headerImageView.kf.indicatorType = .custom(indicator: ImageLoadingIndicator())
+        
         headerImageView.kf.setImage(with: headerImageURL,
                                     placeholder: UIImage.EmptyState.post)
+        { [weak self] (image, _, _, url) in
+            guard let self = self, url == headerImageURL else { return }
+            if let image = image {
+                self.headerImageView.image = image
+            }
+            self.imageloadingAnimation.stopAnimation()
+        }
     }
 
     private func setupAvatarImageView(_ postModel: PostModel) {
