@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +17,27 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="fMc-Gi-kL3">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchScreenLetter" translatesAutoresizingMaskIntoConstraints="NO" id="mIX-wv-ZAA">
+                                <rect key="frame" x="56" y="202" width="263" height="263"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="mIX-wv-ZAA" secondAttribute="height" multiplier="1:1" id="raM-jS-s1W"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mIX-wv-ZAA" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="2Kc-8W-mNB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fMc-Gi-kL3" secondAttribute="trailing" id="4VD-fc-wsB"/>
+                            <constraint firstItem="fMc-Gi-kL3" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Jli-ra-GCB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mIX-wv-ZAA" secondAttribute="trailing" constant="56" id="nkJ-5i-MMP"/>
+                            <constraint firstAttribute="bottom" secondItem="fMc-Gi-kL3" secondAttribute="bottom" id="rhi-Nn-X34"/>
+                            <constraint firstItem="fMc-Gi-kL3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vj9-0M-L8I"/>
+                            <constraint firstItem="mIX-wv-ZAA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56" id="yeL-uN-bQK"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -22,4 +46,8 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="launchScreen" width="1125" height="2436"/>
+        <image name="launchScreenLetter" width="816" height="967"/>
+    </resources>
 </document>
