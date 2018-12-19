@@ -56,8 +56,32 @@ final class MapViewController: UIViewController {
         }
     }
     
-    private func setupMapPoints(_ points: [MapPointModel]) {
-        mapView.addAnnotations(points)
+    private func setupMapPoints(_ points: Set<MapPointModel>) {
+        guard let mapAnnotationsSet = mapView
+            .annotations(in: mapView.visibleMapRect) as? Set<MKAnnotationView> else { return }
+        
+        DispatchQueue.global(qos: .userInteractive).async { [weak self] in
+            let mapPoints = mapAnnotationsSet.map { view -> [MapPointModel] in
+                if let annotation = view.annotation as? MKClusterAnnotation,
+                    let points = annotation.memberAnnotations as? [MapPointModel] {
+                    return points
+                } else if let point = view.annotation as? MapPointModel {
+                    return [point]
+                }
+                return []
+                }.flatMap { $0 }
+            
+            let newPointsSet = Set(points)
+            let annotationsSet = newPointsSet.subtracting(mapPoints)
+            
+            if !annotationsSet.isEmpty {
+                let annotationArray = Array(annotationsSet)
+
+                DispatchQueue.main.async {
+                    self?.mapView.addAnnotations(annotationArray)
+                }
+            }
+        }
     }
 
     // MARK: - Private methods
@@ -105,6 +129,16 @@ final class MapViewController: UIViewController {
 // MARK: - MKMapViewDelegate
 
 extension MapViewController: MKMapViewDelegate {
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        let topRightPoint = CGPoint(x: mapView.frame.maxX, y: mapView.frame.minY)
+        let topRight = mapView.convert(topRightPoint, toCoordinateFrom: mapView)
+        
+        let bottomLeftPoint = CGPoint(x: mapView.frame.minX, y: mapView.frame.maxY)
+        let bottomLeft = mapView.convert(bottomLeftPoint, toCoordinateFrom: mapView)
+        
+        viewModel.action.onNext(.didChangeVisibleRegion(bottomLeft: bottomLeft, topRight: topRight))
+    }
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let annotation = view.annotation as? MKClusterAnnotation,
            let annotations = annotation.memberAnnotations as? [MapPointModel] {

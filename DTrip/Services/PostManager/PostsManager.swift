@@ -8,9 +8,13 @@
 
 import Foundation
 import RxSwift
+import CoreLocation
 
 protocol PostManager {
     func getContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel>
+    func getContent(page: Int, limit: Int,
+                    bottomLeft: CLLocationCoordinate2D,
+                    topRight: CLLocationCoordinate2D) -> Observable<SearchContentResponseModel>
     
     func getPost(identifier: PostIdentifier) -> Observable<PostModel>
     func getPosts(identifiers: [PostIdentifier]) -> Observable<[PostModel]>
@@ -31,6 +35,16 @@ final class PostManagerImp: PostManager {
     
     func getContent(page: Int, limit: Int) -> Observable<SearchContentResponseModel> {
         return network.getSearchContent(page: page, limit: limit)
+    }
+    
+    func getContent(page: Int,
+                    limit: Int,
+                    bottomLeft: CLLocationCoordinate2D,
+                    topRight: CLLocationCoordinate2D) -> Observable<SearchContentResponseModel> {
+        return network.getSearchContent(page: page,
+                                        limit: limit,
+                                        bottomLeft: bottomLeft,
+                                        topRight: topRight)
     }
     
     func getPost(identifier: PostIdentifier) -> Observable<PostModel> {

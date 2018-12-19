@@ -29,10 +29,14 @@ final class MapViewModel: ViewModel {
             .observeOn(MainScheduler.instance)
     }
     
+    let scheduler = SerialDispatchQueueScheduler(queue: DispatchQueue.global(qos: .userInitiated),
+                                                 internalSerialQueueName: "com.ooodin.dtrip.mapViewModel")
+    
     // MARK: - Public types
     
     enum Action {
         case viewDidLoad
+        case didChangeVisibleRegion(bottomLeft: CLLocationCoordinate2D, topRight: CLLocationCoordinate2D)
         case selectIdentifier(MapPointModel)
         case selectIdentifiers([MapPointModel])
     }
@@ -50,8 +54,8 @@ final class MapViewModel: ViewModel {
     }
     
     struct State {
-        var isLoading = true
-        var points: [MapPointModel] = []
+        var isLoading = false
+        var points: Set<MapPointModel> = Set()
     }
     
     // MARK: - Private
@@ -76,6 +80,8 @@ final class MapViewModel: ViewModel {
             .startWith(initialState)
         
         let mutation = actionSubject
+            .debounce(0.5, scheduler: MainScheduler.asyncInstance)
+            .observeOn(scheduler)
             .flatMap { [weak self] action -> Observable<Mutation> in
                 guard let self = self else { return .empty() }
                 return self.mutate(action: action)
@@ -103,16 +109,19 @@ final class MapViewModel: ViewModel {
     private func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad:
-            let points = manager.getContent(page: 0, limit: Constants.limitPostsRequest)
+            return .empty()
+        case let .didChangeVisibleRegion(bottomLeft: bottomLeft, topRight: topRight):
+            let points = manager.getContent(page: 0,
+                                            limit: Constants.limitPostsRequest,
+                                            bottomLeft: bottomLeft,
+                                            topRight: topRight)
+                .take(1)
                 .map { [weak self] content -> [MapPointModel] in
                     guard let self = self else { return [] }
                     return self.performContentCoordinates(content.items)
                 }
-            return .concat([
-                .just(.setLoading(true)),
-                points.map { .addItems($0) },
-                .just(.setLoading(false))
-            ])
+
+            return points.map { .addItems($0) }
         case .selectIdentifier(let mapPoint):
             let identifier = PostIdentifier(mapPoint.author, mapPoint.permlink)
             return .just(.openPost(identifier))
@@ -140,7 +149,7 @@ final class MapViewModel: ViewModel {
             state.isLoading = loading
             return .just(state)
         case .addItems(let points):
-            state.points += points
+            state.points.formUnion(points)
             return .just(state)
         default:
             return .empty()

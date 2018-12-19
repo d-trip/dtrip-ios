@@ -31,8 +31,6 @@
 		EC16E991219171C40099C4FE /* MapPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E990219171C40099C4FE /* MapPointModel.swift */; };
 		EC16E994219240360099C4FE /* MapMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E993219240360099C4FE /* MapMarkerView.swift */; };
 		EC16E997219242240099C4FE /* MapClusterMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E996219242240099C4FE /* MapClusterMarkerView.swift */; };
-		EC16E9BD2193800E0099C4FE /* OAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC16E9BB2193800E0099C4FE /* OAuth2.framework */; };
-		EC16E9BE2193800E0099C4FE /* SwiftyConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */; };
 		EC16E9C1219383590099C4FE /* AppParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C0219383590099C4FE /* AppParameters.swift */; };
 		EC16E9CA219639420099C4FE /* PostManagerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9C9219639420099C4FE /* PostManagerParser.swift */; };
 		EC16E9CE219647200099C4FE /* NodeContentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC16E9CC2196471F0099C4FE /* NodeContentResponseModel.swift */; };
@@ -60,6 +58,7 @@
 		EC78E7252190A86700C19421 /* SearchContentResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */; };
 		EC78E72B2190AED000C19421 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC78E72A2190AED000C19421 /* Observable.swift */; };
 		ECBAC41C21ACA26B00215738 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAC41B21ACA26B00215738 /* LoadingView.swift */; };
+		ECC0FDBC21B49E7C00BA44D3 /* SwiftyConnect.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECC0FDBB21B49E7C00BA44D3 /* SwiftyConnect.framework */; };
 		ECC3BEF621793BF900B6E87B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BEF521793BF900B6E87B /* AppDelegate.swift */; };
 		ECC3BF0021793BFA00B6E87B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECC3BEFE21793BFA00B6E87B /* LaunchScreen.storyboard */; };
 		ECC3BF0B21793BFA00B6E87B /* DTripTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC3BF0A21793BFA00B6E87B /* DTripTests.swift */; };
@@ -143,8 +142,6 @@
 		EC16E990219171C40099C4FE /* MapPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPointModel.swift; sourceTree = "<group>"; };
 		EC16E993219240360099C4FE /* MapMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMarkerView.swift; sourceTree = "<group>"; };
 		EC16E996219242240099C4FE /* MapClusterMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapClusterMarkerView.swift; sourceTree = "<group>"; };
-		EC16E9BB2193800E0099C4FE /* OAuth2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuth2.framework; path = Carthage/Build/iOS/OAuth2.framework; sourceTree = "<group>"; };
-		EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyConnect.framework; path = Carthage/Build/iOS/SwiftyConnect.framework; sourceTree = "<group>"; };
 		EC16E9C0219383590099C4FE /* AppParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppParameters.swift; sourceTree = "<group>"; };
 		EC16E9C9219639420099C4FE /* PostManagerParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostManagerParser.swift; sourceTree = "<group>"; };
 		EC16E9CC2196471F0099C4FE /* NodeContentResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeContentResponseModel.swift; sourceTree = "<group>"; };
@@ -172,6 +169,7 @@
 		EC78E7242190A86700C19421 /* SearchContentResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchContentResponseModel.swift; sourceTree = "<group>"; };
 		EC78E72A2190AED000C19421 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		ECBAC41B21ACA26B00215738 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		ECC0FDBB21B49E7C00BA44D3 /* SwiftyConnect.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyConnect.framework; path = Carthage/Build/iOS/SwiftyConnect.framework; sourceTree = "<group>"; };
 		ECC3BEF221793BF900B6E87B /* DTrip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTrip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECC3BEF521793BF900B6E87B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ECC3BEFF21793BFA00B6E87B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -212,8 +210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC16E9BD2193800E0099C4FE /* OAuth2.framework in Frameworks */,
-				EC16E9BE2193800E0099C4FE /* SwiftyConnect.framework in Frameworks */,
+				ECC0FDBC21B49E7C00BA44D3 /* SwiftyConnect.framework in Frameworks */,
 				0AA7E269A7D5FB71E5348C78 /* Pods_DTrip.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,8 +229,7 @@
 		16B27EB48CEC9B8F8512C04C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EC16E9BB2193800E0099C4FE /* OAuth2.framework */,
-				EC16E9BC2193800E0099C4FE /* SwiftyConnect.framework */,
+				ECC0FDBB21B49E7C00BA44D3 /* SwiftyConnect.framework */,
 				3160CC333263ABC79C3019DF /* Pods_DTrip.framework */,
 				640008754F1848004EDCDA24 /* Pods_DTripTests.framework */,
 			);
@@ -733,7 +729,6 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyConnect.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/OAuth2.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -989,7 +984,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.ooodin.DTrip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ooodin.dtrip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1013,7 +1008,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.ooodin.DTrip;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ooodin.dtrip;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
